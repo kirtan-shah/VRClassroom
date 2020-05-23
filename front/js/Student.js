@@ -34,7 +34,7 @@ export default class Student {
 
     this.controls = new PointerLockControls(this.camera, this.renderer.domElement)
 
-    this.socket = IO('http://localhost:8080')
+    this.socket = IO()
 
     this.initKeyDown(this)
     this.initKeyUp(this)
