@@ -1,1 +1,0 @@
-{"version":3,"sources":["main.js"],"names":["console","log"],"mappings":";;;AAEA,aAFA,QAAA,gBACA,QAAA,iBACAA,QAAQC,IAAI","file":"main.3f66ccb1.js","sourceRoot":"..\\front","sourcesContent":["import \"./styles.css\";\nimport \"./styles.scss\";\nconsole.log(\"hello world!\");"]}

@@ -1,1 +1,0 @@
-{"version":3,"sources":["styles.css","styles.scss"],"names":[],"mappings":"AAAA,GACE,UAAY,CACZ,qBACF,CCDA,GACE,UAHc,CAId","file":"main.5de2a088.css","sourceRoot":"..\\front","sourcesContent":["h1 {\n  color: white;\n  background-color: black;\n}","$primary-color: white;\n$bg: black;\nh1 {\n  color: $primary-color;\n  background-color: $bg;\n}"]}
