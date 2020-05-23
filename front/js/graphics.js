@@ -1,4 +1,4 @@
-import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper } from 'three'
+import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial } from 'three'
 
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
@@ -19,7 +19,13 @@ let moveRight = false
 let velocity = new Vector3()
 let direction = new Vector3()
 
-let loader = new OBJLoader()
+let objLoader = new OBJLoader()
+
+let texture = new TextureLoader().load( 'models/classroom_texture.png' );
+let classroom_material = new MeshBasicMaterial( { map: texture } );
+
+let movementSpeed = 0.2
+let studentHeight = 5.5
 
 init()
 animate()
@@ -34,8 +40,8 @@ function init() {
 
   scene = new Scene()
 
-  camera = new PerspectiveCamera(45, width/height, 1, 10000)
-  camera.position.y = 30
+  camera = new PerspectiveCamera (45, width/height, 1, 10000)
+  camera.position.y = studentHeight
   camera.position.z = 0
 
   controls = new PointerLockControls(camera, renderer.domElement)
@@ -126,9 +132,9 @@ function animate() {
 
     direction.normalize() // this ensures consistent movements in all directions
 
-    velocity.z = direction.z * 2
-    velocity.x = direction.x * 2
-    velocity.y = direction.y * 2
+    velocity.z = direction.z * movementSpeed
+    velocity.x = direction.x * movementSpeed
+    velocity.y = direction.y * movementSpeed
 
     controls.moveRight(- velocity.x)
     controls.moveForward(- velocity.z)
@@ -142,9 +148,14 @@ function drawMap() {
   let gridXZ = new GridHelper(2000, 50)
   scene.add(gridXZ)
 
-  loader.load(
+  objLoader.load(
     '/models/classroom.obj',
     function (object) {
+      object.traverse( function( child ) {
+        if ( child instanceof Mesh ) {
+          child.material = classroom_material
+        }
+      } )
       scene.add(object)
     },
     function (xhr) {
