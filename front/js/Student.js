@@ -36,6 +36,14 @@ export default class Student {
 
     this.socket = IO()
 
+    this.socket.on('connect', () => {
+      this.socketId = this.socket.id
+    })
+
+    this.socket.on('studentConnected', () => {
+      this.socket.emit('updateMovement', this.controls.getObject().position)
+    })
+
     this.initKeyDown(this)
     this.initKeyUp(this)
   }
@@ -121,6 +129,10 @@ export default class Student {
       this.velocity.z = this.direction.z * this.movementSpeed
       this.velocity.x = this.direction.x * this.movementSpeed
       this.velocity.y = this.direction.y * this.movementSpeed
+
+      if(this.direction.length() != 0) {
+        this.socket.emit('updateMovement', this.controls.getObject().position)
+      }
 
       this.controls.moveRight(- this.velocity.x)
       this.controls.moveForward(- this.velocity.z)

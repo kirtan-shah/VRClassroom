@@ -12,6 +12,11 @@ app.use(nocache())
 
 io.on('connection', function(socket) {
 	console.log(socket.id + ' connected')
+	io.emit('studentConnected')
+
+	socket.on('updateMovement', function(location){
+		io.emit('movement', location, socket.id)
+	})
 
 	socket.on('disconnect', function() {
 		io.emit('disconnect', socket.id)

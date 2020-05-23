@@ -1,4 +1,4 @@
-import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial } from 'three'
+import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry } from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
 
@@ -12,6 +12,7 @@ let texture = new TextureLoader().load( 'models/classroom_texture.png' );
 let classroom_material = new MeshBasicMaterial( { map: texture } );
 
 let student = new Student('kirtan')
+let otherStudents = {}
 
 init()
 animate()
@@ -66,8 +67,31 @@ function drawMap() {
  )
 }
 
+student.socket.on('movement', function(location, socketId) {
+  if(student.socketId != socketId) {
+    if(otherStudents.hasOwnProperty(socketId)) {
+      otherStudents[socketId].location = location
+
+      otherStudents[socketId].geometry.position.x = location.x
+      otherStudents[socketId].geometry.position.y = location.y
+      otherStudents[socketId].geometry.position.z = location.z
+    }
+    else {
+      let cubeMaterial = new MeshBasicMaterial ({color: 0xff0000})
+      let cubeGeometry = new BoxGeometry (3,3,3)
+
+      otherStudents[socketId] = {geometry: new Mesh (cubeGeometry, cubeMaterial), location: location}
+
+      otherStudents[socketId].geometry.position.x = location.x
+      otherStudents[socketId].geometry.position.y = location.y
+      otherStudents[socketId].geometry.position.z = location.z
+
+      scene.add(otherStudents[socketId].geometry)
+    }
+  }
+})
+
 function onWindowResize(){
-  console.log('resized window!')
   if(student.camera != undefined) {
     student.camera.aspect = window.innerWidth / window.innerHeight
     student.camera.updateProjectionMatrix()
