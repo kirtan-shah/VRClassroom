@@ -1,3 +1,7 @@
+import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper } from 'three'
+import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
+
+
 let scene, renderer, camera;
 let controls;
 
@@ -11,29 +15,29 @@ let moveRight = false
 let moveUp = false
 let moveDown = false
 
-let velocity = new THREE.Vector3();
-let direction = new THREE.Vector3();
+let velocity = new Vector3();
+let direction = new Vector3();
 
 init();
 animate();
 
 function init()
 {
-    renderer = new THREE.WebGLRenderer( {antialias:true} );
+    renderer = new WebGLRenderer( {antialias:true} );
     let container = document.getElementById('canvas-parent');
 
     renderer.setSize (width, height);
     renderer.setClearColor (0xEAEEF1, 1);
     container.appendChild (renderer.domElement);
 
-    scene = new THREE.Scene();
+    scene = new Scene();
 
-    camera = new THREE.PerspectiveCamera (45, width/height, 1, 10000);
+    camera = new PerspectiveCamera (45, width/height, 1, 10000);
     camera.position.y = 160;
     camera.position.z = 400;
-    camera.lookAt (new THREE.Vector3(0,0,0));
+    camera.lookAt (new Vector3(0,0,0));
 
-    controls = new THREE.PointerLockControls( camera, renderer.domElement );
+    controls = new PointerLockControls( camera, renderer.domElement );
 
     // User interaction needed for initial pointer lock control sequence
     container.addEventListener( 'click', function () {
@@ -160,7 +164,7 @@ function animate()
 function drawMap() {
   console.log("drawing 3d map")
 
-  let gridXZ = new THREE.GridHelper(2000, 50);
+  let gridXZ = new GridHelper(2000, 50);
   scene.add(gridXZ);
 }
 

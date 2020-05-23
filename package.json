@@ -23,7 +23,6 @@
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
-    "nodemon": "^2.0.4",
     "parcel-bundler": "^1.12.4",
     "sass": "^1.26.5"
   }
