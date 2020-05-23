@@ -2,8 +2,8 @@ import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper } from 'th
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
 
 
-let scene, renderer, camera;
-let controls;
+let scene, renderer, camera
+let controls
 
 let width = window.innerWidth
 let height = window.innerHeight
@@ -15,36 +15,36 @@ let moveRight = false
 let moveUp = false
 let moveDown = false
 
-let velocity = new Vector3();
-let direction = new Vector3();
+let velocity = new Vector3()
+let direction = new Vector3()
 
-init();
-animate();
+init()
+animate()
 
 function init()
 {
-    renderer = new WebGLRenderer( {antialias:true} );
-    let container = document.getElementById('canvas-parent');
+    renderer = new WebGLRenderer( {antialias:true} )
+    let container = document.getElementById('canvas-parent')
 
-    renderer.setSize (width, height);
-    renderer.setClearColor (0xEAEEF1, 1);
-    container.appendChild (renderer.domElement);
+    renderer.setSize (width, height)
+    renderer.setClearColor (0xEAEEF1, 1)
+    container.appendChild (renderer.domElement)
 
-    scene = new Scene();
+    scene = new Scene()
 
-    camera = new PerspectiveCamera (45, width/height, 1, 10000);
-    camera.position.y = 160;
-    camera.position.z = 400;
-    camera.lookAt (new Vector3(0,0,0));
+    camera = new PerspectiveCamera (45, width/height, 1, 10000)
+    camera.position.y = 160
+    camera.position.z = 400
+    camera.lookAt (new Vector3(0,0,0))
 
-    controls = new PointerLockControls( camera, renderer.domElement );
+    controls = new PointerLockControls( camera, renderer.domElement )
 
     // User interaction needed for initial pointer lock control sequence
     container.addEventListener( 'click', function () {
-      controls.lock();
-    }, false );
+      controls.lock()
+    }, false )
 
-    scene.add( controls.getObject() );
+    scene.add( controls.getObject() )
 
     drawMap()
 
@@ -52,74 +52,74 @@ function init()
       switch ( event.keyCode ) {
         case 38: // up
         case 87: // w
-          moveForward = true;
-          break;
+          moveForward = true
+          break
 
         case 37: // left
         case 65: // a
-          moveLeft = true;
-          break;
+          moveLeft = true
+          break
 
         case 40: // down
         case 83: // s
-          moveBackward = true;
-          break;
+          moveBackward = true
+          break
 
         case 39: // right
         case 68: // d
-          moveRight = true;
-          break;
+          moveRight = true
+          break
 
         case 82: // r
-          moveUp = true;
-          break;
+          moveUp = true
+          break
 
         case 70: // f
-          moveDown = true;
-          break;
-      };
-    };
+          moveDown = true
+          break
+      }
+    }
 
 		var onKeyUp = function ( event ) {
       switch ( event.keyCode ) {
         case 38: // up
         case 87: // w
-          moveForward = false;
-          break;
+          moveForward = false
+          break
 
         case 37: // left
         case 65: // a
-          moveLeft = false;
-          break;
+          moveLeft = false
+          break
 
         case 40: // down
         case 83: // s
-          moveBackward = false;
-          break;
+          moveBackward = false
+          break
 
         case 39: // right
         case 68: // d
-          moveRight = false;
-          break;
+          moveRight = false
+          break
 
         case 82: // r
-          moveUp = false;
-          break;
+          moveUp = false
+          break
 
         case 70: // f
-          moveDown = false;
-          break;
+          moveDown = false
+          break
       }
-    };
+    }
 
-  document.addEventListener( 'keydown', onKeyDown, false );
-  document.addEventListener( 'keyup', onKeyUp, false );
+  document.addEventListener( 'keydown', onKeyDown, false )
+  document.addEventListener( 'keyup', onKeyUp, false )
 }
 
 function animate()
 {
-  requestAnimationFrame ( animate );
-  renderer.render (scene, camera);
+  requestAnimationFrame ( animate )
+  renderer.render (scene, camera)
 
   if ( controls.isLocked === true ) {
     if(moveForward == true)
@@ -149,32 +149,32 @@ function animate()
       direction.y = 0
     }
 
-    direction.normalize(); // this ensures consistent movements in all directions
+    direction.normalize() // this ensures consistent movements in all directions
 
-    velocity.z = direction.z * 2;
-    velocity.x = direction.x * 2;
-    velocity.y = direction.y * 2;
+    velocity.z = direction.z * 2
+    velocity.x = direction.x * 2
+    velocity.y = direction.y * 2
 
-    controls.moveRight( - velocity.x);
-    controls.moveForward( - velocity.z);
-    controls.getObject().position.y += (velocity.y);
+    controls.moveRight( - velocity.x)
+    controls.moveForward( - velocity.z)
+    controls.getObject().position.y += (velocity.y)
   }
 }
 
 function drawMap() {
   console.log("drawing 3d map")
 
-  let gridXZ = new GridHelper(2000, 50);
-  scene.add(gridXZ);
+  let gridXZ = new GridHelper(2000, 50)
+  scene.add(gridXZ)
 }
 
-window.addEventListener( 'resize', onWindowResize, false );
+window.addEventListener( 'resize', onWindowResize, false )
 
 function onWindowResize(){
   if(camera != undefined) {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize( window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()
+    renderer.setSize( window.innerWidth, window.innerHeight)
   }
 
   width = window.innerWidth
