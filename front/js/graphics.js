@@ -26,7 +26,7 @@ animate()
 
 function init()
 {
-  renderer = new WebGLRenderer( {antialias:true} )
+  renderer = new WebGLRenderer({antialias:true})
   let container = document.getElementById('canvas-parent')
 
   renderer.setSize (width, height)
@@ -39,19 +39,19 @@ function init()
   camera.position.y = 30
   camera.position.z = 0
 
-  controls = new PointerLockControls( camera, renderer.domElement )
+  controls = new PointerLockControls(camera, renderer.domElement)
 
   // User interaction needed for initial pointer lock control sequence
-  container.addEventListener( 'click', function () {
+  container.addEventListener('click', function () {
     controls.lock()
-  }, false )
+  }, false)
 
-  scene.add( controls.getObject() )
+  scene.add(controls.getObject())
 
   drawMap()
 
-  let onKeyDown = function ( event ) {
-    switch ( event.keyCode ) {
+  let onKeyDown = function (event) {
+    switch (event.keyCode) {
       case 38: // up
       case 87: // w
         moveForward = true
@@ -74,8 +74,8 @@ function init()
     }
   }
 
-	let onKeyUp = function ( event ) {
-    switch ( event.keyCode ) {
+	let onKeyUp = function (event) {
+    switch (event.keyCode) {
       case 38: // up
       case 87: // w
         moveForward = false
@@ -98,16 +98,16 @@ function init()
     }
   }
 
-  document.addEventListener( 'keydown', onKeyDown, false )
-  document.addEventListener( 'keyup', onKeyUp, false )
+  document.addEventListener('keydown', onKeyDown, false)
+  document.addEventListener('keyup', onKeyUp, false)
 }
 
 function animate()
 {
-  requestAnimationFrame ( animate )
+  requestAnimationFrame (animate)
   renderer.render (scene, camera)
 
-  if ( controls.isLocked === true ) {
+  if (controls.isLocked === true) {
     if(moveForward == true)
       direction.z = -1.0
     else if(moveBackward == true){
@@ -132,8 +132,8 @@ function animate()
     velocity.x = direction.x * 2
     velocity.y = direction.y * 2
 
-    controls.moveRight( - velocity.x)
-    controls.moveForward( - velocity.z)
+    controls.moveRight(- velocity.x)
+    controls.moveForward(- velocity.z)
     controls.getObject().position.y += (velocity.y)
   }
 }
@@ -146,25 +146,25 @@ function drawMap() {
 
   loader.load(
     '/models/classroom.obj',
-    function ( object ) {
-      scene.add( object );
+    function (object) {
+      scene.add(object);
     },
-    function ( xhr ) {
-      console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    function (xhr) {
+      console.log((xhr.loaded / xhr.total * 100) + '% loaded');
     },
-    function ( error ) {
-      console.log( 'An error happened' );
+    function (error) {
+      console.log('An error happened');
     }
-  )
+ )
 }
 
-window.addEventListener( 'resize', onWindowResize, false )
+window.addEventListener('resize', onWindowResize, false)
 
 function onWindowResize(){
   if(camera != undefined) {
     camera.aspect = window.innerWidth / window.innerHeight
     camera.updateProjectionMatrix()
-    renderer.setSize( window.innerWidth, window.innerHeight)
+    renderer.setSize(window.innerWidth, window.innerHeight)
   }
 
   width = window.innerWidth
