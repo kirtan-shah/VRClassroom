@@ -48,7 +48,7 @@ function init()
 
     drawMap()
 
-    var onKeyDown = function ( event ) {
+    let onKeyDown = function ( event ) {
       switch ( event.keyCode ) {
         case 38: // up
         case 87: // w
@@ -80,7 +80,7 @@ function init()
       }
     }
 
-		var onKeyUp = function ( event ) {
+		let onKeyUp = function ( event ) {
       switch ( event.keyCode ) {
         case 38: // up
         case 87: // w
