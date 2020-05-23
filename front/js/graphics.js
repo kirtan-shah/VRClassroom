@@ -67,10 +67,11 @@ function drawMap() {
 }
 
 function onWindowResize(){
+  console.log('resized window!')
   if(student.camera != undefined) {
     student.camera.aspect = window.innerWidth / window.innerHeight
     student.camera.updateProjectionMatrix()
-    renderer.setSize(window.innerWidth, window.innerHeight)
+    student.renderer.setSize(window.innerWidth, window.innerHeight)
   }
 }
 
