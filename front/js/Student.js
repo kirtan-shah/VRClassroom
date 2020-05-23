@@ -1,11 +1,12 @@
 import { Vector3, PerspectiveCamera, WebGLRenderer } from 'three'
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
+import IO from 'socket.io-client'
 
 export default class Student {
 
   constructor(name, renderer) {
-    this.name = "student"
-    this.id = "some_id"
+    this.name = 'student'
+    this.id = 'some_id'
 
     this.movementSpeed = 0.2
     this.height = 5.5
@@ -32,6 +33,8 @@ export default class Student {
     this.renderer.setClearColor(0xEAEEF1, 1)
 
     this.controls = new PointerLockControls(this.camera, this.renderer.domElement)
+
+    this.socket = IO('http://localhost:8080')
 
     this.initKeyDown(this)
     this.initKeyUp(this)
