@@ -12,8 +12,6 @@ let moveForward = false
 let moveBackward = false
 let moveLeft = false
 let moveRight = false
-let moveUp = false
-let moveDown = false
 
 let velocity = new Vector3()
 let direction = new Vector3()
@@ -33,9 +31,8 @@ function init()
     scene = new Scene()
 
     camera = new PerspectiveCamera (45, width/height, 1, 10000)
-    camera.position.y = 160
-    camera.position.z = 400
-    camera.lookAt (new Vector3(0,0,0))
+    camera.position.y = 30
+    camera.position.z = 0
 
     controls = new PointerLockControls( camera, renderer.domElement )
 
@@ -69,14 +66,6 @@ function init()
         case 68: // d
           moveRight = true
           break
-
-        case 82: // r
-          moveUp = true
-          break
-
-        case 70: // f
-          moveDown = true
-          break
       }
     }
 
@@ -100,14 +89,6 @@ function init()
         case 39: // right
         case 68: // d
           moveRight = false
-          break
-
-        case 82: // r
-          moveUp = false
-          break
-
-        case 70: // f
-          moveDown = false
           break
       }
     }
@@ -138,15 +119,6 @@ function animate()
     }
     else if(moveRight == false && moveLeft == false){
       direction.x = 0
-    }
-
-    if(moveUp == true)
-      direction.y = 1.0
-    else if(moveDown == true){
-      direction.y = -1.0
-    }
-    else if(moveUp == false && moveDown == false){
-      direction.y = 0
     }
 
     direction.normalize() // this ensures consistent movements in all directions
