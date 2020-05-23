@@ -4,8 +4,8 @@ import IO from 'socket.io-client'
 
 export default class Student {
 
-  constructor(name, renderer) {
-    this.name = 'student'
+  constructor(name) {
+    this.name = name
     this.id = 'some_id'
 
     this.movementSpeed = 0.2
