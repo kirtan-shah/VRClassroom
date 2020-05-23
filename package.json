@@ -12,7 +12,8 @@
     "build-front": "parcel build front/index.html -d dist/public",
     "build-back": "babel back -d dist",
     "build-all": "npm run build-front && npm run build-back",
-    "start": "npm run build-all && node dist/index.js"
+    "serve": "node dist/index.js",
+    "start": "npm run build-all && npm run serve"
   },
   "dependencies": {
     "express": "^4.17.1",
