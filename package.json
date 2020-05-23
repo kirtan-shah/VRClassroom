@@ -31,7 +31,7 @@
     "sass": "^1.26.5"
   },
   "staticFiles": {
-    "staticPath": [ 
+    "staticPath": [
       {
         "staticPath": "front/models",
         "staticOutDir": "models"

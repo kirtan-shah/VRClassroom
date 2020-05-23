@@ -24,18 +24,17 @@ let loader = new OBJLoader()
 init()
 animate()
 
-function init()
-{
-  renderer = new WebGLRenderer({antialias:true})
+function init() {
+  renderer = new WebGLRenderer({ antialias:true })
   let container = document.getElementById('canvas-parent')
 
-  renderer.setSize (width, height)
-  renderer.setClearColor (0xEAEEF1, 1)
-  container.appendChild (renderer.domElement)
+  renderer.setSize(width, height)
+  renderer.setClearColor(0xEAEEF1, 1)
+  container.appendChild(renderer.domElement)
 
   scene = new Scene()
 
-  camera = new PerspectiveCamera (45, width/height, 1, 10000)
+  camera = new PerspectiveCamera(45, width/height, 1, 10000)
   camera.position.y = 30
   camera.position.z = 0
 
@@ -102,10 +101,9 @@ function init()
   document.addEventListener('keyup', onKeyUp, false)
 }
 
-function animate()
-{
-  requestAnimationFrame (animate)
-  renderer.render (scene, camera)
+function animate() {
+  requestAnimationFrame(animate)
+  renderer.render(scene, camera)
 
   if (controls.isLocked === true) {
     if(moveForward == true)
@@ -147,13 +145,13 @@ function drawMap() {
   loader.load(
     '/models/classroom.obj',
     function (object) {
-      scene.add(object);
+      scene.add(object)
     },
     function (xhr) {
-      console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+      console.log((xhr.loaded / xhr.total * 100) + '% loaded')
     },
     function (error) {
-      console.log('An error happened');
+      console.log('An error happened')
     }
  )
 }
