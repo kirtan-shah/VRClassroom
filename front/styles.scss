@@ -1,11 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
 $primary-color: black;
+$secondary-color: white;
 $bg: #fafafa;
+$font: 'Open Sans', sans-serif;
 
 body { 
   margin: 0; overflow: hidden;
 }
 canvas { 
   display: block;
+}
+
+button {
+  font-family: $font;
+  outline: none;
+  background-color: transparent;
+  color: $primary-color;
+  border-radius: 5px;
+  transition: 250ms all;
+}
+button:hover {
+  background-color: $primary-color;
+  color: $secondary-color;
+}
+
+#dash-button {
+  position: absolute;
+  top: 0.5em;
+  left: 0.5em;
+  padding: 0.25em;
+  font-size: 1.5rem;
+  border: 1px solid $primary-color;
 }
 
 #app {
