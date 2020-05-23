@@ -1,5 +1,13 @@
 $primary-color: white;
 $bg: black;
+
+body { 
+  margin: 0; overflow: hidden;
+}
+canvas { 
+  display: block;
+}
+
 h1 {
   color: $primary-color;
   background-color: $bg;
