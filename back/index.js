@@ -7,7 +7,7 @@ let server = http.Server(app)
 let io = require('socket.io')(server)
 let port = process.env.PORT || 8080
 
-app.use('/', express.static(path.join(__dirname, '../public')))
+app.use('/', express.static(path.join(__dirname, '/public')))
 app.use(nocache())
 
 io.on('connection', function(socket) {
