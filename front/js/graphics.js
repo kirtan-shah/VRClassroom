@@ -1,6 +1,9 @@
 import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper } from 'three'
-import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
 
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
+
+import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
 
 let scene, renderer, camera
 let controls
@@ -16,82 +19,84 @@ let moveRight = false
 let velocity = new Vector3()
 let direction = new Vector3()
 
+let loader = new OBJLoader()
+
 init()
 animate()
 
 function init()
 {
-    renderer = new WebGLRenderer( {antialias:true} )
-    let container = document.getElementById('canvas-parent')
+  renderer = new WebGLRenderer( {antialias:true} )
+  let container = document.getElementById('canvas-parent')
 
-    renderer.setSize (width, height)
-    renderer.setClearColor (0xEAEEF1, 1)
-    container.appendChild (renderer.domElement)
+  renderer.setSize (width, height)
+  renderer.setClearColor (0xEAEEF1, 1)
+  container.appendChild (renderer.domElement)
 
-    scene = new Scene()
+  scene = new Scene()
 
-    camera = new PerspectiveCamera (45, width/height, 1, 10000)
-    camera.position.y = 30
-    camera.position.z = 0
+  camera = new PerspectiveCamera (45, width/height, 1, 10000)
+  camera.position.y = 30
+  camera.position.z = 0
 
-    controls = new PointerLockControls( camera, renderer.domElement )
+  controls = new PointerLockControls( camera, renderer.domElement )
 
-    // User interaction needed for initial pointer lock control sequence
-    container.addEventListener( 'click', function () {
-      controls.lock()
-    }, false )
+  // User interaction needed for initial pointer lock control sequence
+  container.addEventListener( 'click', function () {
+    controls.lock()
+  }, false )
 
-    scene.add( controls.getObject() )
+  scene.add( controls.getObject() )
 
-    drawMap()
+  drawMap()
 
-    let onKeyDown = function ( event ) {
-      switch ( event.keyCode ) {
-        case 38: // up
-        case 87: // w
-          moveForward = true
-          break
+  let onKeyDown = function ( event ) {
+    switch ( event.keyCode ) {
+      case 38: // up
+      case 87: // w
+        moveForward = true
+        break
 
-        case 37: // left
-        case 65: // a
-          moveLeft = true
-          break
+      case 37: // left
+      case 65: // a
+        moveLeft = true
+        break
 
-        case 40: // down
-        case 83: // s
-          moveBackward = true
-          break
+      case 40: // down
+      case 83: // s
+        moveBackward = true
+        break
 
-        case 39: // right
-        case 68: // d
-          moveRight = true
-          break
-      }
+      case 39: // right
+      case 68: // d
+        moveRight = true
+        break
     }
+  }
 
-		let onKeyUp = function ( event ) {
-      switch ( event.keyCode ) {
-        case 38: // up
-        case 87: // w
-          moveForward = false
-          break
+	let onKeyUp = function ( event ) {
+    switch ( event.keyCode ) {
+      case 38: // up
+      case 87: // w
+        moveForward = false
+        break
 
-        case 37: // left
-        case 65: // a
-          moveLeft = false
-          break
+      case 37: // left
+      case 65: // a
+        moveLeft = false
+        break
 
-        case 40: // down
-        case 83: // s
-          moveBackward = false
-          break
+      case 40: // down
+      case 83: // s
+        moveBackward = false
+        break
 
-        case 39: // right
-        case 68: // d
-          moveRight = false
-          break
-      }
+      case 39: // right
+      case 68: // d
+        moveRight = false
+        break
     }
+  }
 
   document.addEventListener( 'keydown', onKeyDown, false )
   document.addEventListener( 'keyup', onKeyUp, false )
@@ -138,6 +143,19 @@ function drawMap() {
 
   let gridXZ = new GridHelper(2000, 50)
   scene.add(gridXZ)
+
+  loader.load(
+    '/models/classroom.obj',
+    function ( object ) {
+      scene.add( object );
+    },
+    function ( xhr ) {
+      console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+    },
+    function ( error ) {
+      console.log( 'An error happened' );
+    }
+  )
 }
 
 window.addEventListener( 'resize', onWindowResize, false )
