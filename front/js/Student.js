@@ -9,6 +9,9 @@ export default class Student {
 
     this.movementSpeed = 0.2
     this.height = 5.5
+    this.startX = -15.18
+    this.startZ = -13.88
+    this.lookAtInitial = new Vector3(0, this.height, 0)
 
     this.moveForward = false
     this.moveBackward = false
@@ -20,7 +23,9 @@ export default class Student {
 
     this.camera = new PerspectiveCamera (45, window.innerWidth/window.innerHeight, 1, 10000)
     this.camera.position.y = this.height
-    this.camera.position.z = 0
+    this.camera.position.x = this.startX
+    this.camera.position.z = this.startZ
+    this.camera.lookAt(this.lookAtInitial)
 
     this.renderer = new WebGLRenderer({antialias:true})
     this.renderer.setSize(window.innerWidth, window.innerHeight)
