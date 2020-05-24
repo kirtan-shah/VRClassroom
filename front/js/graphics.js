@@ -16,11 +16,28 @@ let classroom_material = new MeshBasicMaterial( { map: texture } );
 let student
 let otherStudents = {}
 
-$("#landingPage").ready(function() {
+$('#landingPage').ready(function() {
+
   $('#createRoomBtn').click(function() {
-    student = new Student('kirtan', 'classroom1', false)
+    alert('TODO: set random room code as Student class\'s socketRoom variable')
+    student = new Student('kirtan teacher', 'classroom1', true)
     startEnvironment()
+    $('#app').hide()
   })
+
+  $('#joinRoomForm').on('submit', function(e) {
+      e.preventDefault()
+      let input = $('#joinRoomInput').val().trim()
+      if(input.length == 0) {
+        alert('you cannot leave this field empty')
+      }
+      else {
+        student = new Student('kirtan student', input, false)
+        startEnvironment()
+        $('#app').hide()
+      }
+  })
+
 })
 
 function startEnvironment() {

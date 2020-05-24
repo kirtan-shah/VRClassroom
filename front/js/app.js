@@ -33,21 +33,4 @@ $(document).ready(function() {
     switchTo(landing)
 
     $('#dash-button').click(() => switchTo(dashboard))
-
-    $('#createRoomBtn').click(function() {
-      $('#app').hide()
-      alert('TODO: genereate random room code and set that as Student class\'s socketRoom variable (also make this student a teacher possibly with a boolean)')
-    })
-
-    $('#joinRoomForm').on('submit', function(e) {
-        e.preventDefault()
-        let input = $('#joinRoomInput').val().trim()
-        if(input.length == 0) {
-          alert('you cannot leave this field empty')
-        }
-        else {
-          alert('TODO: set '+input+' as Student class\'s socketRoom variable')
-          $('#app').hide()
-        }
-    })
 })
