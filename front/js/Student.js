@@ -35,13 +35,15 @@ export default class Student {
     this.controls = new PointerLockControls(this.camera, this.renderer.domElement)
 
     this.socket = IO()
+    this.socketRoom = 'classroom1'
 
     this.socket.on('connect', () => {
       this.socketId = this.socket.id
+      this.socket.emit('joinRoom', this.socketRoom)
     })
 
     this.socket.on('studentConnected', () => {
-      this.socket.emit('updateMovement', this.controls.getObject().position)
+      this.socket.emit('updateMovement', this.controls.getObject().position, this.socketRoom)
     })
 
     this.initKeyDown(this)
@@ -131,7 +133,7 @@ export default class Student {
       this.velocity.y = this.direction.y * this.movementSpeed
 
       if(this.direction.length() != 0) {
-        this.socket.emit('updateMovement', this.controls.getObject().position)
+        this.socket.emit('updateMovement', this.controls.getObject().position, this.socketRoom)
       }
 
       this.controls.moveRight(- this.velocity.x)
