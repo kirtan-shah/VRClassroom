@@ -22,6 +22,8 @@ $('#landingPage').ready(function() {
     let id = genID()
     student = new Student('kirtan teacher', id, true)
     $('#room-id').html('Room Code: ' + id)
+    $('#room-id').show()
+    $('#dash-button').show()
     startEnvironment()
     $('#app').hide()
   })
