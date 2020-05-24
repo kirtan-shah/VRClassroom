@@ -164,7 +164,9 @@ function animate() {
 
   for (var socketId in otherStudents) {
     if (otherStudents.hasOwnProperty(socketId)) {
-      otherStudents[socketId].textGeometry.lookAt(student.controls.getObject().position)
+      if(otherStudents[socketId].textGeometry != undefined) {
+        otherStudents[socketId].textGeometry.lookAt(student.controls.getObject().position)
+      }
     }
   }
 
