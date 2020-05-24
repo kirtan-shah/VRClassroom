@@ -20,8 +20,8 @@ io.on('connection', function(socket) {
 		console.log(socket.id + ' joined ' + room)
 	})
 
-	socket.on('updateMovement', function(name, location, theta, isWalking, room){
-		io.to(room).emit('movement', name, location, theta, isWalking, socket.id)
+	socket.on('updateMovement', function(name, location, theta, state, room){
+		io.to(room).emit('movement', name, location, theta, state, socket.id)
 	})
 
 	socket.on('quiz', function(questions) {

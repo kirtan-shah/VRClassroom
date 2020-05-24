@@ -24,7 +24,7 @@ export default class Student {
     this.velocity = new Vector3()
     this.direction = new Vector3()
 
-    this.camera = new PerspectiveCamera (45, window.innerWidth/window.innerHeight, 1, 10000)
+    this.camera = new PerspectiveCamera (75, window.innerWidth/window.innerHeight, 0.1, 10000)
     this.camera.position.y = this.height
     this.camera.position.x = this.startX
     this.camera.position.z = this.startZ
@@ -166,12 +166,13 @@ export default class Student {
     camVector = wpVector
     let theta = Math.atan2(camVector.x,camVector.z)
 
-    let isWalking = false
+    let state = 'Idle'
+
     if(this.direction.length() > 0) {
-      isWalking = true
+      state = 'Walking'
     }
 
-    this.socket.emit('updateMovement', this.name, this.controls.getObject().position, theta, isWalking, this.socketRoom)
+    this.socket.emit('updateMovement', this.name, this.controls.getObject().position, theta, state, this.socketRoom)
   }
 
 }
