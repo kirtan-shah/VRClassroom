@@ -5,8 +5,7 @@ import landing from '/pages/landing.html'
 import dashboard from '/pages/dashboard.html'
 
 function switchTo(name) {
-    if(!$('#app').is(':visible'))
-        slide($('#app'), 'left')
+    slide($('#app'), 'left')
     $('#app').html(name)
 }
 
@@ -15,16 +14,16 @@ function slide(el, from) {
     const easing = 'easeInOutCubic'
     switch(from) {
         case 'top':
-            el.css({ top: '-100%' }).fadeIn(duration).velocity({ top: 0 }, easing, { duration })
+            el.css({ top: '-100%' }).hide().fadeIn(duration).velocity({ top: 0 }, easing, { duration })
             break
         case 'bottom':
-            el.css({ top: '100%' }).fadeIn(duration).velocity({ top: 0 }, easing, { duration })
+            el.css({ top: '100%' }).hide().fadeIn(duration).velocity({ top: 0 }, easing, { duration })
             break
         case 'left':
-            el.css({ left: '-100%' }).fadeIn(duration).velocity({ left: 0 }, easing, { duration })
+            el.css({ left: '-100%' }).hide().fadeIn(duration).velocity({ left: 0 }, easing, { duration })
             break
         case 'right':
-            el.css({ left: '100%' }).show().animate({ left: 0 }, easing, duration)
+            el.css({ left: '100%' }).hide().fadeIn(duration).velocity({ left: 0 }, easing, { duration })
             break
     }
 }
