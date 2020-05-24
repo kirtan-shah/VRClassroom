@@ -49,6 +49,8 @@ function startEnvironment() {
 function createSocketListeners() {
   student.socket.on('movement', function(location, socketId) {
     if(student.socketId != socketId) {
+      console.log('student moved')
+
       if(otherStudents.hasOwnProperty(socketId)) {
         otherStudents[socketId].location = location
       }
