@@ -70,6 +70,14 @@ function createSocketListeners() {
       otherStudents[socketId].geometry.position.z = location.z
     }
   })
+
+  student.socket.on('disconnect', function(socketId) {
+    if(otherStudents.hasOwnProperty(socketId)) {
+      scene.remove(otherStudents[socketId].geometry)
+      otherStudents.delete(socketId)
+    }
+  })
+
 }
 
 function init() {
