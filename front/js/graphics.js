@@ -162,6 +162,7 @@ function createSocketListeners() {
   student.socket.on('disconnect', function(socketId) {
     if(otherStudents.hasOwnProperty(socketId)) {
       scene.remove(otherStudents[socketId].geometry)
+      scene.remove(otherStudents[socketId].walkingGeometry)
       scene.remove(otherStudents[socketId].textGeometry)
       delete otherStudents[socketId]
     }
