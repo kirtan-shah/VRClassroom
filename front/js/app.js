@@ -31,6 +31,7 @@ function slide(el, from) {
 
 $(document).ready(function() {
     switchTo(landing)
+    
     $('#dash-button').click(() => switchTo(dashboard))
 
     $('#joinRoomForm').on('submit', function(e) {
