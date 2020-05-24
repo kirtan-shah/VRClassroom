@@ -1,6 +1,6 @@
 window.$ = window.jQuery = require('jquery')
 
-import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry } from 'three'
+import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, FontLoader, TextGeometry, Box3 } from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
 import CapsuleGeometry from '/js/CapsuleGeometry.js'
@@ -9,6 +9,7 @@ import Student from '/js/Student.js'
 
 let scene
 let objLoader = new OBJLoader()
+let fontLoader = new FontLoader();
 
 let texture = new TextureLoader().load( 'models/classroom_texture.png' );
 let classroom_material = new MeshBasicMaterial( { map: texture } );
@@ -17,10 +18,10 @@ let student
 let otherStudents = {}
 
 $('#landingPage').ready(function() {
-
   $('#createRoomBtn').click(function() {
+    let name = $('#nameInput').val().trim()
     let id = genID()
-    student = new Student('kirtan teacher', id, true)
+    student = new Student(name, id, true)
     $('#room-id').html('Room Code: ' + id)
     $('#room-id').show()
     $('#dash-button').show()
@@ -30,13 +31,14 @@ $('#landingPage').ready(function() {
 
   $('#joinRoomForm').on('submit', function(e) {
       e.preventDefault()
-      let input = $('#joinRoomInput').val().trim()
-      if(input.length == 0) {
+      let name = $('#nameInput').val().trim()
+      let code = $('#joinRoomInput').val().trim()
+      if(code.length == 0) {
         alert('you cannot leave this field empty')
       }
       else {
-        student = new Student('kirtan student', input, false)
-        $('#room-id').html('Room Code: ' + input)
+        student = new Student(name, code, false)
+        $('#room-id').html('Room Code: ' + code)
         startEnvironment()
         $('#app').hide()
       }
@@ -51,25 +53,45 @@ function startEnvironment() {
 }
 
 function createSocketListeners() {
-  student.socket.on('movement', function(location, socketId) {
+  student.socket.on('movement', function(name, location, socketId) {
     if(student.socketId != socketId) {
       if(otherStudents.hasOwnProperty(socketId)) {
         otherStudents[socketId].location = location
+
+        otherStudents[socketId].geometry.position.x = location.x
+        otherStudents[socketId].geometry.position.z = location.z
+
+        otherStudents[socketId].textGeometry.position.x = location.x - otherStudents[socketId].textGeometrySize.x/2
+        otherStudents[socketId].textGeometry.position.z = location.z - otherStudents[socketId].textGeometrySize.z/2
       }
       else {
-        let material = new MeshBasicMaterial ({color: 0xd62e50})
-        let geometry = new CapsuleGeometry(1, student.height-1-1, 32)
-        let mesh = new Mesh (geometry, material)
-        mesh.rotation.x = Math.PI/2
+        let bodyMaterial = new MeshBasicMaterial ({color: 0xd62e50})
+        let bodyGeometry = new CapsuleGeometry(1, student.height-1-1, 32)
+        let bodyMesh = new Mesh(bodyGeometry, bodyMaterial)
+        bodyMesh.rotation.x = Math.PI/2
 
-        otherStudents[socketId] = {geometry: mesh, location: location}
-        otherStudents[socketId].geometry.position.y = student.height - student.height/2
+        fontLoader.load( 'models/helvetiker_regular.typeface.json', function ( font ) {
+          let textMaterial = new MeshBasicMaterial ({color: 0xffffff})
+          let textGeometry = new TextGeometry(name, {font: font, size: 1, height: 1, curveSegments: 12} )
+          let textMesh = new Mesh(textGeometry, textMaterial)
+          textMesh.scale.set(1, 1, 0.1)
 
-        scene.add(otherStudents[socketId].geometry)
+          let box = new Box3().setFromObject( textMesh );
+
+          otherStudents[socketId] = {name: name, geometry: bodyMesh, textGeometry: textMesh, textGeometrySize: box.getSize(), location: location}
+
+          otherStudents[socketId].geometry.position.y = student.height - student.height/2
+          otherStudents[socketId].geometry.position.x = location.x
+          otherStudents[socketId].geometry.position.z = location.z
+
+          otherStudents[socketId].textGeometry.position.y = student.height
+          otherStudents[socketId].textGeometry.position.x = location.x - box.getSize().x/2
+          otherStudents[socketId].textGeometry.position.z = location.z - box.getSize().z/2
+
+          scene.add(otherStudents[socketId].geometry)
+          scene.add(otherStudents[socketId].textGeometry)
+        })
       }
-
-      otherStudents[socketId].geometry.position.x = location.x
-      otherStudents[socketId].geometry.position.z = location.z
     }
   })
 
@@ -103,6 +125,13 @@ function animate() {
   requestAnimationFrame(animate)
   student.renderer.render(scene, student.camera)
   student.updateMovement()
+
+  for (var socketId in otherStudents) {
+    if (otherStudents.hasOwnProperty(socketId)) {
+      otherStudents[socketId].textGeometry.lookAt(student.controls.getObject().position)
+    }
+  }
+
 }
 
 function drawMap() {

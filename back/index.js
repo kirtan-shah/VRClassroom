@@ -19,8 +19,8 @@ io.on('connection', function(socket) {
 		console.log(socket.id + ' joined ' + room)
 	})
 
-	socket.on('updateMovement', function(location, room){
-		io.to(room).emit('movement', location, socket.id)
+	socket.on('updateMovement', function(name, location, room){
+		io.to(room).emit('movement', name, location, socket.id)
 	})
 
 	socket.on('disconnect', function() {
