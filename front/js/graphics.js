@@ -47,8 +47,7 @@ function createSocketListeners() {
   })
 }
 
-function init()
-{
+function init() {
   let container = document.getElementById('canvas-parent')
 
   container.appendChild(student.renderer.domElement)
@@ -65,8 +64,7 @@ function init()
   drawMap()
 }
 
-function animate()
-{
+function animate() {
   requestAnimationFrame(animate)
   student.renderer.render(scene, student.camera)
   student.updateMovement()
