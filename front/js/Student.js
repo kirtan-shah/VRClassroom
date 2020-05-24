@@ -141,9 +141,6 @@ export default class Student {
 
       let pos = this.controls.getObject().position
 
-      console.log(pos)
-
-
       let minX = 2
       let maxX = 35
       let minZ = -53
