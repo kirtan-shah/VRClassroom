@@ -20,6 +20,12 @@ student = new Student('kirtan', 'classroom1', false)
 startEnvironment()
 
 function startEnvironment() {
+  createSocketListeners()
+  init()
+  animate()
+}
+
+function createSocketListeners() {
   student.socket.on('movement', function(location, socketId) {
     if(student.socketId != socketId) {
       if(otherStudents.hasOwnProperty(socketId)) {
@@ -39,9 +45,6 @@ function startEnvironment() {
       otherStudents[socketId].geometry.position.z = location.z
     }
   })
-
-  init()
-  animate()
 }
 
 function init()
