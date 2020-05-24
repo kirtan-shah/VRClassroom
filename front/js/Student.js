@@ -110,7 +110,7 @@ export default class Student {
   }
 
   updateMovement() {
-    console.log(this.controls.getObject().position)
+    //console.log(this.controls.getObject().position)
     if (this.controls.isLocked === true) {
       if(this.moveForward == true)
         this.direction.z = -1.0

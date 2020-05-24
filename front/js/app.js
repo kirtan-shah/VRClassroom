@@ -3,37 +3,45 @@ require('/lib/velocity.min.js')
 
 import landing from '/pages/landing.html'
 import dashboard from '/pages/dashboard.html'
+import liveQuiz from '/pages/live-quiz.html'
+
+let currentApp = '#app'
+let otherApp = a => a == '#app' ? '#app-tmp' : '#app'
 
 function switchTo(name, direction='left') {
-    $('#app').show()
-    if(direction) slide($('#app'), direction)
-    $('#app').html(name)
+    $(currentApp).show()
+    $(otherApp(currentApp)).hide()
+    if(direction) {
+        slide($(currentApp), direction)
+        $(currentApp).html(name)
+    }
+    else {
+        $(currentApp).html(name)
+    }
+    currentApp = otherApp(currentApp)
 }
+// function fadeTo(name) {
+//     $(currentApp).html(name).ready(() => {
+//         $(currentApp).fadeIn(400)
+//         $(otherApp(currentApp)).fadeOut(400)
+//     })
+//     currentApp = otherApp(currentApp)
+// }
 
 function slide(el, from) {
     const classes = 'animated fadeIn' + from.charAt(0).toUpperCase() + from.slice(1)
     el.addClass(classes)
         .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
         () => el.removeClass(classes))
-     /*
-    switch(from) {
-        case 'top':
-            el.css({ top: '-100%' }).hide().fadeIn(duration).velocity({ top: 0 }, easing, { duration })
-            break
-        case 'bottom':
-            el.css({ top: '100%' }).hide().fadeIn(duration).velocity({ top: 0 }, easing, { duration })
-            break
-        case 'left':
-            el.css({ left: '-100%' }).hide().fadeIn(duration).velocity({ left: 0 }, easing, { duration })
-            break
-        case 'right':
-            el.css({ left: '100%' }).hide().fadeIn(duration).velocity({ left: 0 }, easing, { duration })
-            break
-    }*/
 }
 
 $(document).ready(function() {
     switchTo(landing, false)
-
-    $('#dash-button').click(() => switchTo(dashboard, 'down'))
+    $('#dash-button').click(() => {
+        switchTo(dashboard, 'down')
+        $('#new-live-quiz').click(function() {
+            switchTo(liveQuiz, false)
+            console.log("livequiz")
+        })
+    })
 })
