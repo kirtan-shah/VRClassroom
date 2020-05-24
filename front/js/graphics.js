@@ -19,8 +19,9 @@ let otherStudents = {}
 $('#landingPage').ready(function() {
 
   $('#createRoomBtn').click(function() {
-    alert('TODO: set random room code as Student class\'s socketRoom variable')
-    student = new Student('kirtan teacher', 'classroom1', true)
+    let id = genID()
+    student = new Student('kirtan teacher', id, true)
+    $('#room-id').html(id)
     startEnvironment()
     $('#app').hide()
   })
@@ -33,6 +34,7 @@ $('#landingPage').ready(function() {
       }
       else {
         student = new Student('kirtan student', input, false)
+        $('#room-id').html(input)
         startEnvironment()
         $('#app').hide()
       }
@@ -117,6 +119,11 @@ function drawMap() {
     }
  )
 }
+
+function genID () {
+  return '' + Math.random().toString(36).substr(2, 9);
+}
+
 
 function onWindowResize(){
   if(student.camera != undefined) {
