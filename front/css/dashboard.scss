@@ -1,2 +1,86 @@
+@import "./vars.scss";
 
+#dashboard {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+}
 
+#menu {
+    background-color: $primary-color;
+    color: $secondary-color;
+    width: 15%;
+    height: 100%;
+    padding: 0.5em;
+    font-size: 1.5em;
+    font-family: $font;
+}
+
+#content {
+    background: $bg;
+    width: 85%;
+    height: 100%;
+}
+
+#content h1 {
+    font-size: 1.5em;
+    font-family: $font;
+    color: $primary-color;
+    padding: 0.5em;
+    margin: 0;
+    width: 100%;
+    background: white;
+    border: none;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.cards {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-top: 1em;
+    div {
+        border-radius: 10px;
+        padding: 0.5em;
+        background-color: white;
+        transition: 300ms all;
+        &:hover {
+            background-color: $accent-color;
+            color: white;
+            img {
+                width: 7vw;
+            }
+        }
+    }
+}
+#dash-info {
+    @extend .cards;
+    div {
+        width: card-width(1vw, 3);
+        .number {
+            font-size: 2em;
+        }
+    }
+}
+
+#actions {
+    @extend .cards;
+    div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: card-width(1vw, 3);
+        span {
+            font-size: 1.6em;
+            font-weight: bold;
+            padding: .25em;
+        }
+        img {
+            margin-top: 2em;
+            margin-bottom: 2em;
+            width: 10vw;
+            transition: 300ms all;
+        }
+    }
+}

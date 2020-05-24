@@ -1,0 +1,9 @@
+$primary-color: black;
+$secondary-color: white;
+$accent-color: rgb(45, 62, 78);
+$bg: #f0f0f0;
+$font: 'Open Sans', sans-serif;
+
+@function card-width($spacing, $n) {
+    @return (85vw - $spacing * ($n + 1)) / $n;
+}
