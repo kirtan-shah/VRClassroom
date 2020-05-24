@@ -45,7 +45,6 @@ export default class Student {
     })
 
     this.socket.on('studentConnected', () => {
-      console.log('student connected, sending position data to them')
       setTimeout(() => {  this.socket.emit('updateMovement', this.controls.getObject().position, this.socketRoom) }, 1000);
     })
 

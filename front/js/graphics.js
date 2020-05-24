@@ -3,6 +3,7 @@ window.$ = window.jQuery = require('jquery')
 import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry } from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
+import CapsuleGeometry from '/js/CapsuleGeometry.js'
 
 import Student from '/js/Student.js'
 
@@ -52,22 +53,22 @@ function startEnvironment() {
 function createSocketListeners() {
   student.socket.on('movement', function(location, socketId) {
     if(student.socketId != socketId) {
-      console.log('student moved')
-
       if(otherStudents.hasOwnProperty(socketId)) {
         otherStudents[socketId].location = location
       }
       else {
-        let cubeMaterial = new MeshBasicMaterial ({color: 0xff0000})
-        let cubeGeometry = new BoxGeometry (3,3,3)
+        let material = new MeshBasicMaterial ({color: 0xd62e50})
+        let geometry = new CapsuleGeometry(1, student.height-1-1, 32)
+        let mesh = new Mesh (geometry, material)
+        mesh.rotation.x = Math.PI/2
 
-        otherStudents[socketId] = {geometry: new Mesh (cubeGeometry, cubeMaterial), location: location}
+        otherStudents[socketId] = {geometry: mesh, location: location}
+        otherStudents[socketId].geometry.position.y = student.height - student.height/2
 
         scene.add(otherStudents[socketId].geometry)
       }
 
       otherStudents[socketId].geometry.position.x = location.x
-      otherStudents[socketId].geometry.position.y = location.y
       otherStudents[socketId].geometry.position.z = location.z
     }
   })
