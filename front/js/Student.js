@@ -135,11 +135,14 @@ export default class Student {
       this.velocity.x = this.direction.x * this.movementSpeed
       this.velocity.y = this.direction.y * this.movementSpeed
 
-      this.socket.emit('updateMovement', this.name, this.controls.getObject().position, this.socketRoom)
-
       this.controls.moveRight(- this.velocity.x)
       this.controls.moveForward(- this.velocity.z)
       this.controls.getObject().position.y += (this.velocity.y)
+
+      let camVector = this.camera.getWorldDirection()
+      let theta = Math.atan2(camVector.x,camVector.z)
+
+      this.socket.emit('updateMovement', this.name, this.controls.getObject().position, theta, this.socketRoom)
 
       let pos = this.controls.getObject().position
 

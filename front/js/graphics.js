@@ -66,7 +66,7 @@ function startEnvironment() {
 }
 
 function createSocketListeners() {
-  student.socket.on('movement', function(name, location, socketId) {
+  student.socket.on('movement', function(name, location, theta, socketId) {
     if(student.socketId != socketId) {
       if(otherStudents.hasOwnProperty(socketId)) {
         if(otherStudents[socketId].location != undefined) {
@@ -74,6 +74,7 @@ function createSocketListeners() {
 
           otherStudents[socketId].geometry.position.x = location.x
           otherStudents[socketId].geometry.position.z = location.z
+          otherStudents[socketId].geometry.rotation.y = theta
 
           otherStudents[socketId].textGeometry.position.x = location.x
           otherStudents[socketId].textGeometry.position.z = location.z
@@ -104,6 +105,7 @@ function createSocketListeners() {
 
             otherStudents[socketId].geometry.position.x = location.x
             otherStudents[socketId].geometry.position.z = location.z
+            otherStudents[socketId].geometry.rotation.y = theta
 
             otherStudents[socketId].textGeometry.position.y = student.height + 1
             otherStudents[socketId].textGeometry.position.x = location.x
@@ -121,7 +123,7 @@ function createSocketListeners() {
     if(otherStudents.hasOwnProperty(socketId)) {
       scene.remove(otherStudents[socketId].geometry)
       scene.remove(otherStudents[socketId].textGeometry)
-      otherStudents.delete(socketId)
+      delete otherStudents[socketId]
     }
   })
 
