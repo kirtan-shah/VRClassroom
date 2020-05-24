@@ -36,6 +36,7 @@ $(document).ready(function() {
 
     $('#createRoomBtn').click(function() {
       $('#app').hide()
+      alert('TODO: genereate random room code and set that as Student class\'s socketRoom variable (also make this student a teacher possibly with a boolean)')
     })
 
     $('#joinRoomForm').on('submit', function(e) {
