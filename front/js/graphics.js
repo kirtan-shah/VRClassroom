@@ -65,7 +65,7 @@ function createSocketListeners() {
         otherStudents[socketId].textGeometry.position.z = location.z - otherStudents[socketId].textGeometrySize.z/2
       }
       else {
-        let bodyMaterial = new MeshBasicMaterial ({color: 0xd62e50})
+        let bodyMaterial = new MeshPhysicalMaterial( { clearcoat: 0.2, clearcoatRound: 0.1, color: 0xff3300 } );
         let bodyGeometry = new CapsuleGeometry(1, student.height-1-1, 32)
         let bodyMesh = new Mesh(bodyGeometry, bodyMaterial)
         bodyMesh.rotation.x = Math.PI/2
