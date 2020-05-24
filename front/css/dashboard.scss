@@ -90,9 +90,12 @@
     padding: 1rem;
 }
 
-#add-question {
+#add-question, #send-quiz {
     @include button-theme(#007bff, white);
     font-size: 1rem !important;
+}
+#send-quiz {
+    margin-left: 1vw;
 }
 
 .mc label {

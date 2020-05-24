@@ -1,7 +1,8 @@
 
 export default class Quiz {
 
-    constructor() {
+    constructor(socket) {
+        this.socket = socket
         this.questions = []
         this.editing = -1
     }
@@ -48,6 +49,9 @@ export default class Quiz {
             }
             $('#add-question').text('Confirm Edit')
         })
+        $('#send-quiz').click(function() {
+            self.socket.emit('quiz', self.questions)
+        })
     }
 
     makeQuestion() {
@@ -89,7 +93,9 @@ export default class Quiz {
                 </div>
             `
         })
-        str += '</div>'
+        str += `</div>
+            <button id='send-quiz'>Send Quiz</button>
+        `
         return str
     }
 }
