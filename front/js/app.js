@@ -4,18 +4,17 @@ require('/lib/velocity.min.js')
 import landing from '/pages/landing.html'
 import dashboard from '/pages/dashboard.html'
 
-function switchTo(name) {
-    slide($('#app').show(), 'left')
+function switchTo(name, direction='left') {
+    $('#app').show()
+    if(direction) slide($('#app'), direction)
     $('#app').html(name)
 }
 
 function slide(el, from) {
-    const duration = 500
-    const easing = 'easeInOutCubic'
     const classes = 'animated fadeIn' + from.charAt(0).toUpperCase() + from.slice(1)
-    $('#app').addClass(classes)
+    el.addClass(classes)
         .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-        () => $('#app').removeClass(classes))
+        () => el.removeClass(classes))
      /*
     switch(from) {
         case 'top':
@@ -34,7 +33,7 @@ function slide(el, from) {
 }
 
 $(document).ready(function() {
-    switchTo(landing)
+    switchTo(landing, false)
 
-    $('#dash-button').click(() => switchTo(dashboard))
+    $('#dash-button').click(() => switchTo(dashboard, 'down'))
 })
