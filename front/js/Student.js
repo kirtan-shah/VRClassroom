@@ -45,7 +45,6 @@ export default class Student {
     })
 
     this.socket.on('studentConnected', () => {
-      console.log('student connected, sending position data to them')
       setTimeout(() => {  this.socket.emit('updateMovement', this.controls.getObject().position, this.socketRoom) }, 1000);
     })
 
@@ -110,7 +109,6 @@ export default class Student {
   }
 
   updateMovement() {
-    console.log(this.controls.getObject().position)
     if (this.controls.isLocked === true) {
       if(this.moveForward == true)
         this.direction.z = -1.0

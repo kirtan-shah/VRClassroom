@@ -3,6 +3,7 @@ window.$ = window.jQuery = require('jquery')
 import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry } from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
+import CapsuleGeometry from '/js/CapsuleGeometry.js'
 
 import Student from '/js/Student.js'
 
@@ -52,16 +53,16 @@ function startEnvironment() {
 function createSocketListeners() {
   student.socket.on('movement', function(location, socketId) {
     if(student.socketId != socketId) {
-      console.log('student moved')
-
       if(otherStudents.hasOwnProperty(socketId)) {
         otherStudents[socketId].location = location
       }
       else {
-        let cubeMaterial = new MeshBasicMaterial ({color: 0xff0000})
-        let cubeGeometry = new BoxGeometry (3,3,3)
+        let material = new MeshBasicMaterial ({color: 0xff0000})
+        let geometry = new CapsuleGeometry(1, 2, 32)
+        let mesh = new Mesh (geometry, material)
+        mesh.rotation.z = Math.PI/2
 
-        otherStudents[socketId] = {geometry: new Mesh (cubeGeometry, cubeMaterial), location: location}
+        otherStudents[socketId] = {geometry: mesh, location: location}
 
         scene.add(otherStudents[socketId].geometry)
       }
