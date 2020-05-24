@@ -45,7 +45,7 @@ export default class Student {
     })
 
     this.socket.on('studentConnected', () => {
-      setTimeout(() => {  this.socket.emit('updateMovement', this.name, this.controls.getObject().position, this.socketRoom) }, 1000);
+      console.log('student connected!')
     })
 
     this.initKeyDown(this)
@@ -135,9 +135,7 @@ export default class Student {
       this.velocity.x = this.direction.x * this.movementSpeed
       this.velocity.y = this.direction.y * this.movementSpeed
 
-      if(this.direction.length() != 0) {
-        this.socket.emit('updateMovement', this.name, this.controls.getObject().position, this.socketRoom)
-      }
+      this.socket.emit('updateMovement', this.name, this.controls.getObject().position, this.socketRoom)
 
       this.controls.moveRight(- this.velocity.x)
       this.controls.moveForward(- this.velocity.z)
