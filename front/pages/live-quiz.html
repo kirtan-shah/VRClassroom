@@ -9,8 +9,40 @@
               <label for="question-input" style="font-size: 1.25rem;">Question</label>
               <input type="text" class="form-control form-control-lg" id="question-input" placeholder="Enter Question">
             </div>
-            <div class="form-group">
-              <label for="answer-input">Answer</label>
+            <div class="input-group" style="margin-bottom: 1.5em;">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="question-type">Type</label>
+                  </div>
+                <select class="custom-select" id="question-type">
+                    <option value="mc">Multiple Choice</option>
+                    <option value="frq">Short Answer</option>
+                </select>
+            </div>
+
+            <label>Answer</label>
+
+            <div class="form-group mc">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="correct-answer">Correct</label>
+                    </div>
+                    <input type="text" class="form-control" id="correct-answer" placeholder="Answer">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="wrong-answer-1">Wrong</label>
+                    </div>
+                    <input type="text" class="form-control" id="wrong-answer-1" placeholder="Answer">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="wrong-answer-2">Wrong</label>
+                    </div>
+                    <input type="text" class="form-control" id="wrong-answer-2" placeholder="Answer">
+                </div>
+            </div>
+
+            <div class="form-group frq">
               <input type="text" class="form-control" id="answer-input" placeholder="Answer">
             </div>
             <button type="submit" id="add-question">Add Question</button>

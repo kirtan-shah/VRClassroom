@@ -95,6 +95,17 @@
     font-size: 1rem !important;
 }
 
+.mc label {
+    width: 5rem;
+}
+.correct {
+    color: green;
+    font-weight: bold;
+}
+.wrong {
+    color: red;
+}
+
 #display-questions {
     h1 {
         margin-left: 1vw;
