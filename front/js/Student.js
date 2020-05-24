@@ -139,16 +139,6 @@ export default class Student {
       this.controls.moveForward(- this.velocity.z)
       this.controls.getObject().position.y += (this.velocity.y)
 
-      let camVector = this.camera.getWorldDirection()
-      let theta = Math.atan2(camVector.x,camVector.z)
-
-      let isWalking = false
-      if(this.direction.length() > 0) {
-        isWalking = true
-      }
-
-      this.socket.emit('updateMovement', this.name, this.controls.getObject().position, theta, isWalking, this.socketRoom)
-
       let pos = this.controls.getObject().position
 
       let minX = -15
@@ -169,6 +159,16 @@ export default class Student {
         this.controls.getObject().position.z = minZ
       }
     }
+
+    let camVector = this.camera.getWorldDirection()
+    let theta = Math.atan2(camVector.x,camVector.z)
+
+    let isWalking = false
+    if(this.direction.length() > 0) {
+      isWalking = true
+    }
+
+    this.socket.emit('updateMovement', this.name, this.controls.getObject().position, theta, isWalking, this.socketRoom)
   }
 
 }
