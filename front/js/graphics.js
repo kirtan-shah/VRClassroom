@@ -2,6 +2,7 @@ window.$ = window.jQuery = require('jquery')
 
 import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, MeshPhysicalMaterial, AmbientLight, DirectionalLight, Box3, FontLoader, TextGeometry, AnimationClip, FileLoader, AnimationMixer, AnimationUtils, Clock, KeyframeTrack } from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
+import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2.js'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
@@ -22,6 +23,7 @@ let mtlLoader = new MTLLoader()
 let fbxLoader = new FBXLoader()
 let objLoader = new OBJLoader()
 let objLoader2 = new OBJLoader2()
+let colladaLoader = new ColladaLoader()
 
 let fontLoader = new FontLoader()
 
@@ -219,35 +221,31 @@ function drawMap() {
   let gridXZ = new GridHelper(2000, 50)
   scene.add(gridXZ)
 
+  // old classroom:
   // use object loader to add classroom
-  objLoader.load(
-    '/models/classroom.obj',
-    function (object) {
-      object.traverse( function( child ) {
-        if ( child instanceof Mesh ) {
-          child.material = classroom_material
-        }
-      } )
-      scene.add(object)
-    },
-    function (xhr) {
-      console.log('classrooom model is ' + (xhr.loaded / xhr.total * 100) + '% loaded')
-    },
-    function (error) {
-      console.log('An error happened')
-    }
- )
+  // objLoader.load(
+  //   '/models/classroom.obj',
+  //   function (object) {
+  //     object.traverse( function( child ) {
+  //       if ( child instanceof Mesh ) {
+  //         child.material = classroom_material
+  //       }
+  //     } )
+  //     scene.add(object)
+  //   },
+  //   function (xhr) {
+  //     console.log('classrooom model is ' + (xhr.loaded / xhr.total * 100) + '% loaded')
+  //   },
+  //   function (error) {
+  //     console.log('An error happened')
+  //   }
+  // )
 
-
-
-  // fbxLoader.load( 'models/idle.fbx', function (object) {
-  //   object.scale.multiplyScalar(0.035)
-  //   let delta = clock.getDelta()
-  //   idleMixer = new AnimationMixer(object)
-  //   let action = mixer.clipAction(object.animations[ 0 ])
-  //   action.play()
-  //   scene.add(object)
-  // } )
+  colladaLoader.load( '/models/model.dae', function ( object ) {
+    let classroom = object.scene
+    classroom.scale.multiplyScalar(4)
+    scene.add(classroom)
+  })
 
 
 }
@@ -258,7 +256,7 @@ function genID () {
 
 
 function onWindowResize(){
-  if(student.camera != undefined) {
+  if(student != undefined && student.camera != undefined) {
     student.camera.aspect = window.innerWidth / window.innerHeight
     student.camera.updateProjectionMatrix()
     student.renderer.setSize(window.innerWidth, window.innerHeight)

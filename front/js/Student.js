@@ -12,9 +12,9 @@ export default class Student {
 
     this.movementSpeed = 0.2
     this.height = 5.5
-    this.startX = -15.18
-    this.startZ = -13.88
-    this.lookAtInitial = new Vector3(0, this.height, 0)
+    this.startX = 33.87
+    this.startZ = -50.1074120548162
+    this.lookAtInitial = new Vector3(15.45, this.height, -25.27)
 
     this.moveForward = false
     this.moveBackward = false
@@ -141,10 +141,13 @@ export default class Student {
 
       let pos = this.controls.getObject().position
 
-      let minX = -15
-      let maxX = 14
-      let minZ = -15
-      let maxZ = 16
+      console.log(pos)
+
+
+      let minX = 2
+      let maxX = 35
+      let minZ = -53
+      let maxZ = -2
 
       if(pos.x > maxX) {
         this.controls.getObject().position.x = maxX
@@ -160,7 +163,10 @@ export default class Student {
       }
     }
 
-    let camVector = this.camera.getWorldDirection()
+    let camVector
+    let wpVector = new Vector3();
+    this.camera.getWorldDirection(wpVector)
+    camVector = wpVector
     let theta = Math.atan2(camVector.x,camVector.z)
 
     let isWalking = false
