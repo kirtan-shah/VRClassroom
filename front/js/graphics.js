@@ -1,6 +1,6 @@
 window.$ = window.jQuery = require('jquery')
 
-import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, MeshPhysicalMaterial, AmbientLight, DirectionalLight, Box3, FontLoader, TextGeometry, AnimationClip, FileLoader, AnimationMixer, AnimationUtils, Clock, KeyframeTrack } from 'three'
+import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, MeshPhysicalMaterial, AmbientLight, DirectionalLight, Box3, FontLoader, TextGeometry, AnimationClip, FileLoader, AnimationMixer, AnimationUtils, Clock, KeyframeTrack, PointLight } from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
@@ -28,7 +28,7 @@ let colladaLoader = new ColladaLoader()
 let fontLoader = new FontLoader()
 
 let texture = new TextureLoader().load( 'models/classroom_texture.png' )
-let classroom_material = new MeshPhysicalMaterial( { map: texture, clearcoat: 0.2, clearcoatRound: 0.1, color: 0xffffff } )
+//let classroom_material = new MeshPhysicalMaterial( { map: texture, clearcoat: 0.2, clearcoatRound: 0.1, color: 0xffffff } )
 
 let student
 let otherStudents = {}
@@ -183,12 +183,20 @@ function init() {
   }, false)
 
   let lights = [
-    new AmbientLight(0xffffff, 0.5),
-    new DirectionalLight(0xffffff, 1),
-    new DirectionalLight(0xffffff, 1),
+    new AmbientLight(0x7f7f7f, 0.5),
+    new PointLight(0x7f7f7f, 1, 0),
+    new PointLight(0x7f7f7f, 1, 0),
+    // new PointLight(0x7f7f7f, 0.5, 0),
+    // new PointLight(0x7f7f7f, 0.5, 0),
+    new DirectionalLight(0xfffdb5, .5),
   ]
-  lights[1].position.set(-1, 0.5, 1).normalize()
-  lights[2].position.set(1, 0.5, 1).normalize()
+  lights[1].position.set(16, 5, -20)
+  lights[2].position.set(16, 5, -40)
+  //lights[1].position.set(28, 5, -40)
+  //lights[2].position.set(9, 5, -40)
+  // lights[3].position.set(28, 5, -20)
+  // lights[4].position.set(9, 5, -20)
+  lights[3].position.set(1, 0.5, 0).normalize()
   lights.forEach(l => scene.add(l))
 
   scene.add(student.controls.getObject())
@@ -224,32 +232,67 @@ function drawMap() {
 
   // old classroom:
   // use object loader to add classroom
-  // objLoader.load(
-  //   '/models/classroom.obj',
-  //   function (object) {
-  //     object.traverse( function( child ) {
-  //       if ( child instanceof Mesh ) {
-  //         child.material = classroom_material
-  //       }
-  //     } )
-  //     scene.add(object)
-  //   },
-  //   function (xhr) {
-  //     console.log('classrooom model is ' + (xhr.loaded / xhr.total * 100) + '% loaded')
-  //   },
-  //   function (error) {
-  //     console.log('An error happened')
-  //   }
-  // )
+  // mtlLoader
+  //   .setPath('/models/')
+  //   .load('s.mtl', materials => {
+  //     materials.preload()
+  //     objLoader
+  //       //.setMaterials(materials)
+  //       .setPath('/models/' )
+  //       .load('s.obj', function(object) {
+  //         object.traverse(child => {
+  //           if(child instanceof Mesh) {
+  //             if(child.material)
+  //                child.material = new MeshPhysicalMaterial( { clearcoat: 0.2, clearcoatRound: 0.1, color: child.material.color } )
+  //           }
+  //         })
+  //         object.scale.multiplyScalar(1/8)
+  //         scene.add(object)
+  //       }, 
+  //       function (xhr) {
+  //         console.log('classrooom model is ' + (xhr.loaded / xhr.total * 100) + '% loaded')
+  //       },
+  //       function (error) {
+  //         console.log('An error happened')
+  //       })
+  //   })
+    /*
+  objLoader.load(
+    '/models/s.obj',
+    function(object) {
+      object.traverse( function( child ) {
+        if (child instanceof Mesh) {
+          if(child.material) console.log(child.material.map)
+        }
+      })
+      scene.add(object)
+    },
+    function (xhr) {
+      console.log('classrooom model is ' + (xhr.loaded / xhr.total * 100) + '% loaded')
+    },
+    function (error) {
+      console.log('An error happened')
+    }
+  )*/
 
-  colladaLoader.load( '/models/model.dae', function ( object ) {
+  colladaLoader.load( '/models/s.dae', function ( object ) {
     let classroom = object.scene
+    classroom.traverse(child => {
+      if(child.material) {
+        if(child.material instanceof Array) {
+          child.material = child.material.map(m => 
+            //clearcoatRough: 0.1,
+            new MeshPhysicalMaterial( { map:  m.map, clearcoat: 0.2, color: m.color || 0xffffff } )          
+          )
+        }
+        else child.material = new MeshPhysicalMaterial( { map: child.material.map, clearcoat: 0.2, color: child.material.color || 0xffffff } )
+      }
+
+    })
     classroom.scale.multiplyScalar(4)
     scene.add(classroom)
   })
-
-
-}
+  }
 
 function genID () {
   return '' + Math.random().toString(36).substr(2, 9)

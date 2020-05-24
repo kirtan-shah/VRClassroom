@@ -11,7 +11,7 @@ export default class Student {
     this.isTeacher = isTeacher
 
     this.movementSpeed = 0.2
-    this.height = 5.5
+    this.height = 5
     this.startX = 33.87
     this.startZ = -50.1074120548162
     this.lookAtInitial = new Vector3(15.45, this.height, -25.27)
