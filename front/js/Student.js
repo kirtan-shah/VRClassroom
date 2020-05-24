@@ -4,9 +4,11 @@ import IO from 'socket.io-client'
 
 export default class Student {
 
-  constructor(name) {
+  constructor(name, isTeacher) {
     this.name = name
     this.id = 'some_id'
+
+    this.isTeacher = isTeacher
 
     this.movementSpeed = 0.2
     this.height = 5.5

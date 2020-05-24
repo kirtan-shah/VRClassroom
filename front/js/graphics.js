@@ -11,7 +11,7 @@ let objLoader = new OBJLoader()
 let texture = new TextureLoader().load( 'models/classroom_texture.png' );
 let classroom_material = new MeshBasicMaterial( { map: texture } );
 
-let student = new Student('kirtan')
+let student = new Student('kirtan', false)
 let otherStudents = {}
 
 init()
@@ -75,7 +75,7 @@ student.socket.on('movement', function(location, socketId) {
     else {
       let cubeMaterial = new MeshBasicMaterial ({color: 0xff0000})
       let cubeGeometry = new BoxGeometry (3,3,3)
-      
+
       otherStudents[socketId] = {geometry: new Mesh (cubeGeometry, cubeMaterial), location: location}
 
       scene.add(otherStudents[socketId].geometry)
