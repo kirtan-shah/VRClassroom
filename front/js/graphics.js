@@ -6,7 +6,7 @@ import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockCont
 
 import Student from '/js/Student.js'
 
-let scene, controls
+let scene
 
 let objLoader = new OBJLoader()
 
