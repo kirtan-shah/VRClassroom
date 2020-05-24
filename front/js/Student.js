@@ -4,7 +4,7 @@ import IO from 'socket.io-client'
 
 export default class Student {
 
-  constructor(name, isTeacher) {
+  constructor(name, socketRoom, isTeacher) {
     this.name = name
     this.id = 'some_id'
 
@@ -37,7 +37,7 @@ export default class Student {
     this.controls = new PointerLockControls(this.camera, this.renderer.domElement)
 
     this.socket = IO()
-    this.socketRoom = 'classroom1'
+    this.socketRoom = socketRoom
 
     this.socket.on('connect', () => {
       this.socketId = this.socket.id

@@ -1,3 +1,5 @@
+window.$ = window.jQuery = require('jquery')
+
 import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry } from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
@@ -11,11 +13,36 @@ let objLoader = new OBJLoader()
 let texture = new TextureLoader().load( 'models/classroom_texture.png' );
 let classroom_material = new MeshBasicMaterial( { map: texture } );
 
-let student = new Student('kirtan', false)
+let student
 let otherStudents = {}
 
-init()
-animate()
+student = new Student('kirtan', 'classroom1', false)
+startEnvironment()
+
+function startEnvironment() {
+  student.socket.on('movement', function(location, socketId) {
+    if(student.socketId != socketId) {
+      if(otherStudents.hasOwnProperty(socketId)) {
+        otherStudents[socketId].location = location
+      }
+      else {
+        let cubeMaterial = new MeshBasicMaterial ({color: 0xff0000})
+        let cubeGeometry = new BoxGeometry (3,3,3)
+
+        otherStudents[socketId] = {geometry: new Mesh (cubeGeometry, cubeMaterial), location: location}
+
+        scene.add(otherStudents[socketId].geometry)
+      }
+
+      otherStudents[socketId].geometry.position.x = location.x
+      otherStudents[socketId].geometry.position.y = location.y
+      otherStudents[socketId].geometry.position.z = location.z
+    }
+  })
+
+  init()
+  animate()
+}
 
 function init()
 {
@@ -66,26 +93,6 @@ function drawMap() {
     }
  )
 }
-
-student.socket.on('movement', function(location, socketId) {
-  if(student.socketId != socketId) {
-    if(otherStudents.hasOwnProperty(socketId)) {
-      otherStudents[socketId].location = location
-    }
-    else {
-      let cubeMaterial = new MeshBasicMaterial ({color: 0xff0000})
-      let cubeGeometry = new BoxGeometry (3,3,3)
-
-      otherStudents[socketId] = {geometry: new Mesh (cubeGeometry, cubeMaterial), location: location}
-
-      scene.add(otherStudents[socketId].geometry)
-    }
-
-    otherStudents[socketId].geometry.position.x = location.x
-    otherStudents[socketId].geometry.position.y = location.y
-    otherStudents[socketId].geometry.position.z = location.z
-  }
-})
 
 function onWindowResize(){
   if(student.camera != undefined) {
