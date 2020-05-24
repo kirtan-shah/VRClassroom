@@ -16,8 +16,12 @@ let classroom_material = new MeshBasicMaterial( { map: texture } );
 let student
 let otherStudents = {}
 
-student = new Student('kirtan', 'classroom1', false)
-startEnvironment()
+$("#landingPage").ready(function() {
+  $('#createRoomBtn').click(function() {
+    student = new Student('kirtan', 'classroom1', false)
+    startEnvironment()
+  })
+})
 
 function startEnvironment() {
   createSocketListeners()
