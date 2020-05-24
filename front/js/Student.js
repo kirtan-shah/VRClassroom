@@ -142,7 +142,12 @@ export default class Student {
       let camVector = this.camera.getWorldDirection()
       let theta = Math.atan2(camVector.x,camVector.z)
 
-      this.socket.emit('updateMovement', this.name, this.controls.getObject().position, theta, this.socketRoom)
+      let isWalking = false
+      if(this.direction.length() > 0) {
+        isWalking = true
+      }
+
+      this.socket.emit('updateMovement', this.name, this.controls.getObject().position, theta, isWalking, this.socketRoom)
 
       let pos = this.controls.getObject().position
 

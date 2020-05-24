@@ -14,6 +14,7 @@ import Student from '/js/Student.js'
 let scene
 
 let idleMixer
+let walkingMixer
 
 let clock = new Clock();
 
@@ -67,15 +68,28 @@ function startEnvironment() {
 }
 
 function createSocketListeners() {
-  student.socket.on('movement', function(name, location, theta, socketId) {
+  student.socket.on('movement', function(name, location, theta, isWalking, socketId) {
     if(student.socketId != socketId) {
       if(otherStudents.hasOwnProperty(socketId)) {
         if(otherStudents[socketId].location != undefined) {
           otherStudents[socketId].location = location
 
+          if(isWalking) {
+            otherStudents[socketId].geometry.position.y = -100
+            otherStudents[socketId].walkingGeometry.position.y = 0
+          }
+          else {
+            otherStudents[socketId].geometry.position.y = 0
+            otherStudents[socketId].walkingGeometry.position.y = -100
+          }
+
           otherStudents[socketId].geometry.position.x = location.x
           otherStudents[socketId].geometry.position.z = location.z
           otherStudents[socketId].geometry.rotation.y = theta
+
+          otherStudents[socketId].walkingGeometry.position.x = location.x
+          otherStudents[socketId].walkingGeometry.position.z = location.z
+          otherStudents[socketId].walkingGeometry.rotation.y = theta
 
           otherStudents[socketId].textGeometry.position.x = location.x
           otherStudents[socketId].textGeometry.position.z = location.z
@@ -84,38 +98,61 @@ function createSocketListeners() {
       else {
         otherStudents[socketId] = {}
 
-        fbxLoader.load( 'models/idle.fbx', function (object) {
-          object.scale.multiplyScalar(0.035)
+        fbxLoader.load( 'models/idle.fbx', function (idleObject) {
+          idleObject.scale.multiplyScalar(0.035)
           let delta = clock.getDelta()
-          idleMixer = new AnimationMixer(object)
-          let action = idleMixer.clipAction(object.animations[ 0 ])
+          idleMixer = new AnimationMixer(idleObject)
+          let action = idleMixer.clipAction(idleObject.animations[ 0 ])
           action.play()
-          //scene.add(object)
-          let bodyGeometry = object
+          let bodyIdleGeometry = idleObject
 
 
-          fontLoader.load( 'models/helvetiker_regular.typeface.json', function ( font ) {
-            let textMaterial = new MeshBasicMaterial ({color: 0xffffff})
-            let textGeometry = new TextGeometry(name, {font: font, size: 1, height: 1, curveSegments: 12} )
-            let textMesh = new Mesh(textGeometry, textMaterial)
-            textMesh.scale.set(1, 1, 0.1)
+          fbxLoader.load( 'models/walking.fbx', function (walkingObject) {
+            walkingObject.scale.multiplyScalar(0.035)
+            let delta = clock.getDelta()
+            walkingMixer = new AnimationMixer(walkingObject)
+            let action = walkingMixer.clipAction(walkingObject.animations[ 0 ])
+            action.play()
+            let bodyWalkingGeometry = walkingObject
 
-            let box = new Box3().setFromObject( textMesh )
+            fontLoader.load( 'models/helvetiker_regular.typeface.json', function ( font ) {
+              let textMaterial = new MeshBasicMaterial ({color: 0xffffff})
+              let textGeometry = new TextGeometry(name, {font: font, size: 1, height: 1, curveSegments: 12} )
+              let textMesh = new Mesh(textGeometry, textMaterial)
+              textMesh.scale.set(1, 1, 0.1)
 
-            otherStudents[socketId] = {name: name, geometry: bodyGeometry, textGeometry: textMesh, location: location}
+              let box = new Box3().setFromObject( textMesh )
 
-            otherStudents[socketId].geometry.position.x = location.x
-            otherStudents[socketId].geometry.position.z = location.z
-            otherStudents[socketId].geometry.rotation.y = theta
+              otherStudents[socketId] = {name: name, geometry: bodyIdleGeometry, walkingGeometry: bodyWalkingGeometry, textGeometry: textMesh, location: location}
 
-            otherStudents[socketId].textGeometry.position.y = student.height + 1
-            otherStudents[socketId].textGeometry.position.x = location.x
-            otherStudents[socketId].textGeometry.position.z = location.z
+              otherStudents[socketId].geometry.position.x = location.x
+              otherStudents[socketId].geometry.position.z = location.z
+              otherStudents[socketId].geometry.rotation.y = theta
 
-            scene.add(otherStudents[socketId].geometry)
-            scene.add(otherStudents[socketId].textGeometry)
+              otherStudents[socketId].walkingGeometry.position.x = location.x
+              otherStudents[socketId].walkingGeometry.position.z = location.z
+              otherStudents[socketId].walkingGeometry.rotation.y = theta
+
+              otherStudents[socketId].textGeometry.position.y = student.height + 1
+              otherStudents[socketId].textGeometry.position.x = location.x
+              otherStudents[socketId].textGeometry.position.z = location.z
+
+              if(isWalking) {
+                otherStudents[socketId].geometry.position.y = -100
+                otherStudents[socketId].walkingGeometry.position.y = 0
+              }
+              else {
+                otherStudents[socketId].geometry.position.y = 0
+                otherStudents[socketId].walkingGeometry.position.y = -100
+              }
+
+              scene.add(otherStudents[socketId].geometry)
+              scene.add(otherStudents[socketId].walkingGeometry)
+              scene.add(otherStudents[socketId].textGeometry)
+            })
+
           })
-        } )
+        })
       }
     }
   })
@@ -164,6 +201,8 @@ function animate() {
   let delta = clock.getDelta();
 
   if ( idleMixer ) idleMixer.update( delta );
+  if ( walkingMixer ) walkingMixer.update( delta );
+
 
   for (var socketId in otherStudents) {
     if (otherStudents.hasOwnProperty(socketId)) {
