@@ -1,7 +1,7 @@
 window.$ = window.jQuery = require('jquery')
 require('/lib/velocity.min.js')
 
-
+import landing from '/pages/landing.html'
 import dashboard from '/pages/dashboard.html'
 
 function switchTo(name) {
@@ -30,5 +30,18 @@ function slide(el, from) {
 }
 
 $(document).ready(function() {
+    switchTo(landing)
+    
     $('#dash-button').click(() => switchTo(dashboard))
+
+    $('#joinRoomForm').on('submit', function(e) {
+        e.preventDefault()
+        let input = $('#joinRoomInput').val().trim()
+        if(input.length == 0) {
+          alert('you cannot leave this field empty')
+        }
+        else {
+          alert('write code to make Student class\'s variable \'socketRoom\' be ' + input + '. then, remove this overlay page')
+        }
+    })
 })
