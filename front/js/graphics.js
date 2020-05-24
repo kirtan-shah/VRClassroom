@@ -58,12 +58,12 @@ function createSocketListeners() {
       }
       else {
         let material = new MeshBasicMaterial ({color: 0xd62e50})
-        let geometry = new CapsuleGeometry(1, student.height, 32)
+        let geometry = new CapsuleGeometry(1, student.height-1-1, 32)
         let mesh = new Mesh (geometry, material)
         mesh.rotation.x = Math.PI/2
 
         otherStudents[socketId] = {geometry: mesh, location: location}
-        otherStudents[socketId].geometry.position.y = (student.height+1+1) - (student.height+1+1)/2
+        otherStudents[socketId].geometry.position.y = student.height - student.height/2
 
         scene.add(otherStudents[socketId].geometry)
       }
