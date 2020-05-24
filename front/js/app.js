@@ -43,7 +43,7 @@ $(document).ready(function() {
 
         $('#new-live-quiz').click(function() {
             switchTo(liveQuiz, false)
-            let quiz = new Quiz()
+            let quiz = new Quiz(window.globalSocket)
             quiz.initEvents()
         })
     })

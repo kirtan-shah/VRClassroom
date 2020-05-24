@@ -16,11 +16,17 @@ io.on('connection', function(socket) {
 
 	socket.on('joinRoom', function(room) {
 		socket.join(room)
+		socket.room = room
 		console.log(socket.id + ' joined ' + room)
 	})
 
 	socket.on('updateMovement', function(name, location, theta, room){
 		io.to(room).emit('movement', name, location, theta, socket.id)
+	})
+
+	socket.on('quiz', function(questions) {
+		socket.broadcast.to(socket.room).emit('quiz', questions)
+		console.log('quiz received!', questions)
 	})
 
 	socket.on('disconnect', function() {

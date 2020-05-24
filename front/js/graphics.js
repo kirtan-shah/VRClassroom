@@ -35,6 +35,7 @@ $('#landingPage').ready(function() {
     let name = $('#nameInput').val().trim()
     let id = genID()
     student = new Student(name, id, true)
+    window.globalSocket = student.socket
     $('#room-id').html('Room Code: ' + id)
     $('#room-id').show()
     $('#dash-button').show()
