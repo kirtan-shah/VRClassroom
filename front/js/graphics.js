@@ -1,6 +1,6 @@
 window.$ = window.jQuery = require('jquery')
 
-import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry } from 'three'
+import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, MeshPhysicalMaterial, AmbientLight, DirectionalLight } from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
 import CapsuleGeometry from '/js/CapsuleGeometry.js'
@@ -11,7 +11,7 @@ let scene
 let objLoader = new OBJLoader()
 
 let texture = new TextureLoader().load( 'models/classroom_texture.png' );
-let classroom_material = new MeshBasicMaterial( { map: texture } );
+let classroom_material = new MeshPhysicalMaterial( { map: texture, clearcoat: 0.2, clearcoatRound: 0.1, color: 0xffffff } );
 
 let student
 let otherStudents = {}
@@ -93,6 +93,15 @@ function init() {
   container.addEventListener('click', function () {
     student.controls.lock()
   }, false)
+
+  let lights = [
+    new AmbientLight(0xffffff, 0.5),
+    new DirectionalLight(0xffffff, 1),
+    new DirectionalLight(0xffffff, 1),
+  ]
+  lights[1].position.set(-1, 0.5, 1).normalize()
+  lights[2].position.set(1, 0.5, 1).normalize()
+  lights.forEach(l => scene.add(l))
 
   scene.add(student.controls.getObject())
 
