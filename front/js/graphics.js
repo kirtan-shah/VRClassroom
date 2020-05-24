@@ -174,16 +174,10 @@ function init() {
     new AmbientLight(0x7f7f7f, 0.5),
     new PointLight(0x7f7f7f, 1, 0),
     new PointLight(0x7f7f7f, 1, 0),
-    // new PointLight(0x7f7f7f, 0.5, 0),
-    // new PointLight(0x7f7f7f, 0.5, 0),
     new DirectionalLight(0xfffdb5, .5),
   ]
   lights[1].position.set(16, 5, -20)
   lights[2].position.set(16, 5, -40)
-  //lights[1].position.set(28, 5, -40)
-  //lights[2].position.set(9, 5, -40)
-  // lights[3].position.set(28, 5, -20)
-  // lights[4].position.set(9, 5, -20)
   lights[3].position.set(1, 0.6, 0).normalize()
   lights.forEach(l => scene.add(l))
 
