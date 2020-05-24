@@ -45,7 +45,8 @@ export default class Student {
     })
 
     this.socket.on('studentConnected', () => {
-      this.socket.emit('updateMovement', this.controls.getObject().position, this.socketRoom)
+      console.log('student connected, sending position data to them')
+      setTimeout(() => {  this.socket.emit('updateMovement', this.controls.getObject().position, this.socketRoom) }, 1000);
     })
 
     this.initKeyDown(this)
