@@ -100,7 +100,7 @@ function createSocketListeners() {
           'models/Character.glb',
           function(gltf) {
             let model = gltf.scene
-            model.scale.set(3.7, 3.7, 3.7)
+            model.scale.set(3.45, 3.45, 3.45)
             mixer = new AnimationMixer(model)
             let fileAnimations = gltf.animations
             let idleAnim = AnimationClip.findByName(fileAnimations, 'Idle');

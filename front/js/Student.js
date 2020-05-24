@@ -36,6 +36,10 @@ export default class Student {
 
     this.controls = new PointerLockControls(this.camera, this.renderer.domElement)
 
+    this.state = 'Idle'
+    this.seat = -1
+    this.theta = 0
+
     this.socket = IO()
     this.socketRoom = socketRoom
 
@@ -129,50 +133,52 @@ export default class Student {
         this.direction.x = 0
       }
 
-      this.direction.normalize() // this ensures consistent movements in all directions
+      if(this.seat == -1) {
+        this.direction.normalize() // this ensures consistent movements in all directions
 
-      this.velocity.z = this.direction.z * this.movementSpeed
-      this.velocity.x = this.direction.x * this.movementSpeed
-      this.velocity.y = this.direction.y * this.movementSpeed
+        this.velocity.z = this.direction.z * this.movementSpeed
+        this.velocity.x = this.direction.x * this.movementSpeed
+        this.velocity.y = this.direction.y * this.movementSpeed
 
-      this.controls.moveRight(- this.velocity.x)
-      this.controls.moveForward(- this.velocity.z)
-      this.controls.getObject().position.y += (this.velocity.y)
+        this.controls.moveRight(- this.velocity.x)
+        this.controls.moveForward(- this.velocity.z)
+        this.controls.getObject().position.y += (this.velocity.y)
 
-      let pos = this.controls.getObject().position
+        let pos = this.controls.getObject().position
 
-      let minX = 2
-      let maxX = 35
-      let minZ = -53
-      let maxZ = -2
+        let minX = 2
+        let maxX = 35
+        let minZ = -53
+        let maxZ = -2
 
-      if(pos.x > maxX) {
-        this.controls.getObject().position.x = maxX
-      }
-      if(pos.x < minX) {
-        this.controls.getObject().position.x = minX
-      }
-      if(pos.z > maxZ) {
-        this.controls.getObject().position.z = maxZ
-      }
-      if(pos.z < minZ) {
-        this.controls.getObject().position.z = minZ
+        if(pos.x > maxX) {
+          this.controls.getObject().position.x = maxX
+        }
+        if(pos.x < minX) {
+          this.controls.getObject().position.x = minX
+        }
+        if(pos.z > maxZ) {
+          this.controls.getObject().position.z = maxZ
+        }
+        if(pos.z < minZ) {
+          this.controls.getObject().position.z = minZ
+        }
       }
     }
 
-    let camVector
     let wpVector = new Vector3();
     this.camera.getWorldDirection(wpVector)
-    camVector = wpVector
-    let theta = Math.atan2(camVector.x,camVector.z)
-
-    let state = 'Idle'
+    let camVector = wpVector
+    this.theta = Math.atan2(camVector.x,camVector.z)
 
     if(this.direction.length() > 0) {
-      state = 'Walking'
+      this.state = 'Walking'
+    }
+    else {
+      this.state = 'Idle'
     }
 
-    this.socket.emit('updateMovement', this.name, this.controls.getObject().position, theta, state, this.socketRoom)
+    this.socket.emit('updateMovement', this.name, this.controls.getObject().position, this.theta, this.state, this.socketRoom)
   }
 
 }
