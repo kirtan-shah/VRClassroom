@@ -7,7 +7,6 @@ import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockCont
 import Student from '/js/Student.js'
 
 let scene
-
 let objLoader = new OBJLoader()
 
 let texture = new TextureLoader().load( 'models/classroom_texture.png' );

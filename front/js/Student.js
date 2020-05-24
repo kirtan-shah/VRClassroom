@@ -110,6 +110,7 @@ export default class Student {
   }
 
   updateMovement() {
+    console.log(this.controls.getObject().position)
     if (this.controls.isLocked === true) {
       if(this.moveForward == true)
         this.direction.z = -1.0
@@ -142,6 +143,26 @@ export default class Student {
       this.controls.moveRight(- this.velocity.x)
       this.controls.moveForward(- this.velocity.z)
       this.controls.getObject().position.y += (this.velocity.y)
+
+      let pos = this.controls.getObject().position
+
+      let minX = -15
+      let maxX = 14
+      let minZ = -15
+      let maxZ = 16
+
+      if(pos.x > maxX) {
+        this.controls.getObject().position.x = maxX
+      }
+      if(pos.x < minX) {
+        this.controls.getObject().position.x = minX
+      }
+      if(pos.z > maxZ) {
+        this.controls.getObject().position.z = maxZ
+      }
+      if(pos.z < minZ) {
+        this.controls.getObject().position.z = minZ
+      }
     }
   }
 
