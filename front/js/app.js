@@ -4,6 +4,7 @@ require('/lib/velocity.min.js')
 import landing from '/pages/landing.html'
 import dashboard from '/pages/dashboard.html'
 import liveQuiz from '/pages/live-quiz.html'
+import Quiz from './Quiz'
 
 let currentApp = '#app'
 let otherApp = a => a == '#app' ? '#app-tmp' : '#app'
@@ -39,9 +40,11 @@ $(document).ready(function() {
     switchTo(landing, false)
     $('#dash-button').click(() => {
         switchTo(dashboard, 'down')
+
         $('#new-live-quiz').click(function() {
             switchTo(liveQuiz, false)
-            console.log("livequiz")
+            let quiz = new Quiz()
+            quiz.initEvents()
         })
     })
 })
