@@ -196,7 +196,7 @@ function init() {
   //lights[2].position.set(9, 5, -40)
   // lights[3].position.set(28, 5, -20)
   // lights[4].position.set(9, 5, -20)
-  lights[3].position.set(1, 0.5, 0).normalize()
+  lights[3].position.set(1, 0.6, 0).normalize()
   lights.forEach(l => scene.add(l))
 
   scene.add(student.controls.getObject())
