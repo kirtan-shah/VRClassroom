@@ -31,8 +31,12 @@ function slide(el, from) {
 
 $(document).ready(function() {
     switchTo(landing)
-    
+
     $('#dash-button').click(() => switchTo(dashboard))
+
+    $('#createRoomBtn').click(function() {
+      $('#app').hide()
+    })
 
     $('#joinRoomForm').on('submit', function(e) {
         e.preventDefault()
@@ -41,7 +45,8 @@ $(document).ready(function() {
           alert('you cannot leave this field empty')
         }
         else {
-          alert('write code to make Student class\'s variable \'socketRoom\' be ' + input + '. then, remove this overlay page')
+          alert('TODO: set '+input+' as Student class\'s socketRoom variable')
+          $('#app').hide()
         }
     })
 })
