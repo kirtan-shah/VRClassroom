@@ -21,7 +21,7 @@ $('#landingPage').ready(function() {
   $('#createRoomBtn').click(function() {
     let id = genID()
     student = new Student('kirtan teacher', id, true)
-    $('#room-id').html(id)
+    $('#room-id').html('Room Code: ' + id)
     startEnvironment()
     $('#app').hide()
   })
@@ -34,7 +34,7 @@ $('#landingPage').ready(function() {
       }
       else {
         student = new Student('kirtan student', input, false)
-        $('#room-id').html(input)
+        $('#room-id').html('Room Code: ' + input)
         startEnvironment()
         $('#app').hide()
       }
