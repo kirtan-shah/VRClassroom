@@ -1,6 +1,11 @@
 var currentApp = '#app'
 var otherApp = a => a == '#app' ? '#app-tmp' : '#app'
 
+function closeApp() {
+    $(otherApp(currentApp)).fadeOut(250)
+    $(currentApp).hide()
+}
+
 function switchTo(name, direction='left') {
     $(currentApp).show()
     $(otherApp(currentApp)).hide()
@@ -12,6 +17,7 @@ function switchTo(name, direction='left') {
         $(currentApp).html(name)
     }
     currentApp = otherApp(currentApp)
+    $('.close-icon').click(closeApp)
 }
 // function fadeTo(name) {
 //     $(currentApp).html(name).ready(() => {
@@ -21,6 +27,7 @@ function switchTo(name, direction='left') {
 //     currentApp = otherApp(currentApp)
 // }
 
+
 function slide(el, from) {
     const classes = 'animated fadeIn' + from.charAt(0).toUpperCase() + from.slice(1)
     el.addClass(classes)
@@ -29,4 +36,4 @@ function slide(el, from) {
 }
 
 
-export { switchTo, slide }
+export { switchTo, closeApp, slide }

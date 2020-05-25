@@ -12,7 +12,8 @@ import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockCont
 import CapsuleGeometry from '/js/CapsuleGeometry.js'
 
 import Student from '/js/Student.js'
-import StudentUI from './StudentUI';
+import StudentUI from './StudentUI'
+import { closeApp } from './switch.js'
 
 let scene
 let mixer
@@ -43,7 +44,7 @@ $('#landingPage').ready(function() {
     $('#room-id').show()
     $('#dash-button').show()
     startEnvironment()
-    $('#app').hide()
+    closeApp()
   })
 
   $('#joinRoomForm').on('submit', function(e) {
@@ -59,7 +60,7 @@ $('#landingPage').ready(function() {
         studentUI = new StudentUI(student.socket)
         $('#room-id').html('Room Code: ' + code)
         startEnvironment()
-        $('#app').hide()
+        closeApp()
       }
   })
 
