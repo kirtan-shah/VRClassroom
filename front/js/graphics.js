@@ -2,12 +2,12 @@ window.$ = window.jQuery = require('jquery')
 
 import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, MeshPhysicalMaterial, AmbientLight, DirectionalLight, Box3, FontLoader, TextGeometry, AnimationClip, FileLoader, AnimationMixer, AnimationUtils, Clock, KeyframeTrack, PointLight, Raycaster, Vector2, Frustum, Matrix4 } from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
-import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader.js';
+import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { OBJLoader2 } from 'three/examples/jsm/loaders/OBJLoader2.js'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { MtlObjBridge } from 'three/examples/jsm/loaders/obj2/bridge/MtlObjBridge.js';
+import { MtlObjBridge } from 'three/examples/jsm/loaders/obj2/bridge/MtlObjBridge.js'
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
 import CapsuleGeometry from '/js/CapsuleGeometry.js'
 
@@ -22,14 +22,14 @@ let mixer
 
 let frustum = new Frustum()
 
-let clock = new Clock();
+let clock = new Clock()
 
 let mtlLoader = new MTLLoader()
 let fbxLoader = new FBXLoader()
 let objLoader = new OBJLoader()
 let objLoader2 = new OBJLoader2()
 let colladaLoader = new ColladaLoader()
-let gltfLoader = new GLTFLoader();
+let gltfLoader = new GLTFLoader()
 
 let fontLoader = new FontLoader()
 
@@ -145,9 +145,9 @@ function createSocketListeners() {
             model.scale.set(3.45, 3.45, 3.45)
             mixer = new AnimationMixer(model)
             let fileAnimations = gltf.animations
-            let idleAnim = AnimationClip.findByName(fileAnimations, 'Idle');
-            let walkingAnim = AnimationClip.findByName(fileAnimations, 'Walking');
-            let sittingAnim = AnimationClip.findByName(fileAnimations, 'Sitting');
+            let idleAnim = AnimationClip.findByName(fileAnimations, 'Idle')
+            let walkingAnim = AnimationClip.findByName(fileAnimations, 'Walking')
+            let sittingAnim = AnimationClip.findByName(fileAnimations, 'Sitting')
             let idle = mixer.clipAction(idleAnim)
             let walking = mixer.clipAction(walkingAnim)
             let sitting = mixer.clipAction(sittingAnim)
@@ -169,7 +169,8 @@ function createSocketListeners() {
             nameTag.innerHTML = name.toString()
             nameTag.style.top = 0 + 'px'
             nameTag.style.left = 0 + 'px'
-            nameTag.style.zIndex = "1"
+            nameTag.style.zIndex = '1'
+            nameTag.id = socketId
 
             otherStudents[socketId] = {name: name, geometry: model, nameTag: nameTag, location: location, walkingAnimation: walking, idleAnimation: idle, sittingAnimation: sitting, state: state}
 
@@ -194,6 +195,7 @@ function createSocketListeners() {
       scene.remove(otherStudents[socketId].geometry)
       scene.remove(otherStudents[socketId].walkingGeometry)
       scene.remove(otherStudents[socketId].textGeometry)
+      $('#'+socketId).remove()
       delete otherStudents[socketId]
     }
   })
@@ -241,7 +243,7 @@ function animate() {
     object.frustumCulled = false
   } )
 
-  let delta = clock.getDelta();
+  let delta = clock.getDelta()
 
   if (mixer) { mixer.update( delta ) }
 
