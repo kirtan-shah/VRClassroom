@@ -3,22 +3,20 @@
     <div class="container">
 
       <div class="row">
-
         <h1 id="title">VR CLASSROOM</h1>
-
       </div>
 
       <div class="row">
-
         <div id="name-container">
           <div id="name-header">What is Your Name?</div>
-          <input class="center-block" id="nameInput" placeholder="Full Name"></input>
-        </div>
 
+          <label class="pure-material-textfield-standard">
+            <input id="nameInput" placeholder=" ">
+          </label>
+        </div>
       </div>
 
       <div class="row">
-
         <div id="createRoom-container" class="col-sm">
           <button class="button" id="createRoomBtn">Create Room</button>
         </div>
@@ -27,16 +25,16 @@
           <div>or</div>
         </div>
 
-
         <div id="joinRoom-container" class="col-sm">
-          <button class="button">Join Room</button>
-
-
           <form id="joinRoomForm">
-            <input class="center-block" id="joinRoomInput" type="text" placeholder="Room Code"></input>
+            <label class="pure-material-textfield-standard">
+              <input id="joinRoomInput" placeholder=" ">
+              <span>Enter Room Code</span>
+            </label>
+
+            <button class="button">Join Room</button>
           </form>
         </div>
-
       </div>
 
     </div>
