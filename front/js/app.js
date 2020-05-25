@@ -12,8 +12,14 @@ import { switchTo, setOnMenuLoad } from './switch.js'
 
 $(document).ready(function() {
     switchTo(landing, false)
+
     $('#dash-button').show()
     $('#room-id').show()
+
+    $('#profileImage').on('change', function(){
+      alert('handle image upload code to be written')
+    })
+
 
     $('#dash-button').click(() => {
         openDash()
@@ -59,7 +65,7 @@ function onFeedbackInfo() {
         let d = '<div id="destructive">Destructive</div>'
         for(let fs of Object.values(feedbacks)) {
             for(let f of fs) {
-                if(f.analysis.constructive) 
+                if(f.analysis.constructive)
                     c += `<div>${f.text}</div>`
                 else
                     d += `<div>${f.text}</div>`

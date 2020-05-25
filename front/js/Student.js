@@ -6,7 +6,7 @@ export default class Student {
 
   constructor(name, socketRoom, isTeacher) {
     this.name = name
-    this.id = 'some_id'
+    this.photoURL = 'https://firebasestorage.googleapis.com/v0/b/vr-classroom-214b2.appspot.com/o/defaultUser.png?alt=media&token=a15c1187-da96-4a93-8963-5ae30be92aa9'
 
     this.isTeacher = isTeacher
 
@@ -201,7 +201,7 @@ export default class Student {
       }
     }
 
-    this.socket.emit('updateMovement', this.name, this.controls.getObject().position, this.theta, this.state, this.socketRoom)
+    this.socket.emit('updateMovement', this.name, this.controls.getObject().position, this.theta, this.state, this.photoURL, this.socketRoom)
   }
 
 }

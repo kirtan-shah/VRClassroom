@@ -2,6 +2,7 @@ const express = require('express')
 const nocache = require('nocache')
 const path = require('path')
 const http = require('http')
+var cors = require('cors')
 let app = express()
 let server = http.Server(app)
 let io = require('socket.io')(server)
@@ -9,6 +10,7 @@ let port = process.env.PORT || 8080
 
 app.use('/', express.static(path.join(__dirname, '/public')))
 app.use(nocache())
+app.use(cors())
 
 let rooms = {  }
 const Tone = require('./Tone')
@@ -28,8 +30,8 @@ io.on('connection', function(socket) {
 		console.log(socket.id + ' joined ' + room)
 	})
 
-	socket.on('updateMovement', function(name, location, theta, state, room){
-		io.to(room).emit('movement', name, location, theta, state, socket.id)
+	socket.on('updateMovement', function(name, location, theta, state, photoURL, room){
+		io.to(room).emit('movement', name, location, theta, state, photoURL, socket.id)
 	})
 
 	socket.on('quiz', function(questions, date) {

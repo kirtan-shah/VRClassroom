@@ -119,7 +119,7 @@ function createSeats() {
 }
 
 function createSocketListeners() {
-  student.socket.on('movement', function(name, location, theta, state, socketId) {
+  student.socket.on('movement', function(name, location, theta, state, photoURL, socketId) {
     if(student.socketId != socketId) {
       if(otherStudents.hasOwnProperty(socketId)) {
         if(otherStudents[socketId].location != undefined) {
@@ -194,7 +194,7 @@ function createSocketListeners() {
             nameTag.id = socketId
             nameTag.className = 'nameTag'
 
-            let planeMaterial = new MeshLambertMaterial({ map: textureLoader.load('https://s3.amazonaws.com/duhaime/blog/tsne-webgl/assets/cat.jpg'), color : 0xffffff, side: DoubleSide })
+            let planeMaterial = new MeshLambertMaterial({ map: textureLoader.load(photoURL), color : 0xffffff, side: DoubleSide })
             let planeGeometry = new PlaneGeometry( 1, 1, 32 )
             let plane = new Mesh(planeGeometry, planeMaterial)
             scene.add(plane)
