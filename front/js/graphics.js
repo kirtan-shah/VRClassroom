@@ -40,28 +40,38 @@ let seats = {}
 $('#landingPage').ready(function() {
   $('#createRoomBtn').click(function() {
     let name = $('#nameInput').val().trim()
-    let id = genID()
-    student = new Student(name, id, true)
-    window.globalSocket = student.socket
-    $('#room-id').html('Room Code: ' + id)
-    $('#room-id').show()
-    $('#dash-button').show()
-    startEnvironment()
-    closeApp()
+    if(name.length > 0) {
+      let id = genID()
+      student = new Student(name, id, true)
+      window.globalSocket = student.socket
+      $('#room-id').html('Room Code: ' + id)
+      $('#room-id').show()
+      $('#dash-button').show()
+      startEnvironment()
+      closeApp()
+    }
+    else {
+      alert('You cannot leave the name field empty!')
+    }
   })
 
   $('#joinRoomForm').on('submit', function(e) {
       e.preventDefault()
       let name = $('#nameInput').val().trim()
-      let code = $('#joinRoomInput').val().trim()
-      if(code.length == 0) {
-        alert('you cannot leave this field empty')
+      if(name.length > 0) {
+        let code = $('#joinRoomInput').val().trim()
+        if(code.length == 0) {
+          alert('You cannot leave the join code field empty!')
+        }
+        else {
+          student = new Student(name, code, false)
+          $('#room-id').html('Room Code: ' + code)
+          startEnvironment()
+          closeApp()
+        }
       }
       else {
-        student = new Student(name, code, false)
-        $('#room-id').html('Room Code: ' + code)
-        startEnvironment()
-        closeApp()
+        alert('You cannot leave the name field empty!')
       }
   })
 
@@ -281,6 +291,7 @@ function animate() {
   }
 
   student.availableSeat = 'none'
+  let showPrompt = false
 
   for (var seatName in seats) {
     if(student.seat == seatName) {
@@ -290,8 +301,17 @@ function animate() {
     else if (seats.hasOwnProperty(seatName)) {
       if(Math.abs(student.controls.getObject().position.x-seats[seatName].x)<2 && Math.abs(student.controls.getObject().position.z-seats[seatName].z)<2) {
         student.availableSeat = seatName
+        showPrompt = true
       }
     }
+  }
+
+  if(showPrompt) {
+    $('#interaction-prompt').show()
+    $('#interaction-prompt').html('Click to Sit')
+  }
+  else {
+    $('#interaction-prompt').hide()
   }
 
 }
