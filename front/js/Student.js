@@ -41,7 +41,7 @@ export default class Student {
 
     this.socket.on('connect', () => {
       this.socketId = this.socket.id
-      this.socket.emit('joinRoom', this.socketRoom)
+      this.socket.emit('joinRoom', this.socketRoom, isTeacher)
     })
 
     this.socket.on('studentConnected', () => {

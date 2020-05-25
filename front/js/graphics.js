@@ -11,6 +11,7 @@ import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockCont
 import CapsuleGeometry from '/js/CapsuleGeometry.js'
 
 import Student from '/js/Student.js'
+import StudentUI from './StudentUI';
 
 let scene
 
@@ -32,6 +33,7 @@ let texture = new TextureLoader().load( 'models/classroom_texture.png' )
 
 let student
 let otherStudents = {}
+let studentUI
 
 $('#landingPage').ready(function() {
   $('#createRoomBtn').click(function() {
@@ -55,6 +57,8 @@ $('#landingPage').ready(function() {
       }
       else {
         student = new Student(name, code, false)
+        window.globalSocket = student.socket
+        studentUI = new StudentUI(student.socket)
         $('#room-id').html('Room Code: ' + code)
         startEnvironment()
         $('#app').hide()
