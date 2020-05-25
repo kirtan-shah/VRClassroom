@@ -20,9 +20,45 @@
     color: $secondary-color;
     width: 15%;
     height: 100%;
-    padding: 0.5em;
+    font-weight: bold;
     font-size: 1.5em;
-    font-family: $font;
+    font-family: 'Open Sans';
+    .title {
+        padding: .5em;
+    }
+    .logo {
+        width: 1.5em;
+        height: 1.5em;
+        margin-right: .5em;
+    }
+    .menu-content {
+        margin-top: 2em;
+    }
+    .menu-section {
+        margin-bottom: 1em;
+        font-size: 1.1rem;
+        .section-title {
+            color: gray;
+            font-size: 1rem;
+            margin-bottom: .25em;
+            margin-left: 1em;
+        }
+        table {
+            width: 100%;
+            td {
+                font-size: 1rem;
+                padding: .5em;
+            }
+            tr {
+                background: $accent-color;
+                transition: 400ms all;
+                &:hover {
+                    background: darken($accent-color, 5%);
+                }
+            }
+        }
+    }
+    
 }
 
 .content {
@@ -34,7 +70,7 @@
 }
 
 .content h1 {
-    font-size: 1.5em;
+    font-size: 2em;
     color: $primary-color;
     padding: 0.5em;
     margin: 0;
