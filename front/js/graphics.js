@@ -65,6 +65,7 @@ $('#landingPage').ready(function() {
         }
         else {
           student = new Student(name, code, false)
+          $('#dash-button').hide()
           $('#room-id').html('Room Code: ' + code)
           startEnvironment()
           closeApp()
