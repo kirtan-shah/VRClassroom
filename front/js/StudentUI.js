@@ -64,7 +64,8 @@ export default class StudentUI {
         $('#quiz-mc').hide()
         $('#quiz-frq').hide()
         $('#quiz-client label').hide()
-        $('#quiz-client .content').append(`<div class="score">You scored <span class="correct">${this.numCorrect}</span> out of <span class="correct">${this.questions.length}</span>.</div>`)
+        $('#next-question-button').hide()
+        $('#quiz-client .content').append(`<div class="you-score">You scored <span class="correct">${this.numCorrect}</span> out of <span class="correct">${this.questions.length}</span>.</div>`)
         this.socket.emit('quizScore', this.numCorrect / this.questions.length, this.date)
         setTimeout(closeApp, 3000)
     }

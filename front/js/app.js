@@ -83,8 +83,8 @@ function onQuizAnalysis() {
             str += `<div class="quiz-date">${date}</div>`
             for(let { score, name } of quizzes[date]) {
                 str += `<div class="quiz-score">
-                        <div class="name"><b>${name}</b></div>
-                        <div class="score">${Math.round(score*10000) / 100}%</div>
+                        <span class="name"><b>${name}</b></span>
+                        <span class="score">${Math.round(score*10000) / 100}%</span>
                     </div>`
             }
         }

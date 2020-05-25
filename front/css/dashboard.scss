@@ -21,29 +21,29 @@
     width: 15%;
     height: 100%;
     font-weight: bold;
-    font-size: 2rem;
+    font-size: 1.25rem;
     font-family: 'Open Sans';
     * { cursor: pointer; }
     .title {
-        padding-left: .5rem;
-        padding-top: 1rem;
+        padding-left: .2rem;
+        padding-top: .75rem;
     }
     .logo {
-        width: 3rem;
-        height: 3rem;
-        margin-right: .5rem;
+        width: 2.25rem;
+        height: 2.25rem;
+        margin-right: .3rem;
     }
     .menu-content {
-        margin-top: 2rem;
+        margin-top: 1.5rem;
     }
     .menu-section {
         margin-bottom: 1rem;
-        font-size: 1.2rem;
+        font-size: 0.9rem;
         .section-title {
             color: gray;
-            font-size: 1.2rem;
-            margin-bottom: .25rem;
-            margin-left: 1rem;
+            font-size: .9rem;
+            margin-bottom: .2rem;
+            margin-left: 0.5rem;
         }
         table, table * {
             //border: 1px solid white;
@@ -51,17 +51,18 @@
         table {
             width: 100%;
             td {
-                font-size: 1.2rem;
-                padding: .5rem;
+                font-size: 0.8rem;
+                padding: 0.5rem;
+                padding-left: .75rem;
             }
             td:nth-child(1) {
-                padding-left: 1.5rem;
-                max-width: 1em;
+                padding-left: 1rem;
+                max-width: 1rem;
             }
             .material-icons {
                 text-align: center;
                 vertical-align: middle;
-                font-size: 1.5rem;
+                font-size: 1.1rem;
                 padding: 0;
             }
             tr {
@@ -88,7 +89,7 @@
 }
 
 .content h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: $primary-color;
     padding: 1rem;
     margin: 0;
@@ -184,16 +185,30 @@
 #scores-info {
     @extend #smart-info;
     .quiz-date {
+        margin-top: 1vw;
         background: rgb(207, 255, 207);
+        width: 83vw / 2;
         &:hover {
             background: inherit;
+            background: rgb(207, 255, 207) !important;
             color: black !important;
         }
     }
     .quiz-score {
-        * { border: none; background: transparent; }
-        .name { font-size: 1.5rem !important; }
-        .score { font-size: 1rem !important;  }
+        display: flex;
+        align-items: center;
+        * { 
+            border: none;
+            background: transparent; 
+            flex: 1;
+            //transition: 300ms all;
+            &:hover {
+                background: transparent !important;
+                //color: white;
+            }
+        }
+        .name { font-size: 1.5rem !important; text-align: left; }
+        .score { font-size: 1.5rem !important; text-align: center; }
     }
 }
 
@@ -201,7 +216,7 @@
 #create-question {
     padding: 1rem;
     * {
-        font-size: 1.5rem;
+        font-size: 1rem;
         height: auto;
     }
     .mc label {
@@ -211,7 +226,7 @@
 
 #add-question, #send-quiz {
     @include button-theme(#007bff, white);
-    font-size: 1.5rem !important;
+    font-size: 1rem !important;
 }
 #send-quiz {
     margin-left: 1vw;
