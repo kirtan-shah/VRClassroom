@@ -10,8 +10,6 @@ import { switchTo } from './switch.js'
 
 $(document).ready(function() {
     switchTo(landing, false)
-    $('#dash-button').show()
-    $('#room-id').show()
 
     $('#dash-button').click(() => {
         switchTo(dashboard, 'down')
