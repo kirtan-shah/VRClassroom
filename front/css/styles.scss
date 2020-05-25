@@ -60,3 +60,38 @@ canvas {
   background-color: $bg;
   font-family: $font;
 }
+
+#title {
+  font-size: 36px;
+  text-align: center;
+  width: 100%;
+}
+
+#name-container {
+  width: 100%;
+  text-align: center;
+}
+
+#createRoom-container {
+  width: 100%;
+  text-align: center;
+}
+
+#or-container {
+  text-align: center;
+}
+
+#joinRoom-container {
+  width: 100%;
+  text-align: center;
+}
+
+#name-header {
+  text-align: center;
+}
+
+.center-block {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
