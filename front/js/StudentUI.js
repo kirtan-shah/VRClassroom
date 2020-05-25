@@ -1,4 +1,4 @@
-import { switchTo } from './switch.js'
+import { switchTo, closeApp } from './switch.js'
 
 import liveQuizClient from '/pages/live-quiz-client.html'
 
@@ -7,14 +7,20 @@ export default class StudentUI {
     constructor(socket) {
         this.socket = socket
         this.questionIndex = 0
+        this.numCorrect = 0
 
         let self = this
         socket.on('quiz', questions => { 
             switchTo('<div id="quiz-client" class="dashboard">' + liveQuizClient + '</div>', 'up')
             self.questionIndex = 0
+            self.numCorrect = 0
             self.questions = questions
             self.nextQuestion()
         })
+    }
+
+    compare(a, b) {
+        return a.toLowerCase().trim().replace(/ /g,'') == b.toLowerCase().trim().replace(/ /g,'')
     }
 
     nextQuestion() {
@@ -22,12 +28,23 @@ export default class StudentUI {
             this.finishQuiz()
             return
         }
-        this.renderQuiz(this.questions[this.questionIndex], this.questionIndex == this.questions.length - 1)
+        let q = this.questions[this.questionIndex]
+        if(this.questionIndex > 0) {
+            if(q.type == 'mc' && this.compare($('input[name="quiz-mc-radios"]:checked').val(), q.answer))
+                this.numCorrect++
+            if(q.type == 'frq' && this.compare($('#quiz-answer-input').val(), q.answer))
+                this.numCorrect++
+        }
+        this.renderQuiz(q, this.questionIndex == this.questions.length - 1)
         this.questionIndex++
     }
 
     finishQuiz() {
-
+        $('#quiz-mc').hide()
+        $('#quiz-frq').hide()
+        setTimeout(() => {
+            
+        })
     }
 
     renderQuiz(question, last) {

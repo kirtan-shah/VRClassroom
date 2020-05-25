@@ -1,5 +1,13 @@
 @import "./vars.scss";
 
+.close-icon {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    width: 32px;
+    height: 32px; 
+}
+
 .dashboard {
     display: flex;
     justify-content: space-around;
@@ -22,7 +30,7 @@
     width: 85%;
     height: 100%;
     font-family: $font;
-    overflow: scroll;
+    overflow-y: auto;
 }
 
 .content h1 {
