@@ -1,10 +1,15 @@
 var currentApp = '#app'
 var otherApp = a => a == '#app' ? '#app-tmp' : '#app'
+var menuLoad = () => {}
 
 function closeApp() {
   $('.nameTag').show()
     $(otherApp(currentApp)).fadeOut(250)
     $(currentApp).hide()
+}
+
+function setOnMenuLoad(f) {
+    menuLoad = f
 }
 
 function switchTo(name, direction='left') {
@@ -18,6 +23,7 @@ function switchTo(name, direction='left') {
     else {
         $(currentApp).html(name)
     }
+    $('.menu').ready(menuLoad)
     currentApp = otherApp(currentApp)
     $('.close-icon').click(closeApp)
 }
@@ -38,4 +44,4 @@ function slide(el, from) {
 }
 
 
-export { switchTo, closeApp, slide }
+export { switchTo, closeApp, slide, setOnMenuLoad }
