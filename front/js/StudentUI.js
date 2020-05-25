@@ -2,6 +2,7 @@ import { switchTo, closeApp } from './switch.js'
 
 import liveQuizClient from '/pages/live-quiz-client.html'
 import feedbackForm from '/pages/feedback-form.html'
+import whiteboard from '/pages/whiteboard.html'
 
 export default class StudentUI {
 
@@ -28,6 +29,13 @@ export default class StudentUI {
                 $('#feedback-form').html('<div class="correct" style="font-size: 2rem;">Feedback submitted!</div>')
                 setTimeout(closeApp, 3000)
             })
+        })
+        socket.on('openWhiteboard', () => {
+            switchTo(whiteboard, 'up')
+            $('.menu-content').hide()
+            let iframe = $('.whiteboard')[0]
+            iframe.contentWindow.document.getElementsByClassName('colors')[0].style.display = 'none'
+            iframe.style.pointerEvents = 'none'
         })
     }
 
