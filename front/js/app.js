@@ -9,44 +9,12 @@ import smartFeedback from '/pages/smart-feedback.html'
 import feedbackAnalysis from '/pages/feedback-analysis.html'
 import Quiz from './Quiz'
 import { switchTo, setOnMenuLoad } from './switch.js'
-import * as firebase from 'firebase'
-import 'firebase/storage'
-
-let firebaseConfig = {
-  apiKey: "AIzaSyByvmyJHzHc472pLWyKhsu1JCaBm2MLf9Y",
-  authDomain: "vr-classroom-214b2.firebaseapp.com",
-  databaseURL: "https://vr-classroom-214b2.firebaseio.com",
-  projectId: "vr-classroom-214b2",
-  storageBucket: "vr-classroom-214b2.appspot.com",
-  messagingSenderId: "659971797979",
-  appId: "1:659971797979:web:76157965ae2a6f224d6dfe",
-  measurementId: "G-E5VEJG1ZHL"
-}
-
-firebase.initializeApp(firebaseConfig)
-firebase.analytics()
 
 $(document).ready(function() {
     switchTo(landing, false)
 
     $('#dash-button').show()
     $('#room-id').show()
-
-    $('#profileImage').on('change', function(){
-      alert('handle image upload code to be written')
-
-      let data = {}
-      let file = $('#profileImage')[0].files[0]
-      let reader  = new FileReader()
-
-      reader.onloadend = function() {
-        data.imageDataIn = reader.result
-
-      }
-
-      reader.readAsDataURL(file)
-    })
-
 
     $('#dash-button').click(() => {
         openDash()
