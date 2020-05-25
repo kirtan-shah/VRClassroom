@@ -1,6 +1,6 @@
 window.$ = window.jQuery = require('jquery')
 
-import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, MeshPhysicalMaterial, AmbientLight, DirectionalLight, Box3, FontLoader, TextGeometry, AnimationClip, FileLoader, AnimationMixer, AnimationUtils, Clock, KeyframeTrack, PointLight, Raycaster, Vector2, Frustum, Matrix4 } from 'three'
+import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, MeshPhysicalMaterial, AmbientLight, DirectionalLight, Box3, FontLoader, TextGeometry, AnimationClip, FileLoader, AnimationMixer, AnimationUtils, Clock, KeyframeTrack, PointLight, Raycaster, Vector2, Frustum, Matrix4, PlaneGeometry, DoubleSide, ImageUtils, MeshLambertMaterial } from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
@@ -30,7 +30,7 @@ let objLoader = new OBJLoader()
 let objLoader2 = new OBJLoader2()
 let colladaLoader = new ColladaLoader()
 let gltfLoader = new GLTFLoader()
-
+let textureLoader = new TextureLoader()
 let fontLoader = new FontLoader()
 
 let student
@@ -125,9 +125,19 @@ function createSocketListeners() {
         if(otherStudents[socketId].location != undefined) {
           otherStudents[socketId].location = location
 
-          otherStudents[socketId].geometry.position.x = location.x
-          otherStudents[socketId].geometry.position.z = location.z
+          let maskDistance = 0.75
+
+          if(state == 'Walking') {
+            maskDistance = 1
+          }
+
+          otherStudents[socketId].geometry.position.x = location.x - Math.sin(theta)*maskDistance
+          otherStudents[socketId].geometry.position.z = location.z - Math.cos(theta)*maskDistance
           otherStudents[socketId].geometry.rotation.y = theta
+
+          otherStudents[socketId].planeGeometry.position.x = location.x
+          otherStudents[socketId].planeGeometry.position.z = location.z
+          otherStudents[socketId].planeGeometry.rotation.y = theta
 
           if(state == 'Sitting' && otherStudents[socketId].state != 'Sitting') {
             otherStudents[socketId].sittingAnimation.play()
@@ -166,11 +176,14 @@ function createSocketListeners() {
             let walking = mixer.clipAction(walkingAnim)
             let sitting = mixer.clipAction(sittingAnim)
 
+            let maskDistance = 0.75
+
             if(state == 'Sitting') {
               sitting.play()
             }
             else if(state == 'Walking') {
               walking.play()
+              maskDistance = 1
             }
             else if(state == 'Idle') {
               idle.play()
@@ -181,13 +194,24 @@ function createSocketListeners() {
             nameTag.id = socketId
             nameTag.className = 'nameTag'
 
-            otherStudents[socketId] = {name: name, geometry: model, nameTag: nameTag, location: location, walkingAnimation: walking, idleAnimation: idle, sittingAnimation: sitting, state: state}
+            let planeMaterial = new MeshLambertMaterial({ map: textureLoader.load('https://s3.amazonaws.com/duhaime/blog/tsne-webgl/assets/cat.jpg'), color : 0xffffff, side: DoubleSide })
+            let planeGeometry = new PlaneGeometry( 1, 1, 32 )
+            let plane = new Mesh(planeGeometry, planeMaterial)
+            scene.add(plane)
+
+            otherStudents[socketId] = {name: name, geometry: model, planeGeometry: plane, nameTag: nameTag, location: location, walkingAnimation: walking, idleAnimation: idle, sittingAnimation: sitting, state: state}
 
             otherStudents[socketId].geometry.position.x = location.x
             otherStudents[socketId].geometry.position.z = location.z
             otherStudents[socketId].geometry.rotation.y = theta
 
+            otherStudents[socketId].planeGeometry.position.x = location.x - Math.sin(theta)*maskDistance
+            otherStudents[socketId].planeGeometry.position.z = location.z - Math.cos(theta)*maskDistance
+            otherStudents[socketId].planeGeometry.position.y = student.height+0.1
+            otherStudents[socketId].planeGeometry.rotation.y = theta
+
             scene.add(otherStudents[socketId].geometry)
+            scene.add(otherStudents[socketId].planeGeometry)
             document.body.appendChild(otherStudents[socketId].nameTag)
           },
           undefined,
@@ -332,7 +356,6 @@ function drawMap() {
     classroom.scale.multiplyScalar(4)
     scene.add(classroom)
   })
-
 }
 
 function genID () {
