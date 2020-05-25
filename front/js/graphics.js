@@ -227,6 +227,7 @@ function createSocketListeners() {
     if(otherStudents.hasOwnProperty(socketId)) {
       scene.remove(otherStudents[socketId].geometry)
       scene.remove(otherStudents[socketId].walkingGeometry)
+      scene.remove(otherStudents[socketId].planeGeometry)
       scene.remove(otherStudents[socketId].textGeometry)
       $('#'+socketId).remove()
       delete otherStudents[socketId]
