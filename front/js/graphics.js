@@ -15,6 +15,24 @@ import Student from '/js/Student.js'
 import StudentUI from './StudentUI'
 import { closeApp } from './switch.js'
 
+import * as firebase from 'firebase/app'
+import 'firebase/storage'
+
+let firebaseConfig = {
+  apiKey: "AIzaSyByvmyJHzHc472pLWyKhsu1JCaBm2MLf9Y",
+  authDomain: "vr-classroom-214b2.firebaseapp.com",
+  databaseURL: "https://vr-classroom-214b2.firebaseio.com",
+  projectId: "vr-classroom-214b2",
+  storageBucket: "vr-classroom-214b2.appspot.com",
+  messagingSenderId: "659971797979",
+  appId: "1:659971797979:web:76157965ae2a6f224d6dfe",
+  measurementId: "G-E5VEJG1ZHL"
+}
+
+firebase.initializeApp(firebaseConfig)
+let storageRef = firebase.storage().ref()
+let uploadedPhotoURL = 'https://firebasestorage.googleapis.com/v0/b/vr-classroom-214b2.appspot.com/o/defaultUser.png?alt=media&token=a15c1187-da96-4a93-8963-5ae30be92aa9'
+
 let container
 
 let scene
@@ -39,11 +57,42 @@ let otherStudents = {}
 let seats = {}
 
 $('#landingPage').ready(function() {
+  $('#profileImage').on('change', function(){
+    alert('handle image upload code to be written')
+
+    let data = {}
+    let file = $('#profileImage')[0].files[0]
+    let uploadTask = storageRef.child('images/'+Math.round((new Date()).getTime())+'.jpg').put(file)
+
+    uploadTask.on('state_changed', function(snapshot){
+      let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      console.log('Upload is ' + progress + '% done')
+      switch (snapshot.state) {
+        case firebase.storage.TaskState.PAUSED: // or 'paused'
+        console.log('Upload is paused')
+        break
+        case firebase.storage.TaskState.RUNNING: // or 'running'
+        console.log('Upload is running')
+        break
+      }
+    },
+    function(error) {
+      alert('error')
+    },
+    function() {
+      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        console.log('File available at', downloadURL)
+        uploadedPhotoURL = downloadURL
+      })
+    })
+  })
+
   $('#createRoomBtn').click(function() {
     let name = $('#nameInput').val().trim()
     if(name.length > 0) {
       let id = genID()
       student = new Student(name, id, true)
+      student.photoURL = uploadedPhotoURL
       window.globalSocket = student.socket
       $('#room-id').html('Room Code: ' + id)
       $('#room-id').show()
@@ -66,6 +115,7 @@ $('#landingPage').ready(function() {
         }
         else {
           student = new Student(name, code, false)
+          student.photoURL = uploadedPhotoURL
           window.globalSocket = student.socket
           studentUI = new StudentUI(student.socket)
           $('#dash-button').hide()
