@@ -8,7 +8,7 @@ import liveQuiz from '/pages/live-quiz.html'
 import smartFeedback from '/pages/smart-feedback.html'
 import feedbackAnalysis from '/pages/feedback-analysis.html'
 import Quiz from './Quiz'
-import { switchTo } from './switch.js'
+import { switchTo, setOnMenuLoad } from './switch.js'
 
 $(document).ready(function() {
     switchTo(landing, false)
@@ -16,15 +16,25 @@ $(document).ready(function() {
     $('#room-id').show()
 
     $('#dash-button').click(() => {
-        switchTo(dashboard, 'down')
+        openDash()
 
-        $('#new-white-board').click(newWhiteboard)
+        setOnMenuLoad(function() {
+            $('#menu-dash').click(openDash)
+            $('#menu-whiteboard').click(newWhiteboard)
+            $('#menu-quiz').click(newLiveQuiz)
+            $('#menu-feedback').click(newSmartFeedback)
+            $('#menu-feedback-analysis').click(onFeedbackInfo)
+        })
+        $('#new-whiteboard').click(newWhiteboard)
         $('#new-live-quiz').click(newLiveQuiz)
         $('#new-smart-feedback').click(newSmartFeedback)
         $('#feedback-info').click(onFeedbackInfo)
     })
 })
 
+function openDash() {
+    switchTo(dashboard, 'down')
+}
 function newWhiteboard() {
     switchTo(whiteboard, false)
 }
