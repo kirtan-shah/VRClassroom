@@ -2,8 +2,8 @@
 
 .close-icon {
     position: absolute;
-    top: 0.5em;
-    right: 0.5em;
+    top: 0.5rem;
+    right: 0.5rem;
     width: 32px;
     height: 32px; 
 }
@@ -23,14 +23,15 @@
     font-weight: bold;
     font-size: 2rem;
     font-family: 'Open Sans';
+    * { cursor: pointer; }
     .title {
-        padding-left: .25rem;
-        padding-top: .5rem;
+        padding-left: .5rem;
+        padding-top: 1rem;
     }
     .logo {
         width: 3rem;
         height: 3rem;
-        margin-right: .25rem;
+        margin-right: .5rem;
     }
     .menu-content {
         margin-top: 2rem;
@@ -44,17 +45,33 @@
             margin-bottom: .25rem;
             margin-left: 1rem;
         }
+        table, table * {
+            //border: 1px solid white;
+        }
         table {
             width: 100%;
             td {
                 font-size: 1.2rem;
                 padding: .5rem;
             }
+            td:nth-child(1) {
+                padding-left: 1.5rem;
+                max-width: 1em;
+            }
+            .material-icons {
+                text-align: center;
+                vertical-align: middle;
+                font-size: 1.5rem;
+                padding: 0;
+            }
             tr {
                 background: $accent-color;
                 transition: 400ms all;
                 &:hover {
                     background: darken($accent-color, 5%);
+                }
+                &:first-child {
+                    padding: 0;
                 }
             }
         }
@@ -71,9 +88,9 @@
 }
 
 .content h1 {
-    font-size: 2em;
+    font-size: 2rem;
     color: $primary-color;
-    padding: 0.5em;
+    padding: 1rem;
     margin: 0;
     width: 100%;
     background: white;
@@ -166,19 +183,23 @@
 
 #create-question {
     padding: 1rem;
+    * {
+        font-size: 1.5rem;
+        height: auto;
+    }
+    .mc label {
+        width: 7.5rem;
+    }
 }
 
 #add-question, #send-quiz {
     @include button-theme(#007bff, white);
-    font-size: 1rem !important;
+    font-size: 1.5rem !important;
 }
 #send-quiz {
     margin-left: 1vw;
 }
 
-.mc label {
-    width: 5rem;
-}
 .correct {
     color: green;
     font-weight: bold;
@@ -206,8 +227,9 @@
             width: card-width(1vw, 3);
             padding: 0.5rem;
             transition: 200ms all;
+            font-size: 1.25rem;
             .preview-question {
-                font-size: 1.25rem;
+                font-size: 1.5rem;
             }
             .edit-icon {
                 position: absolute;
