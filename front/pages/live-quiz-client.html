@@ -1,0 +1,36 @@
+<!-- <div class="dashboard"> --->
+    <div class="menu">
+        <div>VR Classroom</div>
+    </div>
+    <div class="content">
+        <h1>Quiz</h1>
+        <div style="padding: 1rem;">
+            <label style="font-size: 1.25rem;">${question}</label>
+            <div id="quiz-mc" class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="quiz-mc-radios" id="answer-radio-1" value="${isCorrect1}">
+                    <label class="form-check-label" for="answer-radio-1">
+                        ${answer1}
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="quiz-mc-radios" id="answer-radio-2" value="${isCorrect2}">
+                    <label class="form-check-label" for="answer-radio-2">
+                        ${answer2}
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="quiz-mc-radios" id="answer-radio-3" value="${isCorrect3}">
+                    <label class="form-check-label" for="answer-radio-3">
+                        ${answer3}
+                    </label>
+                </div>
+            </div>
+            <div id="quiz-frq" class="form-group">
+                <label for="quiz-answer-input">Answer</label>
+                <input type="text" class="form-control" id="quiz-answer-input" placeholder="Answer">
+            </div>
+            <button type="submit" id="next-question-button">Next</button>
+        </div>
+    </div>
+<!-- </div> -->

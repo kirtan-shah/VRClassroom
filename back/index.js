@@ -10,13 +10,17 @@ let port = process.env.PORT || 8080
 app.use('/', express.static(path.join(__dirname, '/public')))
 app.use(nocache())
 
+//let rooms = {  }
+
 io.on('connection', function(socket) {
 	console.log(socket.id + ' connected')
 	io.emit('studentConnected')
 
-	socket.on('joinRoom', function(room) {
+	socket.on('joinRoom', function(room, isTeacher) {
 		socket.join(room)
 		socket.room = room
+		socket.isTeacher = isTeacher
+		//rooms[room] = { teacher: socket }
 		console.log(socket.id + ' joined ' + room)
 	})
 
@@ -25,8 +29,10 @@ io.on('connection', function(socket) {
 	})
 
 	socket.on('quiz', function(questions) {
-		socket.broadcast.to(socket.room).emit('quiz', questions)
-		console.log('quiz received!', questions)
+		if(socket.isTeacher) { //safety check
+			socket.broadcast.to(socket.room).emit('quiz', questions)
+			//console.log('quiz received!', questions)
+		}
 	})
 
 	socket.on('disconnect', function() {

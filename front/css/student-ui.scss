@@ -1,0 +1,6 @@
+@import './vars.scss';
+
+#next-question-button {
+    @include button-theme(#28a745, white);
+    font-size: 1rem !important;
+}

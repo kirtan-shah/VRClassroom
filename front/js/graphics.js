@@ -12,6 +12,7 @@ import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockCont
 import CapsuleGeometry from '/js/CapsuleGeometry.js'
 
 import Student from '/js/Student.js'
+import StudentUI from './StudentUI';
 
 let scene
 let mixer
@@ -29,6 +30,7 @@ let fontLoader = new FontLoader()
 
 let student
 let otherStudents = {}
+let studentUI
 let seats = {}
 
 $('#landingPage').ready(function() {
@@ -53,6 +55,8 @@ $('#landingPage').ready(function() {
       }
       else {
         student = new Student(name, code, false)
+        window.globalSocket = student.socket
+        studentUI = new StudentUI(student.socket)
         $('#room-id').html('Room Code: ' + code)
         startEnvironment()
         $('#app').hide()
