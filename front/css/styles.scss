@@ -31,13 +31,23 @@ canvas {
 
 #interaction-prompt {
   position: absolute;
-  top: 30%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -0%);
   padding: 0.25em;
   font-size: 1.5rem;
   border: 1px solid $primary-color;
   display: none;
+  border-radius: 5px;
+  background: black;
+  color: white;
+  opacity: 0.3;
+  animation: blinking 2s infinite;
+}
+@keyframes blinking{
+  0% { opacity: 0.3 }
+  50% { opacity: 1 }
+  100% { opacity: 0.3 }
 }
 
 #app, #app-tmp {
