@@ -101,7 +101,7 @@ canvas {
 }
 
 #joinRoom-container {
-  margin-top: 10rem;
+  margin-top: 7rem;
   width: 100%;
   text-align: center;
 }
@@ -114,6 +114,13 @@ canvas {
 #nameInput {
   text-align: center !important;
   caret-color: black;
+  font-size: 3rem;
+}
+
+#joinRoomInput {
+  text-align: center !important;
+  caret-color: black;
+  font-size: 2rem;
 }
 
 .nameTag {
@@ -161,7 +168,6 @@ canvas {
   position: relative;
   display: inline-block;
   font-family: var(--pure-material-font, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
-  font-size: 3rem;
   line-height: 1.5;
   overflow: hidden;
 }
