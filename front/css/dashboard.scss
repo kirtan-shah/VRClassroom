@@ -158,7 +158,7 @@
     div {
         background: white;
         width: 83vw;
-        font-size: 1rem;
+        font-size: 1.5rem;
         border-radius: 0;
         border-bottom: 1px solid lightgray;
     }
@@ -174,12 +174,28 @@
 }
 #constructive, #destructive {
     border-radius: 10px 10px 0 0;
-    font-size: 2rem;
+    font-size: 2rem !important;
     &:hover {
         background: inherit;
         color: black !important;
     }
 }
+
+#scores-info {
+    @extend #smart-info;
+    .quiz-date {
+        background: rgb(207, 255, 207);
+        &:hover {
+            background: inherit;
+            color: black !important;
+        }
+    }
+    .quiz-score {
+        .name { font-size: 1.5rem !important; }
+        .score { font-size: 1rem !important;  }
+    }
+}
+
 
 #create-question {
     padding: 1rem;
