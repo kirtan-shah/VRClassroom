@@ -38,6 +38,7 @@ export default class Student {
 
     this.state = 'Idle'
     this.seat = -1
+    this.availableSeat = -1
     this.theta = 0
 
     this.socket = IO()
@@ -52,8 +53,16 @@ export default class Student {
       console.log('student connected!')
     })
 
+    this.initMouseClick(this)
     this.initKeyDown(this)
     this.initKeyUp(this)
+  }
+
+  initMouseClick(student) {
+    let onMousePress = function() {
+      student.seat = student.availableSeat
+    }
+    document.addEventListener("click", onMousePress)
   }
 
   initKeyDown(student) {
@@ -169,13 +178,23 @@ export default class Student {
     let wpVector = new Vector3();
     this.camera.getWorldDirection(wpVector)
     let camVector = wpVector
-    this.theta = Math.atan2(camVector.x,camVector.z)
+    this.theta = Math.atan2(camVector.x, camVector.z)
 
-    if(this.direction.length() > 0) {
-      this.state = 'Walking'
+    if(this.seat != -1) {
+      this.camera.position.y = this.height*0.75
+
+      this.state = 'Sitting'
+      this.theta = Math.PI*1/2
     }
     else {
-      this.state = 'Idle'
+      this.camera.position.y = this.height
+
+      if(this.direction.length() > 0) {
+        this.state = 'Walking'
+      }
+      else {
+        this.state = 'Idle'
+      }
     }
 
     this.socket.emit('updateMovement', this.name, this.controls.getObject().position, this.theta, this.state, this.socketRoom)

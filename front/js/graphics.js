@@ -81,13 +81,21 @@ function createSocketListeners() {
           otherStudents[socketId].textGeometry.position.x = location.x
           otherStudents[socketId].textGeometry.position.z = location.z
 
-          if(state == 'Walking' && otherStudents[socketId].state != 'Walking') {
+          if(state == 'Sitting' && otherStudents[socketId].state != 'Sitting') {
+            otherStudents[socketId].sittingAnimation.play()
+            otherStudents[socketId].walkingAnimation.stop()
+            otherStudents[socketId].idleAnimation.stop()
+            otherStudents[socketId].state = 'Sitting'
+          }
+          else if(state == 'Walking' && otherStudents[socketId].state != 'Walking') {
             otherStudents[socketId].walkingAnimation.play()
+            otherStudents[socketId].sittingAnimation.stop()
             otherStudents[socketId].idleAnimation.stop()
             otherStudents[socketId].state = 'Walking'
           }
           else if(state=='Idle' && otherStudents[socketId].state != 'Idle'){
             otherStudents[socketId].idleAnimation.play()
+            otherStudents[socketId].sittingAnimation.stop()
             otherStudents[socketId].walkingAnimation.stop()
             otherStudents[socketId].state = 'Idle'
           }
@@ -105,9 +113,15 @@ function createSocketListeners() {
             let fileAnimations = gltf.animations
             let idleAnim = AnimationClip.findByName(fileAnimations, 'Idle');
             let walkingAnim = AnimationClip.findByName(fileAnimations, 'Walking');
+            let sittingAnim = AnimationClip.findByName(fileAnimations, 'Sitting');
             let idle = mixer.clipAction(idleAnim)
             let walking = mixer.clipAction(walkingAnim)
-            if(state == 'Walking') {
+            let sitting = mixer.clipAction(sittingAnim)
+
+            if(state == 'Sitting') {
+              sitting.play()
+            }
+            else if(state == 'Walking') {
               walking.play()
             }
             else if(state == 'Idle') {
@@ -122,7 +136,7 @@ function createSocketListeners() {
 
               let box = new Box3().setFromObject( textMesh )
 
-              otherStudents[socketId] = {name: name, geometry: model, textGeometry: textMesh, location: location, walkingAnimation: walking, idleAnimation: idle, state: state}
+              otherStudents[socketId] = {name: name, geometry: model, textGeometry: textMesh, location: location, walkingAnimation: walking, idleAnimation: idle, sittingAnimation: sitting, state: state}
 
               otherStudents[socketId].geometry.position.x = location.x
               otherStudents[socketId].geometry.position.z = location.z
