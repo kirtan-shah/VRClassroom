@@ -11,6 +11,8 @@ app.use('/', express.static(path.join(__dirname, '/public')))
 app.use(nocache())
 
 let rooms = {  }
+const Tone = require('./Tone')
+let tone = new Tone()
 
 io.on('connection', function(socket) {
 	console.log(socket.id + ' connected')
@@ -51,7 +53,36 @@ io.on('connection', function(socket) {
 		}
 	})
 	socket.on('feedback', function(text, date) {
-		rooms[socket.room].feedbacks[date].push({ text, name: socket.name })
+		tone.analyze(text)
+			.then(toneAnalysis => {
+				let tones = toneAnalysis.result.document_tone.tones
+				console.log(tones)
+				let tonesById = {}
+				tones.forEach(tone => tonesById[tone.tone_id] = tone.score)
+				let n = 0
+				let positive = tonesById.joy || 0
+				let negative = 0
+				let net = 0
+				if(tonesById.anger) {
+					negative += tonesById.anger
+					n++
+				}
+				if(tonesById.sadness) {
+					negative += tonesById.sadness
+					n++
+				}
+				if(tonesById.fear) {
+					negative += tonesById.fear
+					n++
+				}
+				negative = n == 0 ? 1 : 1 - negative / n
+				if(positive == 0) net = negative
+				else net = (positive + negative) / 2
+				let destructive = tonesById.anger && (!tonesById.analytical || tonesById.anger > tonesById.analytical)
+				let analysis = { positive: net, constructive: !destructive }
+				rooms[socket.room].feedbacks[date].push({ text, name: socket.name, analysis })
+			})
+			.catch(err => console.log('error', err))
 	})
 	socket.on('requestFeedbacks', function() {
 		socket.emit('feedbacks', rooms[socket.room].feedbacks)

@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "ibm-watson": "^5.5.0",
     "jquery": "^3.5.1",
     "nocache": "^2.1.0",
     "socket.io": "^2.3.0",

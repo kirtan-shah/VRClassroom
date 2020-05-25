@@ -24,15 +24,14 @@ export default class StudentUI {
             $('#feedback-question').text(q)
             $('#send-feedback').click(function() {
                 $('#send-feedback').hide()
-                $('#feedback-form').html('<div class="correct" style="font-size: 2rem;">Feedback submitted!</div>')
                 socket.emit('feedback', $('#feedback-input').val(), date)
+                $('#feedback-form').html('<div class="correct" style="font-size: 2rem;">Feedback submitted!</div>')
                 setTimeout(closeApp, 3000)
             })
         })
     }
 
     compare(a, b) {
-        console.log(a, b)
         return a && b && a.toLowerCase().trim().replace(/ /g,'') == b.toLowerCase().trim().replace(/ /g,'')
     }
 
