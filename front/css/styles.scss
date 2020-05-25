@@ -7,8 +7,10 @@
 }
 
 body {
-  margin: 0; overflow: hidden;
+  margin: 0;
+  overflow: hidden;
 }
+
 canvas {
   display: block;
 }
@@ -18,6 +20,7 @@ canvas {
   top: 0.5em;
   left: 0.5em;
   @include button-theme($primary-color, $secondary-color);
+  display: none;
 }
 
 #room-id {
@@ -27,6 +30,7 @@ canvas {
   padding: 0.25em;
   font-size: 1.5rem;
   border: 1px solid $primary-color;
+  display: none;
 }
 
 #interaction-prompt {
@@ -37,12 +41,12 @@ canvas {
   padding: 0.25em;
   font-size: 1.5rem;
   border: 1px solid $primary-color;
-  display: none;
   border-radius: 5px;
   background: black;
   color: white;
   opacity: 0.3;
   animation: blinking 2s infinite;
+  display: none;
 }
 @keyframes blinking{
   0% { opacity: 0.3 }
@@ -59,4 +63,88 @@ canvas {
   top: 0;
   background-color: $bg;
   font-family: $font;
+}
+
+#landingPage {
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#title {
+  margin-top: 6rem;
+  font-size: 8rem;
+  text-align: center;
+  width: 100%;
+}
+
+#name-container {
+  margin-top: 6rem;
+  width: 100%;
+  text-align: center;
+}
+
+#createRoom-container {
+  margin-top: 10rem;
+  width: 100%;
+  text-align: center;
+}
+
+#or-container {
+  margin-top: 10rem;
+  text-align: center;
+}
+
+#joinRoom-container {
+  margin-top: 10rem;
+  width: 100%;
+  text-align: center;
+}
+
+#name-header {
+  text-align: center;
+}
+
+.nameTag {
+  position: absolute;
+  background-color: black;
+  color: white;
+  top: 0px;
+  left: 0px;
+}
+
+.center-block {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.button {
+  @include button-theme($primary-color, $secondary-color);
+  width: 20rem;
+  height: 6rem;
+  background: #f3f0f1;
+  position: relative;
+  background: #f3f0f1;
+  margin-bottom: 25px;
+  border-radius: 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+  span {
+    line-height: 100px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 3rem;
+    font-weight: semibold;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .button {
+    width: 10rem !important;
+    height: 6rem !important;
+  }
 }

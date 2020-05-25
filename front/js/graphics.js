@@ -177,14 +177,9 @@ function createSocketListeners() {
             }
 
             let nameTag = document.createElement('div')
-            nameTag.style.position = 'absolute'
-            nameTag.style.backgroundColor = 'black'
-            nameTag.style.color = 'white'
             nameTag.innerHTML = name.toString()
-            nameTag.style.top = 0 + 'px'
-            nameTag.style.left = 0 + 'px'
-            nameTag.style.zIndex = '1'
             nameTag.id = socketId
+            nameTag.className = 'nameTag'
 
             otherStudents[socketId] = {name: name, geometry: model, nameTag: nameTag, location: location, walkingAnimation: walking, idleAnimation: idle, sittingAnimation: sitting, state: state}
 
