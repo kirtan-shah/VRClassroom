@@ -10,7 +10,7 @@
     "clean": "rm -rf dist",
     "dev": "parcel front/index.html -d dist/public",
     "build-front": "parcel build front/index.html -d dist/public",
-    "build-back": "babel back -d dist",
+    "build-back": "babel back -d dist --copy-files",
     "build-all": "npm run build-front && npm run build-back",
     "serve": "node dist/index.js",
     "start": "npm run build-all && npm run serve"
