@@ -9,6 +9,22 @@ import smartFeedback from '/pages/smart-feedback.html'
 import feedbackAnalysis from '/pages/feedback-analysis.html'
 import Quiz from './Quiz'
 import { switchTo, setOnMenuLoad } from './switch.js'
+import * as firebase from 'firebase'
+import 'firebase/storage'
+
+let firebaseConfig = {
+  apiKey: "AIzaSyByvmyJHzHc472pLWyKhsu1JCaBm2MLf9Y",
+  authDomain: "vr-classroom-214b2.firebaseapp.com",
+  databaseURL: "https://vr-classroom-214b2.firebaseio.com",
+  projectId: "vr-classroom-214b2",
+  storageBucket: "vr-classroom-214b2.appspot.com",
+  messagingSenderId: "659971797979",
+  appId: "1:659971797979:web:76157965ae2a6f224d6dfe",
+  measurementId: "G-E5VEJG1ZHL"
+}
+
+firebase.initializeApp(firebaseConfig)
+firebase.analytics()
 
 $(document).ready(function() {
     switchTo(landing, false)
@@ -26,27 +42,6 @@ $(document).ready(function() {
       reader.onloadend = function() {
         data.imageDataIn = reader.result
 
-        let xmlhttp = new XMLHttpRequest()
-        let theUrl = '/uploadImage'
-
-        xmlhttp.open('Post', theUrl)
-        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
-        xmlhttp.send(JSON.stringify(data))
-
-        xmlhttp.onload  = function (e) {
-          if (xmlhttp.readyState === 4) {
-            if (xmlhttp.status === 200) {
-              let obj = JSON.parse(xmlhttp.responseText)
-              let result = obj.success
-              console.log(result)
-            }
-            else {
-              console.error(xmlhttp.statusText)
-              console.log(2)
-              alert("Error contacting server.")
-            }
-          }
-        }
       }
 
       reader.readAsDataURL(file)
