@@ -2,11 +2,13 @@ var currentApp = '#app'
 var otherApp = a => a == '#app' ? '#app-tmp' : '#app'
 
 function closeApp() {
+  $('.nameTag').show()
     $(otherApp(currentApp)).fadeOut(250)
     $(currentApp).hide()
 }
 
 function switchTo(name, direction='left') {
+    $('.nameTag').hide()
     $(currentApp).show()
     $(otherApp(currentApp)).hide()
     if(direction) {
