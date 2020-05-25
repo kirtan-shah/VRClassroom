@@ -1,6 +1,6 @@
 window.$ = window.jQuery = require('jquery')
 
-import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, MeshPhysicalMaterial, AmbientLight, DirectionalLight, Box3, FontLoader, TextGeometry, AnimationClip, FileLoader, AnimationMixer, AnimationUtils, Clock, KeyframeTrack, PointLight } from 'three'
+import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, MeshPhysicalMaterial, AmbientLight, DirectionalLight, Box3, FontLoader, TextGeometry, AnimationClip, FileLoader, AnimationMixer, AnimationUtils, Clock, KeyframeTrack, PointLight, Raycaster, Vector2, Frustum, Matrix4 } from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
@@ -15,8 +15,12 @@ import Student from '/js/Student.js'
 import StudentUI from './StudentUI'
 import { closeApp } from './switch.js'
 
+let container
+
 let scene
 let mixer
+
+let frustum = new Frustum()
 
 let clock = new Clock();
 
@@ -111,9 +115,6 @@ function createSocketListeners() {
           otherStudents[socketId].geometry.position.z = location.z
           otherStudents[socketId].geometry.rotation.y = theta
 
-          otherStudents[socketId].textGeometry.position.x = location.x
-          otherStudents[socketId].textGeometry.position.z = location.z
-
           if(state == 'Sitting' && otherStudents[socketId].state != 'Sitting') {
             otherStudents[socketId].sittingAnimation.play()
             otherStudents[socketId].walkingAnimation.stop()
@@ -161,29 +162,23 @@ function createSocketListeners() {
               idle.play()
             }
 
-            fontLoader.load( 'models/helvetiker_regular.typeface.json', function ( font ) {
-              let textMaterial = new MeshBasicMaterial ({color: 0xffffff})
-              let textGeometry = new TextGeometry(name, {font: font, size: 1, height: 1, curveSegments: 12} )
-              let textMesh = new Mesh(textGeometry, textMaterial)
-              textMesh.scale.set(1, 1, 0.1)
+            let nameTag = document.createElement('div')
+            nameTag.style.position = 'absolute'
+            nameTag.style.backgroundColor = 'black'
+            nameTag.style.color = 'white'
+            nameTag.innerHTML = name.toString()
+            nameTag.style.top = 0 + 'px'
+            nameTag.style.left = 0 + 'px'
+            nameTag.style.zIndex = "1"
 
-              let box = new Box3().setFromObject( textMesh )
+            otherStudents[socketId] = {name: name, geometry: model, nameTag: nameTag, location: location, walkingAnimation: walking, idleAnimation: idle, sittingAnimation: sitting, state: state}
 
-              otherStudents[socketId] = {name: name, geometry: model, textGeometry: textMesh, location: location, walkingAnimation: walking, idleAnimation: idle, sittingAnimation: sitting, state: state}
+            otherStudents[socketId].geometry.position.x = location.x
+            otherStudents[socketId].geometry.position.z = location.z
+            otherStudents[socketId].geometry.rotation.y = theta
 
-              otherStudents[socketId].geometry.position.x = location.x
-              otherStudents[socketId].geometry.position.z = location.z
-              otherStudents[socketId].geometry.rotation.y = theta
-
-              otherStudents[socketId].textGeometry.position.y = student.height + 1.3
-              otherStudents[socketId].textGeometry.position.x = location.x
-              otherStudents[socketId].textGeometry.position.z = location.z
-
-              scene.add(otherStudents[socketId].geometry)
-              scene.add(otherStudents[socketId].textGeometry)
-            })
-
-
+            scene.add(otherStudents[socketId].geometry)
+            document.body.appendChild(otherStudents[socketId].nameTag)
           },
           undefined,
           function(error) {
@@ -206,7 +201,7 @@ function createSocketListeners() {
 }
 
 function init() {
-  let container = document.getElementById('canvas-parent')
+  container = document.getElementById('canvas-parent')
 
   container.appendChild(student.renderer.domElement)
 
@@ -252,8 +247,32 @@ function animate() {
 
   for (var socketId in otherStudents) {
     if (otherStudents.hasOwnProperty(socketId)) {
-      if(otherStudents[socketId].textGeometry != undefined) {
-        otherStudents[socketId].textGeometry.lookAt(student.controls.getObject().position)
+      if(otherStudents[socketId].location != undefined) {
+        student.camera.updateMatrix()
+        student.camera.updateMatrixWorld()
+
+        frustum.setFromProjectionMatrix(new Matrix4().multiplyMatrices(student.camera.projectionMatrix, student.camera.matrixWorldInverse))
+
+        let pos = new Vector3(otherStudents[socketId].location.x, student.height, otherStudents[socketId].location.z)
+
+        if (frustum.containsPoint(pos)) {
+          otherStudents[socketId].nameTag.innerHTML = otherStudents[socketId].name
+        }
+        else {
+          otherStudents[socketId].nameTag.innerHTML = ''
+        }
+
+        const tempV = new Vector3()
+        const canvas = student.renderer.domElement
+
+        // otherStudents[socketId].geometry.updateWorldMatrix(true, false)
+        otherStudents[socketId].geometry.getWorldPosition(tempV)
+        tempV.project(student.camera)
+
+        const x = (tempV.x *  .5 + .5) * canvas.clientWidth
+        const y = (tempV.y * -.5 + .5) * canvas.clientHeight
+
+        otherStudents[socketId].nameTag.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`
       }
     }
   }
@@ -283,17 +302,12 @@ function animate() {
 }
 
 function drawMap() {
-  // add grid on xz axis
-  // let gridXZ = new GridHelper(2000, 50)
-  // scene.add(gridXZ)
-
   colladaLoader.load( '/models/s.dae', function ( object ) {
     let classroom = object.scene
     classroom.traverse(child => {
       if(child.material) {
         if(child.material instanceof Array) {
           child.material = child.material.map(m =>
-            //clearcoatRough: 0.1,
             new MeshPhysicalMaterial( { map:  m.map, clearcoat: 0.2, color: m.color || 0xffffff } )
           )
         }
