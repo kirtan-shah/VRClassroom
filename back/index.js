@@ -2,7 +2,9 @@ const express = require('express')
 const nocache = require('nocache')
 const path = require('path')
 const http = require('http')
-var cors = require('cors')
+const cors = require('cors')
+const admin = require('firebase-admin')
+
 let app = express()
 let server = http.Server(app)
 let io = require('socket.io')(server)
@@ -15,6 +17,13 @@ app.use(cors())
 let rooms = {  }
 const Tone = require('./Tone')
 let tone = new Tone()
+
+let serviceAccount = require('./vr-classroom-214b2-firebase-adminsdk-ear0m-9532b6513d.json')
+
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount),
+	databaseURL: 'https://vr-classroom-214b2.firebaseio.com'
+})
 
 io.on('connection', function(socket) {
 	console.log(socket.id + ' connected')
