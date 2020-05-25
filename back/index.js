@@ -101,6 +101,11 @@ io.on('connection', function(socket) {
 		socket.emit('students', rooms[socket.room].students)
 	})
 
+	socket.on('openWhiteboard', function() {
+		if(socket.isTeacher)
+			socket.broadcast.to(socket.room).emit('openWhiteboard')
+	})
+
 	socket.on('disconnect', function() {
 		io.emit('disconnect', socket.id)
 		console.log(socket.id + ' disconnected')

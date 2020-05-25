@@ -52,8 +52,8 @@ $(document).ready(function() {
         openDash()
 
         setOnMenuLoad(function() {
-            $('.title').click(openDash)
-            $('.menu-dash').click(openDash)
+            $('.title').click(() => openDash(false))
+            $('.menu-dash').click(() => openDash(false))
             $('.menu-whiteboard').click(newWhiteboard)
             $('.menu-quiz').click(newLiveQuiz)
             $('.menu-feedback').click(newSmartFeedback)
@@ -66,11 +66,12 @@ $(document).ready(function() {
     })
 })
 
-function openDash() {
-    switchTo(dashboard, 'down')
+function openDash(direction='down') {
+    switchTo(dashboard, direction)
 }
 function newWhiteboard() {
     switchTo(whiteboard, false)
+    window.globalSocket.emit('openWhiteboard')
 }
 function newLiveQuiz() {
     switchTo(liveQuiz, false)
