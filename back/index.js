@@ -21,7 +21,8 @@ io.on('connection', function(socket) {
 		socket.room = room
 		socket.isTeacher = isTeacher
 		socket.name = name
-		rooms[room] = { quizzes: {} , feedbacks: {} }
+		if(!rooms[room]) rooms[room] = { quizzes: {} , feedbacks: {}, students: [] }
+		rooms[room].students.push(name)
 		console.log(socket.id + ' joined ' + room)
 	})
 
@@ -54,6 +55,10 @@ io.on('connection', function(socket) {
 	})
 	socket.on('requestFeedbacks', function() {
 		socket.emit('feedbacks', rooms[socket.room].feedbacks)
+	})
+
+	socket.on('requestStudents', function() {
+		socket.emit('students', rooms[socket.room].students)
 	})
 
 	socket.on('disconnect', function() {
