@@ -191,6 +191,7 @@
         }
     }
     .quiz-score {
+        * { border: none; background: transparent; }
         .name { font-size: 1.5rem !important; }
         .score { font-size: 1rem !important;  }
     }
