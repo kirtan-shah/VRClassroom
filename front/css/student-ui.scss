@@ -4,3 +4,17 @@
     @include button-theme(#28a745, white);
     font-size: 1rem !important;
 }
+
+.score {
+    font-size: 2em;
+}
+
+#create-feedback, #feedback-form {
+    padding: 1rem;
+}
+
+#send-feedback-form, #send-feedback {
+    @include button-theme(#6610f2, white);
+    font-size: 1rem !important;
+    margin-left: 1rem;
+}

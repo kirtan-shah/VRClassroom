@@ -291,14 +291,6 @@ function animate() {
     }
   }
 
-  if(student.availableSeat != 'none') {
-    $('#interaction-prompt').show()
-    $('#interaction-prompt').html('Click to Sit')
-  }
-  else {
-    $('#interaction-prompt').hide()
-  }
-
 }
 
 function drawMap() {
