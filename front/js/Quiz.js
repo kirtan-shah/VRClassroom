@@ -50,7 +50,7 @@ export default class Quiz {
             $('#add-question').text('Confirm Edit')
         })
         $('#send-quiz').click(function() {
-            self.socket.emit('quiz', self.questions)
+            self.socket.emit('quiz', self.questions, new Date())
         })
     }
 
@@ -94,7 +94,7 @@ export default class Quiz {
             `
         })
         str += `</div>
-            <button id='send-quiz'>Send Quiz</button>
+            <button id='send-quiz'>Send Quiz to Students</button>
         `
         return str
     }

@@ -74,13 +74,7 @@ function startEnvironment() {
 }
 
 function createSeats() {
-  // Row 1
-  seats['seat 1'] = {x: 24, z: -44.5}
-  seats['seat 2'] = {x: 23.5, z: -37.5}
-  seats['seat 3'] = {x: 23, z: -27}
-  seats['seat 4'] = {x: 23, z: -20.8}
-  seats['seat 5'] = {x: 23.3, z: -15.5}
-
+  seats['seat1'] = {x: 24, z: -44.5}
 
 }
 
@@ -256,20 +250,12 @@ function animate() {
     }
   }
 
-  if(student.availableSeat != 'none') {
-    $('#interaction-prompt').show()
-    $('#interaction-prompt').html('Click to Sit')
-  }
-  else {
-    $('#interaction-prompt').hide()
-  }
-
 }
 
 function drawMap() {
   // add grid on xz axis
-  // let gridXZ = new GridHelper(2000, 50)
-  // scene.add(gridXZ)
+  let gridXZ = new GridHelper(2000, 50)
+  scene.add(gridXZ)
 
   colladaLoader.load( '/models/s.dae', function ( object ) {
     let classroom = object.scene
