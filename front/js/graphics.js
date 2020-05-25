@@ -267,6 +267,7 @@ function animate() {
 
         // otherStudents[socketId].geometry.updateWorldMatrix(true, false)
         otherStudents[socketId].geometry.getWorldPosition(tempV)
+        tempV.y = student.height+1
         tempV.project(student.camera)
 
         const x = (tempV.x *  .5 + .5) * canvas.clientWidth
