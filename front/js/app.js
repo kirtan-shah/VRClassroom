@@ -18,8 +18,6 @@ $(document).ready(function() {
     $('#room-id').show()
 
     $('#dash-button').click(() => {
-        openDash()
-
         setOnMenuLoad(function() {
             $('.title').click(() => openDash(false))
             $('.menu-dash').click(() => openDash(false))
@@ -29,6 +27,8 @@ $(document).ready(function() {
             $('.menu-feedback-analysis').click(onFeedbackInfo)
             $('.menu-scores').click(onQuizAnalysis)
         })
+        openDash()
+        
         $('#new-whiteboard').click(newWhiteboard)
         $('#new-live-quiz').click(newLiveQuiz)
         $('#new-smart-feedback').click(newSmartFeedback)
