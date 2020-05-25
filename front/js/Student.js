@@ -64,7 +64,7 @@ export default class Student {
         student.seat = student.availableSeat
       }
       else {
-        student.controls.getObject().position.z -= 3
+        student.controls.getObject().position.z -= 2
         student.seat = 'none'
       }
     }
@@ -128,7 +128,6 @@ export default class Student {
   }
 
   updateMovement() {
-    //console.log(this.controls.getObject().position)
     if (this.controls.isLocked === true) {
       if(this.moveForward == true)
         this.direction.z = -1.0
@@ -160,9 +159,6 @@ export default class Student {
         this.controls.getObject().position.y += (this.velocity.y)
 
         let pos = this.controls.getObject().position
-
-        console.log(pos)
-
         let minX = 2
         let maxX = 35
         let minZ = -53

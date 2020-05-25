@@ -12,7 +12,6 @@ import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockCont
 import CapsuleGeometry from '/js/CapsuleGeometry.js'
 
 import Student from '/js/Student.js'
-import StudentUI from './StudentUI';
 
 let scene
 let mixer
@@ -30,7 +29,6 @@ let fontLoader = new FontLoader()
 
 let student
 let otherStudents = {}
-let studentUI
 let seats = {}
 
 $('#landingPage').ready(function() {
@@ -55,8 +53,6 @@ $('#landingPage').ready(function() {
       }
       else {
         student = new Student(name, code, false)
-        window.globalSocket = student.socket
-        studentUI = new StudentUI(student.socket)
         $('#room-id').html('Room Code: ' + code)
         startEnvironment()
         $('#app').hide()
@@ -80,7 +76,26 @@ function createSeats() {
   seats['seat 4'] = {x: 23, z: -20.8}
   seats['seat 5'] = {x: 23.3, z: -15.5}
 
+  // Row 2
+  seats['seat 6'] = {x: 16, z: -44.5}
+  seats['seat 7'] = {x: 16.5, z: -37.5}
+  seats['seat 8'] = {x: 16, z: -28}
+  seats['seat 9'] = {x: 15.5, z: -20.8}
+  seats['seat 10'] = {x: 15.8, z: -15.5}
 
+  // Row 3
+  seats['seat 11'] = {x: 10, z: -44.5}
+  seats['seat 12'] = {x: 9.5, z: -37.5}
+  seats['seat 13'] = {x: 9, z: -28}
+  seats['seat 14'] = {x: 8.5, z: -21.8}
+  seats['seat 15'] = {x: 8.8, z: -15.5}
+
+  // Row 4
+  seats['seat 16'] = {x: 3, z: -45}
+  seats['seat 17'] = {x: 3, z: -37.5}
+  seats['seat 18'] = {x: 3, z: -28.4}
+
+  seats['seat 19'] = {x: 2.8, z: -16}
 }
 
 function createSocketListeners() {
