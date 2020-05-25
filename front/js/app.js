@@ -25,11 +25,12 @@ $(document).ready(function() {
         openDash()
 
         setOnMenuLoad(function() {
-            $('#menu-dash').click(openDash)
-            $('#menu-whiteboard').click(newWhiteboard)
-            $('#menu-quiz').click(newLiveQuiz)
-            $('#menu-feedback').click(newSmartFeedback)
-            $('#menu-feedback-analysis').click(onFeedbackInfo)
+            $('.title').click(openDash)
+            $('.menu-dash').click(openDash)
+            $('.menu-whiteboard').click(newWhiteboard)
+            $('.menu-quiz').click(newLiveQuiz)
+            $('.menu-feedback').click(newSmartFeedback)
+            $('.menu-feedback-analysis').click(onFeedbackInfo)
         })
         $('#new-whiteboard').click(newWhiteboard)
         $('#new-live-quiz').click(newLiveQuiz)

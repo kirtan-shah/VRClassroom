@@ -23,7 +23,7 @@ function switchTo(name, direction='left') {
     else {
         $(currentApp).html(name)
     }
-    $('.menu').ready(menuLoad)
+    menuLoad()
     currentApp = otherApp(currentApp)
     $('.close-icon').click(closeApp)
 }

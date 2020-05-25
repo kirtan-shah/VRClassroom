@@ -21,33 +21,34 @@
     width: 15%;
     height: 100%;
     font-weight: bold;
-    font-size: 1.5em;
+    font-size: 2rem;
     font-family: 'Open Sans';
     .title {
-        padding: .5em;
+        padding-left: .25rem;
+        padding-top: .5rem;
     }
     .logo {
-        width: 1.5em;
-        height: 1.5em;
-        margin-right: .5em;
+        width: 3rem;
+        height: 3rem;
+        margin-right: .25rem;
     }
     .menu-content {
-        margin-top: 2em;
+        margin-top: 2rem;
     }
     .menu-section {
-        margin-bottom: 1em;
-        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
         .section-title {
             color: gray;
-            font-size: 1rem;
-            margin-bottom: .25em;
-            margin-left: 1em;
+            font-size: 1.2rem;
+            margin-bottom: .25rem;
+            margin-left: 1rem;
         }
         table {
             width: 100%;
             td {
-                font-size: 1rem;
-                padding: .5em;
+                font-size: 1.2rem;
+                padding: .5rem;
             }
             tr {
                 background: $accent-color;
@@ -227,4 +228,9 @@
             }
         }
     }
+}
+
+.whiteboard {
+    width: 85vw;
+    height: 40vw;
 }
