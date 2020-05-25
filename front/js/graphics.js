@@ -34,6 +34,7 @@ let gltfLoader = new GLTFLoader()
 let fontLoader = new FontLoader()
 
 let student
+let studentUI
 let otherStudents = {}
 let seats = {}
 
@@ -65,6 +66,8 @@ $('#landingPage').ready(function() {
         }
         else {
           student = new Student(name, code, false)
+          window.globalSocket = student.socket
+          studentUI = new StudentUI(student.socket)
           $('#dash-button').hide()
           $('#room-id').html('Room Code: ' + code)
           startEnvironment()

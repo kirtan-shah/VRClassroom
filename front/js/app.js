@@ -24,6 +24,7 @@ $(document).ready(function() {
         $('#new-smart-feedback').click(function() {
             switchTo(smartFeedback, false)
             $('#send-feedback-form').click(function() {
+                console.log("clicked")
                 let q = $('#feedback-question-input').val()
                 window.globalSocket.emit('smartFeedback', q, new Date())
             })
