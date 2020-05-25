@@ -14,9 +14,8 @@ let port = process.env.PORT || 8080
 
 app.use('/', express.static(path.join(__dirname, '/public')))
 app.use(nocache())
-app.use(cors())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json({limit: '10mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}))
 
 let rooms = {  }
 const Tone = require('./Tone')
@@ -28,10 +27,28 @@ admin.initializeApp({
 	storageBucket: 'gs://vr-classroom-214b2.appspot.com'
 })
 
-app.post('/uploadImage', function(req, res){
-	let imageData = req.body.imageDataIn
+let bucket = admin.storage().bucket()
 
-	console.log(imageData)
+app.post('/uploadImage', function(req, res){
+	// let base64EncodedImageString = req.body.imageDataIn
+
+	// Google function accepts request containing base64 string
+	const { base64Img } = req.body.imageDataIn
+
+	// Bucket reference
+	const file = bucket.file(`test/image.jpeg`);
+
+	// file.save uses createWriteStream
+	file.save(base64Img, {
+		metadata: {
+			contentType: 'image/jpeg',
+		},
+	}, err => {
+		if (err) {
+			res.send({ err });
+		}
+		res.send({ msg: 'image uploaded' });
+	});
 
 	let response = { success: true }
 

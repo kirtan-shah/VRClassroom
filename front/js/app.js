@@ -19,34 +19,37 @@ $(document).ready(function() {
     $('#profileImage').on('change', function(){
       alert('handle image upload code to be written')
 
-
       let data = {}
+      let file = $('#profileImage')[0].files[0]
+      let reader  = new FileReader()
 
-      data.imageDataIn = 'hello'
+      reader.onloadend = function() {
+        data.imageDataIn = reader.result
 
-      let xmlhttp = new XMLHttpRequest()
-      let theUrl = '/uploadImage'
+        let xmlhttp = new XMLHttpRequest()
+        let theUrl = '/uploadImage'
 
-      xmlhttp.open('Post', theUrl)
-      xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
-      xmlhttp.send(JSON.stringify(data))
+        xmlhttp.open('Post', theUrl)
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+        xmlhttp.send(JSON.stringify(data))
 
-      xmlhttp.onload  = function (e) {
-        if (xmlhttp.readyState === 4) {
-          if (xmlhttp.status === 200) {
-            let obj = JSON.parse(xmlhttp.responseText)
-            let result = obj.success
-            console.log(result)
-          }
-          else {
-            console.error(xmlhttp.statusText)
-            console.log(2)
-            alert("Error contacting server.")
+        xmlhttp.onload  = function (e) {
+          if (xmlhttp.readyState === 4) {
+            if (xmlhttp.status === 200) {
+              let obj = JSON.parse(xmlhttp.responseText)
+              let result = obj.success
+              console.log(result)
+            }
+            else {
+              console.error(xmlhttp.statusText)
+              console.log(2)
+              alert("Error contacting server.")
+            }
           }
         }
       }
 
-
+      reader.readAsDataURL(file)
     })
 
 
