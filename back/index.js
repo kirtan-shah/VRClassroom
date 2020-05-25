@@ -33,7 +33,7 @@ io.on('connection', function(socket) {
 		socket.isTeacher = isTeacher
 		socket.name = name
 		if(!rooms[room]) rooms[room] = { quizzes: {} , feedbacks: {}, students: [] }
-		rooms[room].students.push(name)
+		if(!isTeacher) rooms[room].students.push(name)
 		console.log(socket.id + ' joined ' + room)
 	})
 

@@ -14,6 +14,7 @@ export default class StudentUI {
         let self = this
         socket.on('quiz', (questions, date) => { 
             switchTo('<div id="quiz-client" class="dashboard">' + liveQuizClient + '</div>', 'up')
+            $('.menu-content').hide()
             self.questionIndex = 0
             self.numCorrect = 0
             self.questions = questions
@@ -22,6 +23,7 @@ export default class StudentUI {
         })
         socket.on('smartFeedback', (q, date) => {
             switchTo(feedbackForm, 'up')
+            $('.menu-content').hide()
             $('#feedback-question').text(q)
             $('#send-feedback').click(function() {
                 $('#send-feedback').hide()

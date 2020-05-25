@@ -8,6 +8,7 @@ import liveQuiz from '/pages/live-quiz.html'
 import smartFeedback from '/pages/smart-feedback.html'
 import feedbackAnalysis from '/pages/feedback-analysis.html'
 import quizAnalysis from '/pages/quiz-analysis.html'
+import students from '/pages/students.html'
 import Quiz from './Quiz'
 import { switchTo, setOnMenuLoad } from './switch.js'
 
@@ -26,6 +27,7 @@ $(document).ready(function() {
             $('.menu-feedback').click(newSmartFeedback)
             $('.menu-feedback-analysis').click(onFeedbackInfo)
             $('.menu-scores').click(onQuizAnalysis)
+            $('.menu-students').click(onStudents)
         })
         openDash()
         
@@ -34,6 +36,7 @@ $(document).ready(function() {
         $('#new-smart-feedback').click(newSmartFeedback)
         $('#feedback-info').click(onFeedbackInfo)
         $('#quizzes-info').click(onQuizAnalysis)
+        $('#students-info').click(onStudents)
     })
 })
 
@@ -89,5 +92,14 @@ function onQuizAnalysis() {
             }
         }
         $('#scores-info').html(str)
+    })
+}
+function onStudents() {
+    switchTo(students, false)
+    window.globalSocket.emit('requestStudents')
+    window.globalSocket.once('students', students => {
+        let str = '<div class="students-title">Students</div>'
+        students.forEach(name => str += `<div>${name}</div>`)
+        $('#students-info').html(str)
     })
 }

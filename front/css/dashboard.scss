@@ -159,7 +159,7 @@
     div {
         background: white;
         width: 83vw;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         border-radius: 0;
         border-bottom: 1px solid lightgray;
     }
@@ -175,7 +175,7 @@
 }
 #constructive, #destructive {
     border-radius: 10px 10px 0 0;
-    font-size: 2rem !important;
+    font-size: 1.5rem !important;
     &:hover {
         background: inherit;
         color: black !important;
@@ -188,6 +188,7 @@
         margin-top: 1vw;
         background: rgb(207, 255, 207);
         width: 83vw / 2;
+        border-radius: 10px 10px 0 0;
         &:hover {
             background: inherit;
             background: rgb(207, 255, 207) !important;
@@ -207,11 +208,23 @@
                 //color: white;
             }
         }
-        .name { font-size: 1.5rem !important; text-align: left; }
-        .score { font-size: 1.5rem !important; text-align: center; }
+        .name { font-size: 1.2rem !important; text-align: left; }
+        .score { font-size: 1.2rem !important; text-align: center; }
     }
 }
 
+#students-info {
+    @extend #smart-info;
+    .students-title {
+        border-radius: 10px 10px 0 0;
+        font-size: 1,5rem !important;
+        background: #adf4ff;
+        &:hover {
+            background: inherit;
+            color: black !important;
+        }
+    }
+}
 
 #create-question {
     padding: 1rem;
