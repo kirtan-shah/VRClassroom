@@ -76,6 +76,7 @@ function openDash(direction='down') {
 }
 function newWhiteboard() {
     switchTo(whiteboard, false)
+    window.globalSocket.emit('openWhiteboard')
 }
 function newLiveQuiz() {
     switchTo(liveQuiz, false)
