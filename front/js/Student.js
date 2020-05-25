@@ -64,6 +64,7 @@ export default class Student {
         student.seat = student.availableSeat
       }
       else {
+        student.controls.getObject().position.z -= 3
         student.seat = 'none'
       }
     }
