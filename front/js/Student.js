@@ -24,7 +24,7 @@ export default class Student {
     this.velocity = new Vector3()
     this.direction = new Vector3()
 
-    this.camera = new PerspectiveCamera (45, window.innerWidth/window.innerHeight, 1, 10000)
+    this.camera = new PerspectiveCamera (75, window.innerWidth/window.innerHeight, 0.1, 10000)
     this.camera.position.y = this.height
     this.camera.position.x = this.startX
     this.camera.position.z = this.startZ
@@ -35,6 +35,11 @@ export default class Student {
     this.renderer.setClearColor(0xEAEEF1, 1)
 
     this.controls = new PointerLockControls(this.camera, this.renderer.domElement)
+
+    this.state = 'Idle'
+    this.seat = 'none'
+    this.availableSeat = 'none'
+    this.theta = 0
 
     this.socket = IO()
     this.socketRoom = socketRoom
@@ -48,8 +53,22 @@ export default class Student {
       console.log('student connected!')
     })
 
+    this.initMouseClick(this)
     this.initKeyDown(this)
     this.initKeyUp(this)
+  }
+
+  initMouseClick(student) {
+    let onMousePress = function() {
+      if(student.seat== 'none') {
+        student.seat = student.availableSeat
+      }
+      else {
+        student.controls.getObject().position.z -= 3
+        student.seat = 'none'
+      }
+    }
+    document.addEventListener("click", onMousePress)
   }
 
   initKeyDown(student) {
@@ -129,49 +148,64 @@ export default class Student {
         this.direction.x = 0
       }
 
-      this.direction.normalize() // this ensures consistent movements in all directions
+      if(this.seat == 'none') {
+        this.direction.normalize() // this ensures consistent movements in all directions
 
-      this.velocity.z = this.direction.z * this.movementSpeed
-      this.velocity.x = this.direction.x * this.movementSpeed
-      this.velocity.y = this.direction.y * this.movementSpeed
+        this.velocity.z = this.direction.z * this.movementSpeed
+        this.velocity.x = this.direction.x * this.movementSpeed
+        this.velocity.y = this.direction.y * this.movementSpeed
 
-      this.controls.moveRight(- this.velocity.x)
-      this.controls.moveForward(- this.velocity.z)
-      this.controls.getObject().position.y += (this.velocity.y)
+        this.controls.moveRight(- this.velocity.x)
+        this.controls.moveForward(- this.velocity.z)
+        this.controls.getObject().position.y += (this.velocity.y)
 
-      let pos = this.controls.getObject().position
+        let pos = this.controls.getObject().position
 
-      let minX = 2
-      let maxX = 35
-      let minZ = -53
-      let maxZ = -2
+        console.log(pos)
 
-      if(pos.x > maxX) {
-        this.controls.getObject().position.x = maxX
-      }
-      if(pos.x < minX) {
-        this.controls.getObject().position.x = minX
-      }
-      if(pos.z > maxZ) {
-        this.controls.getObject().position.z = maxZ
-      }
-      if(pos.z < minZ) {
-        this.controls.getObject().position.z = minZ
+        let minX = 2
+        let maxX = 35
+        let minZ = -53
+        let maxZ = -2
+
+        if(pos.x > maxX) {
+          this.controls.getObject().position.x = maxX
+        }
+        if(pos.x < minX) {
+          this.controls.getObject().position.x = minX
+        }
+        if(pos.z > maxZ) {
+          this.controls.getObject().position.z = maxZ
+        }
+        if(pos.z < minZ) {
+          this.controls.getObject().position.z = minZ
+        }
       }
     }
 
-    let camVector
     let wpVector = new Vector3();
     this.camera.getWorldDirection(wpVector)
-    camVector = wpVector
-    let theta = Math.atan2(camVector.x,camVector.z)
+    let camVector = wpVector
+    this.theta = Math.atan2(camVector.x, camVector.z)
 
-    let isWalking = false
-    if(this.direction.length() > 0) {
-      isWalking = true
+    if(this.seat != 'none') {
+      this.camera.position.y = this.height*0.75
+
+      this.state = 'Sitting'
+      this.theta = Math.PI*1/2
+    }
+    else {
+      this.camera.position.y = this.height
+
+      if(this.direction.length() > 0) {
+        this.state = 'Walking'
+      }
+      else {
+        this.state = 'Idle'
+      }
     }
 
-    this.socket.emit('updateMovement', this.name, this.controls.getObject().position, theta, isWalking, this.socketRoom)
+    this.socket.emit('updateMovement', this.name, this.controls.getObject().position, this.theta, this.state, this.socketRoom)
   }
 
 }
