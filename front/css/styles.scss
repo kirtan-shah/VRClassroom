@@ -29,6 +29,17 @@ canvas {
   border: 1px solid $primary-color;
 }
 
+#interaction-prompt {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -0%);
+  padding: 0.25em;
+  font-size: 1.5rem;
+  border: 1px solid $primary-color;
+  display: none;
+}
+
 #app, #app-tmp {
   display: block;
   width: 100%;
