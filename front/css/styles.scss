@@ -18,6 +18,7 @@ canvas {
   top: 0.5em;
   left: 0.5em;
   @include button-theme($primary-color, $secondary-color);
+  display: none;
 }
 
 #room-id {
@@ -27,6 +28,7 @@ canvas {
   padding: 0.25em;
   font-size: 1.5rem;
   border: 1px solid $primary-color;
+  display: none;
 }
 
 #interaction-prompt {
@@ -37,12 +39,12 @@ canvas {
   padding: 0.25em;
   font-size: 1.5rem;
   border: 1px solid $primary-color;
-  display: none;
   border-radius: 5px;
   background: black;
   color: white;
   opacity: 0.3;
   animation: blinking 2s infinite;
+  display: none;
 }
 @keyframes blinking{
   0% { opacity: 0.3 }
