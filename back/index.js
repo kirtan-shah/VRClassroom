@@ -3,7 +3,9 @@ const nocache = require('nocache')
 const path = require('path')
 const http = require('http')
 const cors = require('cors')
+const bodyParser = require('body-parser')
 const admin = require('firebase-admin')
+const serviceAccount = require('./vr-classroom-214b2-firebase-adminsdk-ear0m-9532b6513d.json')
 
 let app = express()
 let server = http.Server(app)
@@ -13,16 +15,26 @@ let port = process.env.PORT || 8080
 app.use('/', express.static(path.join(__dirname, '/public')))
 app.use(nocache())
 app.use(cors())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 let rooms = {  }
 const Tone = require('./Tone')
 let tone = new Tone()
 
-let serviceAccount = require('./vr-classroom-214b2-firebase-adminsdk-ear0m-9532b6513d.json')
-
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
 	databaseURL: 'https://vr-classroom-214b2.firebaseio.com'
+})
+
+app.post('/uploadImage', function(req, res){
+	let imageData = req.body.imageDataIn
+
+	console.log(imageData)
+
+	let response = { success: true }
+
+	res.send(response)
 })
 
 io.on('connection', function(socket) {
