@@ -27,9 +27,9 @@ let gltfLoader = new GLTFLoader();
 
 let fontLoader = new FontLoader()
 
-let texture = new TextureLoader().load( 'models/classroom_texture.png' )
 let student
 let otherStudents = {}
+let seats = {}
 
 $('#landingPage').ready(function() {
   $('#createRoomBtn').click(function() {
@@ -62,9 +62,15 @@ $('#landingPage').ready(function() {
 })
 
 function startEnvironment() {
+  createSeats()
   createSocketListeners()
   init()
   animate()
+}
+
+function createSeats() {
+  seats['seat1'] = {x: 24, z: -44.5}
+
 }
 
 function createSocketListeners() {
@@ -221,6 +227,20 @@ function animate() {
     if (otherStudents.hasOwnProperty(socketId)) {
       if(otherStudents[socketId].textGeometry != undefined) {
         otherStudents[socketId].textGeometry.lookAt(student.controls.getObject().position)
+      }
+    }
+  }
+
+  student.availableSeat = 'none'
+
+  for (var seatName in seats) {
+    if(student.seat == seatName) {
+      student.controls.getObject().position.x=seats[seatName].x
+      student.controls.getObject().position.z=seats[seatName].z
+    }
+    else if (seats.hasOwnProperty(seatName)) {
+      if(Math.abs(student.controls.getObject().position.x-seats[seatName].x)<2 && Math.abs(student.controls.getObject().position.z-seats[seatName].z)<2) {
+        student.availableSeat = seatName
       }
     }
   }

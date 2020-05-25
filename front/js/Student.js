@@ -37,8 +37,8 @@ export default class Student {
     this.controls = new PointerLockControls(this.camera, this.renderer.domElement)
 
     this.state = 'Idle'
-    this.seat = -1
-    this.availableSeat = -1
+    this.seat = 'none'
+    this.availableSeat = 'none'
     this.theta = 0
 
     this.socket = IO()
@@ -60,7 +60,12 @@ export default class Student {
 
   initMouseClick(student) {
     let onMousePress = function() {
-      student.seat = student.availableSeat
+      if(student.seat== 'none') {
+        student.seat = student.availableSeat
+      }
+      else {
+        student.seat = 'none'
+      }
     }
     document.addEventListener("click", onMousePress)
   }
@@ -142,7 +147,7 @@ export default class Student {
         this.direction.x = 0
       }
 
-      if(this.seat == -1) {
+      if(this.seat == 'none') {
         this.direction.normalize() // this ensures consistent movements in all directions
 
         this.velocity.z = this.direction.z * this.movementSpeed
@@ -154,6 +159,8 @@ export default class Student {
         this.controls.getObject().position.y += (this.velocity.y)
 
         let pos = this.controls.getObject().position
+
+        console.log(pos)
 
         let minX = 2
         let maxX = 35
@@ -180,7 +187,7 @@ export default class Student {
     let camVector = wpVector
     this.theta = Math.atan2(camVector.x, camVector.z)
 
-    if(this.seat != -1) {
+    if(this.seat != 'none') {
       this.camera.position.y = this.height*0.75
 
       this.state = 'Sitting'
