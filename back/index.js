@@ -24,7 +24,8 @@ let tone = new Tone()
 
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
-	databaseURL: 'https://vr-classroom-214b2.firebaseio.com'
+	databaseURL: 'https://vr-classroom-214b2.firebaseio.com',
+	storageBucket: 'gs://vr-classroom-214b2.appspot.com'
 })
 
 app.post('/uploadImage', function(req, res){
