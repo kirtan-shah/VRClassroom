@@ -13,7 +13,9 @@ import CapsuleGeometry from '/js/CapsuleGeometry.js'
 
 import Student from '/js/Student.js'
 import StudentUI from './StudentUI'
-import { closeApp } from './switch.js'
+import { closeApp, switchTo, setOnMenuLoad } from './switch.js'
+import selection2 from '/pages/selection2.html'
+
 
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
@@ -32,6 +34,7 @@ let firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 let storageRef = firebase.storage().ref()
 let uploadedPhotoURL = 'https://firebasestorage.googleapis.com/v0/b/vr-classroom-214b2.appspot.com/o/defaultUser.png?alt=media&token=a15c1187-da96-4a93-8963-5ae30be92aa9'
+let isTeacher = false
 
 let container
 
@@ -57,9 +60,23 @@ let otherStudents = {}
 let seats = {}
 
 $('#landingPage').ready(function() {
-  $('#profileImage').on('change', function(){
-    alert('handle image upload code to be written')
+  $('#teacherBtn').click(function() {
+    isTeacher = true
+    console.log('teacher selected')
+    addUploadListener()
+    addNextButton()
+  })
 
+  $('#studentBtn').click(function() {
+    isTeacher = false
+    console.log('student selected')
+    addUploadListener()
+    addNextButton()
+  })
+})
+
+function addUploadListener() {
+  $('#profileImage').on('change', function(){
     let data = {}
     let file = $('#profileImage')[0].files[0]
     let uploadTask = storageRef.child('images/'+Math.round((new Date()).getTime())+'.jpg').put(file)
@@ -77,44 +94,43 @@ $('#landingPage').ready(function() {
       }
     },
     function(error) {
-      alert('error')
+      alert('error uploading image')
     },
     function() {
       uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-        console.log('File available at', downloadURL)
+        $('#imagePreview').attr('src', downloadURL)
         uploadedPhotoURL = downloadURL
       })
     })
   })
+}
 
-  $('#createRoomBtn').click(function() {
+function addNextButton() {
+  $('#nextBtn').click(function() {
     let name = $('#nameInput').val().trim()
-    if(name.length > 0) {
-      let id = genID()
-      student = new Student(name, id, true)
-      student.photoURL = uploadedPhotoURL
-      window.globalSocket = student.socket
-      $('#room-id').html('Room Code: ' + id)
-      $('#room-id').show()
-      $('#dash-button').show()
-      startEnvironment()
-      closeApp()
-    }
-    else {
-      alert('You cannot leave the name field empty!')
-    }
-  })
 
-  $('#joinRoomForm').on('submit', function(e) {
-      e.preventDefault()
-      let name = $('#nameInput').val().trim()
-      if(name.length > 0) {
+    if(name.length > 0) {
+      switchTo(selection2)
+
+      $('#createRoomBtn').click(function() {
+        student = new Student(name, genID(), isTeacher)
+        student.photoURL = uploadedPhotoURL
+        window.globalSocket = student.socket
+        $('#room-id').html('Room Code: ' + id)
+        $('#room-id').show()
+        $('#dash-button').show()
+        startEnvironment()
+        closeApp()
+      })
+
+      $('#joinRoomForm').on('submit', function(e) {
+        e.preventDefault()
         let code = $('#joinRoomInput').val().trim()
         if(code.length == 0) {
           alert('You cannot leave the join code field empty!')
         }
         else {
-          student = new Student(name, code, false)
+          student = new Student(name, code, isTeacher)
           student.photoURL = uploadedPhotoURL
           window.globalSocket = student.socket
           studentUI = new StudentUI(student.socket)
@@ -123,13 +139,14 @@ $('#landingPage').ready(function() {
           startEnvironment()
           closeApp()
         }
-      }
-      else {
-        alert('You cannot leave the name field empty!')
-      }
-  })
+      })
+    }
+    else {
+      alert('You cannot leave the name field empty!')
+    }
 
-})
+  })
+}
 
 function startEnvironment() {
   createSeats()
