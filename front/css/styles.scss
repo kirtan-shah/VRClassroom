@@ -70,7 +70,7 @@ canvas {
 #landingPage {
   width: 100%;
   height: 100%;
-  background-image: url("../img/bg.jpg");
+  background-image: url("/img/bg.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -91,13 +91,12 @@ canvas {
 }
 
 #name-container {
-  margin-top: 3rem;
   width: 100%;
   text-align: center;
 }
 
 #imageUpload-container {
-  margin-top: 2rem;
+  margin-top: 1rem;
   width: 100%;
   text-align: center;
 }
@@ -113,12 +112,13 @@ canvas {
 #imagePreview {
   width: 8rem;
   height: 8rem;
+  margin-bottom: 1rem;
+  margin-top: -1rem;
   border-radius: 1rem;
 }
 
 #createRoom-container {
   display: none;
-  margin-top: 10rem;
   width: 100%;
   text-align: center;
 }
@@ -131,20 +131,23 @@ canvas {
 
 #joinRoom-container {
   display: none;
-  margin-top: 7rem;
   width: 100%;
   text-align: center;
 }
 
 #name-header {
-  font-size: 3rem;
+  font-size: 2.5rem;
   text-align: center;
 }
 
 #nameInput {
   text-align: center !important;
   caret-color: black;
-  font-size: 3rem;
+  font-size: 2.5rem;
+  margin-top: -1rem;
+}
+.pure-material-textfield-standard {
+  font-family: $font !important;
 }
 
 #joinRoomInput {
@@ -167,6 +170,15 @@ canvas {
 #studentBtn {
   @include button-theme(#28a745, white);
 }
+.mybtn {
+  @include button-theme(#6610f2, white);
+}
+#nextBtn {
+  @include button-theme(#28a745, white);
+  padding: 1rem !important;
+  border-radius: 2em !important;
+  min-width: 15rem;
+}
 #teacherOrStudent {
   margin-top: 4.25rem;
   font-size: 2rem;
@@ -176,13 +188,18 @@ canvas {
   position:relative;
   display:inline-block;
   border-radius:8px;
-  border:#ebebeb solid 1px;
+  border:1px solid #7f7f7f;
   width:250px;
   padding: 4px 6px 4px 8px;
   font: normal 14px Myriad Pro, Verdana, Geneva, sans-serif;
   color: #7f7f7f;
-  margin-top: 2px;
-  background:white
+  margin-top: 1em;
+  transition: 200ms all;
+  background:transparent;
+  &:hover {
+    background: #222222;
+    color: white;
+  }
 }
 
 .choose_file input[type="file"] {

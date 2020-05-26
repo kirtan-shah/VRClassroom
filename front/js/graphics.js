@@ -113,7 +113,7 @@ function addNextButton() {
     let name = $('#nameInput').val().trim()
 
     if(name.length > 0) {
-      switchTo(selection2)
+      switchTo(selection2, false)
 
       if(isTeacher) {
         $('#createRoom-container').show()
