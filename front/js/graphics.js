@@ -203,10 +203,18 @@ function createSocketListeners() {
         if(otherStudents[socketId].location != undefined) {
           otherStudents[socketId].location = location
 
-          let maskDistance = 0.75
+          let maskDistance = 0.8
 
           if(state == 'Walking') {
             maskDistance = 1
+          }
+
+          if(state == 'Sitting') {
+            otherStudents[socketId].planeGeometry.position.y = student.height*0.75+0.1
+            maskDistance = 1
+          }
+          else {
+            otherStudents[socketId].planeGeometry.position.y = student.height+0.1
           }
 
           otherStudents[socketId].geometry.position.x = location.x - Math.sin(theta)*maskDistance
@@ -254,7 +262,7 @@ function createSocketListeners() {
             let walking = mixer.clipAction(walkingAnim)
             let sitting = mixer.clipAction(sittingAnim)
 
-            let maskDistance = 0.75
+            let maskDistance = 0.8
 
             if(state == 'Sitting') {
               sitting.play()
@@ -282,6 +290,11 @@ function createSocketListeners() {
             otherStudents[socketId].geometry.position.x = location.x
             otherStudents[socketId].geometry.position.z = location.z
             otherStudents[socketId].geometry.rotation.y = theta
+
+            if(state == 'Sitting') {
+              otherStudents[socketId].planeGeometry.position.y = student.height*0.75+0.1
+              maskDistance = 1
+            }
 
             otherStudents[socketId].planeGeometry.position.x = location.x - Math.sin(theta)*maskDistance
             otherStudents[socketId].planeGeometry.position.z = location.z - Math.cos(theta)*maskDistance
