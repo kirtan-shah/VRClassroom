@@ -76,15 +76,22 @@ canvas {
   background-position: center;
 }
 
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
 #title {
-  margin-top: 6rem;
-  font-size: 8rem;
+  font-size: 5.5rem;
   text-align: center;
   width: 100%;
 }
 
 #name-container {
-  margin-top: 6rem;
+  margin-top: 3rem;
   width: 100%;
   text-align: center;
 }
@@ -146,14 +153,23 @@ canvas {
   font-size: 2rem;
 }
 
-#teacherBtn {
-  margin-top: 4rem;
-  margin-right: 2rem;
+#teacherBtn, #studentBtn {
+  margin-top: 3rem;
+  margin-left: 3rem;
+  margin-right: 3rem;
+  font-size: 2rem !important;
+  border-radius: 2em !important;
+  background: transparent;
 }
-
+#teacherBtn {
+  @include button-theme(#6610f2, white);
+}
 #studentBtn {
-  margin-top: 4rem;
-  margin-left: 2rem;
+  @include button-theme(#28a745, white);
+}
+#teacherOrStudent {
+  margin-top: 4.25rem;
+  font-size: 2rem;
 }
 
 .choose_file {
@@ -207,13 +223,6 @@ canvas {
     font-family: "Montserrat", sans-serif;
     font-size: 3rem;
     font-weight: semibold;
-  }
-}
-
-@media only screen and (max-width: 1000px) {
-  .button {
-    width: 10rem !important;
-    height: 6rem !important;
   }
 }
 
