@@ -2,6 +2,7 @@ window.$ = window.jQuery = require('jquery')
 require('/lib/velocity.min.js')
 
 import landing from '/pages/landing.html'
+import selection from '/pages/selection.html'
 import dashboard from '/pages/dashboard.html'
 import whiteboard from '/pages/whiteboard.html'
 import liveQuiz from '/pages/live-quiz.html'
@@ -14,6 +15,14 @@ import { switchTo, setOnMenuLoad } from './switch.js'
 
 $(document).ready(function() {
     switchTo(landing, false)
+
+    $('#teacherBtn').click(function() {
+      switchTo(selection, false)
+    })
+
+    $('#studentBtn').click(function() {
+      switchTo(selection, false)
+    })
 
     $('#dash-button').show()
     $('#room-id').show()

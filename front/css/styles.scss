@@ -89,6 +89,26 @@ canvas {
   text-align: center;
 }
 
+#imageUpload-container {
+  margin-top: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
+#imagePreview-container {
+  margin-top: 2rem;
+}
+
+#imageUpload-prompt {
+  font-size: 2rem;
+}
+
+#imagePreview {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 1rem;
+}
+
 #createRoom-container {
   margin-top: 10rem;
   width: 100%;
@@ -122,6 +142,40 @@ canvas {
   text-align: center !important;
   caret-color: black;
   font-size: 2rem;
+}
+
+#teacherBtn {
+  margin-top: 4rem;
+  margin-right: 2rem;
+}
+
+#studentBtn {
+  margin-top: 4rem;
+  margin-left: 2rem;
+}
+
+#nextBtn {
+
+}
+
+.choose_file {
+  position:relative;
+  display:inline-block;
+  border-radius:8px;
+  border:#ebebeb solid 1px;
+  width:250px;
+  padding: 4px 6px 4px 8px;
+  font: normal 14px Myriad Pro, Verdana, Geneva, sans-serif;
+  color: #7f7f7f;
+  margin-top: 2px;
+  background:white
+}
+
+.choose_file input[type="file"] {
+  -webkit-appearance:none;
+  position:absolute;
+  top:0; left:0;
+  opacity:0;
 }
 
 .nameTag {
