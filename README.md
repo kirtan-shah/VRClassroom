@@ -1,6 +1,6 @@
-# vr-classroom
+# SmartRoom
 
-Empty project.
+(descriptoin)
 
 ## Building and running on localhost
 
