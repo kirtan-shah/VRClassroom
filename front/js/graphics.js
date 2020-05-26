@@ -77,13 +77,14 @@ $('#landingPage').ready(function() {
 
 function addUploadListener() {
   $('#profileImage').on('change', function(){
+    $('.loading').show()
+
     let data = {}
     let file = $('#profileImage')[0].files[0]
     let uploadTask = storageRef.child('images/'+Math.round((new Date()).getTime())+'.jpg').put(file)
 
     uploadTask.on('state_changed', function(snapshot){
       let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-      console.log('Upload is ' + progress + '% done')
       switch (snapshot.state) {
         case firebase.storage.TaskState.PAUSED: // or 'paused'
         console.log('Upload is paused')
@@ -94,10 +95,12 @@ function addUploadListener() {
       }
     },
     function(error) {
+      $('.loading').hide()
       alert('error uploading image')
     },
     function() {
       uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        $('.loading').hide()
         $('#imagePreview').attr('src', downloadURL)
         uploadedPhotoURL = downloadURL
       })
