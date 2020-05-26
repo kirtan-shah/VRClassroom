@@ -110,6 +110,7 @@ canvas {
 }
 
 #createRoom-container {
+  display: none;
   margin-top: 10rem;
   width: 100%;
   text-align: center;
@@ -122,6 +123,7 @@ canvas {
 }
 
 #joinRoom-container {
+  display: none;
   margin-top: 7rem;
   width: 100%;
   text-align: center;
@@ -152,10 +154,6 @@ canvas {
 #studentBtn {
   margin-top: 4rem;
   margin-left: 2rem;
-}
-
-#nextBtn {
-
 }
 
 .choose_file {

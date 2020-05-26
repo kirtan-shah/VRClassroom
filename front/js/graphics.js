@@ -112,6 +112,13 @@ function addNextButton() {
     if(name.length > 0) {
       switchTo(selection2)
 
+      if(isTeacher) {
+        $('#createRoom-container').show()
+      }
+      else {
+        $('#joinRoom-container').show()
+      }
+
       $('#createRoomBtn').click(function() {
         let id = genID()
         student = new Student(name, id, isTeacher)
