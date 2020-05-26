@@ -51,6 +51,35 @@ $(document).ready(function() {
 
 function openDash(direction='down') {
     switchTo(dashboard, direction)
+    let socket = window.globalSocket
+    socket.emit('requestQuizzes')
+    socket.emit('requestStudents')
+    socket.emit('requestFeedbacks')
+    socket.once('quizzes', quizzes => {
+        let sum = 0
+        let n = 0
+        for(let date of Object.keys(quizzes)) {
+            for(let { score, name } of quizzes[date]) {
+                sum += score
+                n++
+            }
+        }
+        let avg = n == 0 ? '--' : (Math.round(sum*1000) / 10 + '%')
+        $('#quizzes-info .number').text(avg)
+    })
+    socket.once('feedbacks', feedbacks => {
+        let sum = 0
+        let n = 0
+        for(let fs of Object.values(feedbacks)) {
+            for(let { analysis } of fs) {
+                sum += analysis.positive
+                n++
+            }
+        }
+        let avg = n == 0 ? '--' : (Math.round(sum*1000) / 10 + '%')
+        $('#feedback-info .number').text(avg)
+    })
+    socket.once('students', students => $('#student-info .number').text(students.length))
 }
 function newWhiteboard() {
     switchTo(whiteboard, false)
