@@ -168,32 +168,32 @@ function startEnvironment() {
 
 function createSeats() {
   // Row 1
-  seats['seat 1'] = {x: 24, z: -44.5}
-  seats['seat 2'] = {x: 23.5, z: -37.5}
-  seats['seat 3'] = {x: 23, z: -27}
-  seats['seat 4'] = {x: 23, z: -20.8}
-  seats['seat 5'] = {x: 23.3, z: -15.5}
+  seats['seat 1'] = {x: 24.5, z: -44.5}
+  seats['seat 2'] = {x: 24, z: -37.5}
+  seats['seat 3'] = {x: 23.5, z: -27}
+  seats['seat 4'] = {x: 23.5, z: -20.8}
+  seats['seat 5'] = {x: 23.8, z: -15.5}
 
   // Row 2
-  seats['seat 6'] = {x: 16, z: -44.5}
-  seats['seat 7'] = {x: 16.5, z: -37.5}
-  seats['seat 8'] = {x: 16, z: -28}
-  seats['seat 9'] = {x: 15.5, z: -20.8}
-  seats['seat 10'] = {x: 15.8, z: -15.5}
+  seats['seat 6'] = {x: 16.5, z: -44.5}
+  seats['seat 7'] = {x: 17, z: -37.5}
+  seats['seat 8'] = {x: 16.5, z: -28}
+  seats['seat 9'] = {x: 16, z: -20.8}
+  seats['seat 10'] = {x: 16.3, z: -15.5}
 
   // Row 3
-  seats['seat 11'] = {x: 10, z: -44.5}
-  seats['seat 12'] = {x: 9.5, z: -37.5}
-  seats['seat 13'] = {x: 9, z: -28}
-  seats['seat 14'] = {x: 8.5, z: -21.8}
-  seats['seat 15'] = {x: 8.8, z: -15.5}
+  seats['seat 11'] = {x: 10.5, z: -44.5}
+  seats['seat 12'] = {x: 10, z: -37.5}
+  seats['seat 13'] = {x: 9.5, z: -28}
+  seats['seat 14'] = {x: 9, z: -21.8}
+  seats['seat 15'] = {x: 9.3, z: -15.5}
 
   // Row 4
-  seats['seat 16'] = {x: 3, z: -45}
-  seats['seat 17'] = {x: 3, z: -37.5}
-  seats['seat 18'] = {x: 3, z: -28.4}
+  seats['seat 16'] = {x: 3.5, z: -45}
+  seats['seat 17'] = {x: 3.5, z: -37.5}
+  seats['seat 18'] = {x: 3.5, z: -28.4}
 
-  seats['seat 19'] = {x: 2.8, z: -16}
+  seats['seat 19'] = {x: 3.3, z: -16}
 }
 
 function createSocketListeners() {

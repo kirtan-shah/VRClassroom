@@ -164,6 +164,8 @@ export default class Student {
         let minZ = -53
         let maxZ = -2
 
+        // console.log(pos)
+
         if(pos.x > maxX) {
           this.controls.getObject().position.x = maxX
         }
