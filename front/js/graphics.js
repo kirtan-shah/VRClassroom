@@ -113,7 +113,8 @@ function addNextButton() {
       switchTo(selection2)
 
       $('#createRoomBtn').click(function() {
-        student = new Student(name, genID(), isTeacher)
+        let id = genID()
+        student = new Student(name, id, isTeacher)
         student.photoURL = uploadedPhotoURL
         window.globalSocket = student.socket
         $('#room-id').html('Room Code: ' + id)
