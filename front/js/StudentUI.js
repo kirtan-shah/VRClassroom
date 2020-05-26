@@ -2,6 +2,7 @@ import { switchTo, closeApp } from './switch.js'
 
 import liveQuizClient from '/pages/live-quiz-client.html'
 import feedbackForm from '/pages/feedback-form.html'
+import whiteboard from '/pages/whiteboard.html'
 
 export default class StudentUI {
 
@@ -13,6 +14,7 @@ export default class StudentUI {
         let self = this
         socket.on('quiz', (questions, date) => { 
             switchTo('<div id="quiz-client" class="dashboard">' + liveQuizClient + '</div>', 'up')
+            $('.menu-content').hide()
             self.questionIndex = 0
             self.numCorrect = 0
             self.questions = questions
@@ -21,6 +23,7 @@ export default class StudentUI {
         })
         socket.on('smartFeedback', (q, date) => {
             switchTo(feedbackForm, 'up')
+            $('.menu-content').hide()
             $('#feedback-question').text(q)
             $('#send-feedback').click(function() {
                 $('#send-feedback').hide()
@@ -28,6 +31,14 @@ export default class StudentUI {
                 $('#feedback-form').html('<div class="correct" style="font-size: 2rem;">Feedback submitted!</div>')
                 setTimeout(closeApp, 3000)
             })
+        })
+        socket.on('openWhiteboard', () => {
+            switchTo(whiteboard, 'up')
+            $('iframe.whiteboard').attr('src', "https://socketiowhiteboard.herokuapp.com/readonly.html")
+            $('.menu-content').hide()
+            // let iframe = $('.whiteboard')[0]
+            // iframe.contentWindow.document.getElementsByClassName('colors')[0].style.display = 'none'
+            // iframe.style.pointerEvents = 'none'
         })
     }
 
@@ -56,7 +67,8 @@ export default class StudentUI {
         $('#quiz-mc').hide()
         $('#quiz-frq').hide()
         $('#quiz-client label').hide()
-        $('#quiz-client .content').append(`<div class="score">You scored <span class="correct">${this.numCorrect}</span> out of <span class="correct">${this.questions.length}</span>.</div>`)
+        $('#next-question-button').hide()
+        $('#quiz-client .content').append(`<div class="you-score">You scored <span class="correct">${this.numCorrect}</span> out of <span class="correct">${this.questions.length}</span>.</div>`)
         this.socket.emit('quizScore', this.numCorrect / this.questions.length, this.date)
         setTimeout(closeApp, 3000)
     }

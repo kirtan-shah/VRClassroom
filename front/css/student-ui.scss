@@ -5,8 +5,9 @@
     font-size: 1rem !important;
 }
 
-.score {
+.you-score {
     font-size: 2rem;
+    margin-left: 1rem;
 }
 
 #create-feedback, #feedback-form {
@@ -15,6 +16,6 @@
 
 #send-feedback-form, #send-feedback {
     @include button-theme(#6610f2, white);
-    font-size: 1.5rem !important;
+    font-size: 1rem !important;
     margin-left: 1rem;
 }

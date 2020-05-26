@@ -8,6 +8,8 @@ import whiteboard from '/pages/whiteboard.html'
 import liveQuiz from '/pages/live-quiz.html'
 import smartFeedback from '/pages/smart-feedback.html'
 import feedbackAnalysis from '/pages/feedback-analysis.html'
+import quizAnalysis from '/pages/quiz-analysis.html'
+import students from '/pages/students.html'
 import Quiz from './Quiz'
 import { switchTo, setOnMenuLoad } from './switch.js'
 
@@ -26,8 +28,6 @@ $(document).ready(function() {
     $('#room-id').show()
 
     $('#dash-button').click(() => {
-        openDash()
-
         setOnMenuLoad(function() {
             $('.title').click(() => openDash(false))
             $('.menu-dash').click(() => openDash(false))
@@ -35,11 +35,17 @@ $(document).ready(function() {
             $('.menu-quiz').click(newLiveQuiz)
             $('.menu-feedback').click(newSmartFeedback)
             $('.menu-feedback-analysis').click(onFeedbackInfo)
+            $('.menu-scores').click(onQuizAnalysis)
+            $('.menu-students').click(onStudents)
         })
+        openDash()
+        
         $('#new-whiteboard').click(newWhiteboard)
         $('#new-live-quiz').click(newLiveQuiz)
         $('#new-smart-feedback').click(newSmartFeedback)
         $('#feedback-info').click(onFeedbackInfo)
+        $('#quizzes-info').click(onQuizAnalysis)
+        $('#students-info').click(onStudents)
     })
 })
 
@@ -78,5 +84,31 @@ function onFeedbackInfo() {
             }
         }
         $('#smart-info').html(c + d)
+    })
+}
+function onQuizAnalysis() {
+    switchTo(quizAnalysis, false)
+    window.globalSocket.emit('requestQuizzes')
+    window.globalSocket.once('quizzes', quizzes => {
+        let str = ''
+        for(let date of Object.keys(quizzes)) {
+            str += `<div class="quiz-date">${date}</div>`
+            for(let { score, name } of quizzes[date]) {
+                str += `<div class="quiz-score">
+                        <span class="name"><b>${name}</b></span>
+                        <span class="score">${Math.round(score*10000) / 100}%</span>
+                    </div>`
+            }
+        }
+        $('#scores-info').html(str)
+    })
+}
+function onStudents() {
+    switchTo(students, false)
+    window.globalSocket.emit('requestStudents')
+    window.globalSocket.once('students', students => {
+        let str = '<div class="students-title">Students</div>'
+        students.forEach(name => str += `<div>${name}</div>`)
+        $('#students-info').html(str)
     })
 }
