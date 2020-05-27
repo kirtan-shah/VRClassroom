@@ -1,6 +1,6 @@
 # SmartRoom
 
-[smartroomvr.herokuapp.com]
+[smartroomvr.herokuapp.com][smartroomvr.herokuapp.com]
 
 ## Building and running on localhost
 
