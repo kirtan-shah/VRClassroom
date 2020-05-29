@@ -28,11 +28,11 @@ io.on('connection', function(socket) {
 	io.emit('studentConnected')
 
 	socket.on('joinRoom', function(room, isTeacher, name) {
-		if(isTeacher && (rooms[room] != undefined && rooms[room].sockets.length>0)) {
+		if(isTeacher && (rooms[room] && rooms[room].sockets.length > 0)) {
 			console.log('room already exists - room already has a teacher')
 			io.emit('teacherErr', socket.id)
 		}
-		else if (!isTeacher && (rooms[room] == undefined || rooms[room].sockets.length==0)) {
+		else if (!isTeacher && (!rooms[room] || rooms[room].sockets.length == 0)) {
 			console.log('room does not exist - students cannot create rooms')
 			io.emit('studentJoinErr', socket.id)
 		}
@@ -47,6 +47,7 @@ io.on('connection', function(socket) {
 			if(!isTeacher) {
 				rooms[room].students.push(name)
 			}
+			socket.emit('initPeers', rooms[room].sockets)
 			rooms[room].sockets.push(socket.id)
 			console.log(socket.id + ' joined ' + room)
 		}
