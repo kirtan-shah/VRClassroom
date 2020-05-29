@@ -197,6 +197,33 @@ function createSeats() {
 }
 
 function createSocketListeners() {
+
+  student.socket.on('studentJoinErr', function(socketIdIn) {
+    console.log('student join error')
+
+    if(student.socketId == socketIdIn) {
+      if(confirm('This room does not exist. Please double check the room code entered.')) {
+        window.location.reload()
+      }
+      else {
+        window.location.reload()
+      }
+    }
+  })
+
+  student.socket.on('teacherErr', function(socketIdIn) {
+    console.log('teacher create room error')
+
+    if(student.socketId == socketIdIn) {
+      if(confirm('A classroom with this name already exists.')) {
+        window.location.reload()
+      }
+      else {
+        window.location.reload()
+      }
+    }
+  })
+
   student.socket.on('teacherLeft', function() {
     if(confirm('The teacher has left the room')) {
       window.location.reload()

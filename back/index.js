@@ -30,9 +30,11 @@ io.on('connection', function(socket) {
 	socket.on('joinRoom', function(room, isTeacher, name) {
 		if(isTeacher && (rooms[room] != undefined && rooms[room].sockets.length>0)) {
 			console.log('room already exists - room already has a teacher')
+			io.emit('teacherErr', socket.id)
 		}
 		else if (!isTeacher && (rooms[room] == undefined || rooms[room].sockets.length==0)) {
 			console.log('room does not exist - students cannot create rooms')
+			io.emit('studentJoinErr', socket.id)
 		}
 		else {
 			socket.join(room)
