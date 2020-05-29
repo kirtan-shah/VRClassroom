@@ -1,6 +1,6 @@
 window.$ = window.jQuery = require('jquery')
 
-import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, MeshPhysicalMaterial, AmbientLight, DirectionalLight, Box3, FontLoader, TextGeometry, AnimationClip, FileLoader, AnimationMixer, AnimationUtils, Clock, KeyframeTrack, PointLight, Raycaster, Vector2, Frustum, Matrix4, PlaneGeometry, DoubleSide, ImageUtils, MeshLambertMaterial } from 'three'
+import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, MeshPhysicalMaterial, AmbientLight, DirectionalLight, Box3, FontLoader, TextGeometry, AnimationClip, FileLoader, AnimationMixer, AnimationUtils, Clock, KeyframeTrack, PointLight, Raycaster, Vector2, Frustum, Matrix4, PlaneGeometry, DoubleSide, ImageUtils, MeshLambertMaterial, CanvasTexture } from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
