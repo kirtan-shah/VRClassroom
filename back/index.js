@@ -121,6 +121,9 @@ io.on('connection', function(socket) {
 
 	socket.on('disconnect', function() {
 		io.emit('disconnect', socket.id)
+		if(socket.isTeacher) {
+			socket.broadcast.to(socket.room).emit('teacherLeft')
+		}
 		if(rooms[socket.room] != undefined) {
 			rooms[socket.room].sockets.pop(socket.id)
 		}

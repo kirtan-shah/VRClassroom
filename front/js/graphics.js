@@ -197,6 +197,14 @@ function createSeats() {
 }
 
 function createSocketListeners() {
+  student.socket.on('teacherLeft', function() {
+    if(confirm('The teacher has left the room')) {
+      window.location.reload()
+    }
+    else {
+      window.location.reload()
+    }
+  })
   student.socket.on('movement', function(name, location, theta, state, photoURL, socketId) {
     if(student.socketId != socketId) {
       if(otherStudents.hasOwnProperty(socketId)) {
