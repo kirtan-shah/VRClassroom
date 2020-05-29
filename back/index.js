@@ -28,13 +28,28 @@ io.on('connection', function(socket) {
 	io.emit('studentConnected')
 
 	socket.on('joinRoom', function(room, isTeacher, name) {
-		socket.join(room)
-		socket.room = room
-		socket.isTeacher = isTeacher
-		socket.name = name
-		if(!rooms[room]) rooms[room] = { quizzes: {} , feedbacks: {}, students: [] }
-		if(!isTeacher) rooms[room].students.push(name)
-		console.log(socket.id + ' joined ' + room)
+		if(isTeacher && (rooms[room] != undefined && rooms[room].sockets.length>0)) {
+			console.log('room already exists - room already has a teacher')
+			io.emit('teacherErr', socket.id)
+		}
+		else if (!isTeacher && (rooms[room] == undefined || rooms[room].sockets.length==0)) {
+			console.log('room does not exist - students cannot create rooms')
+			io.emit('studentJoinErr', socket.id)
+		}
+		else {
+			socket.join(room)
+			socket.room = room
+			socket.isTeacher = isTeacher
+			socket.name = name
+			if(!rooms[room]) {
+				rooms[room] = { quizzes: {} , feedbacks: {}, students: [], sockets: [] }
+			}
+			if(!isTeacher) {
+				rooms[room].students.push(name)
+			}
+			rooms[room].sockets.push(socket.id)
+			console.log(socket.id + ' joined ' + room)
+		}
 	})
 
 	socket.on('updateMovement', function(name, location, theta, state, photoURL, room){
@@ -108,6 +123,12 @@ io.on('connection', function(socket) {
 
 	socket.on('disconnect', function() {
 		io.emit('disconnect', socket.id)
+		if(socket.isTeacher) {
+			socket.broadcast.to(socket.room).emit('teacherLeft')
+		}
+		if(rooms[socket.room] != undefined) {
+			rooms[socket.room].sockets.pop(socket.id)
+		}
 		console.log(socket.id + ' disconnected')
 	})
 })
