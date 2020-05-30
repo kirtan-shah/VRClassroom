@@ -86,7 +86,7 @@ $('#landingPage').ready(function() {
 
 function openWhiteboard() {
   console.log("CALLBACK FUNCTION REEEE")
-  document.body.append( '<iframe src="https://socketiowhiteboard.herokuapp.com/" scrolling="no" id="whiteboard" frameborder="0"></iframe>' )
+  document.body.append( '<iframe src="https://socketiowhiteboard.herokuapp.com/readonly.html" scrolling="no" id="whiteboard" frameborder="0"></iframe>' )
   let iframe = document.getElementById('whiteboard')
   let canvas = iframe.contentWindow.document.querySelector('.whiteboard')
   ctx = canvas.getContext('2d')
