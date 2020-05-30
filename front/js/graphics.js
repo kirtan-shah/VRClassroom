@@ -85,7 +85,12 @@ $('#landingPage').ready(function() {
 })
 
 function openWhiteboard() {
-  
+  console.log("CALLBACK FUNCTION REEEE")
+  document.body.append( '<iframe src="https://socketiowhiteboard.herokuapp.com/readonly.html" scrolling="no" id="whiteboard" frameborder="0"></iframe>' )
+  let iframe = document.getElementById('whiteboard')
+  let canvas = iframe.contentWindow.document.querySelector('.whiteboard')
+  ctx = canvas.getContext('2d')
+  whiteboardFound = true
 }
 
 function connectExisting(peers) {
@@ -122,7 +127,7 @@ function loadVideo() {
       video.srcObject = stream
       document.getElementById('imagePreview-container').appendChild(video)
     })
-    .catch(err => { 
+    .catch(err => {
       console.error("Error initializing video")
       loadVideo()
     })
@@ -472,6 +477,7 @@ function animate() {
     ctx.fillStyle = '#FF0000'
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     const texture = new CanvasTexture(ctx.canvas)
+    texture.needsUpdate = true
 
     const material = new MeshBasicMaterial({
       map: texture,
