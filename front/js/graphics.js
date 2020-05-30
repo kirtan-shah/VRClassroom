@@ -42,7 +42,7 @@ let container
 let scene
 let mixer
 
-let ctx
+let whiteboardCanvas
 let whiteboardFound = false
 let whiteboardCreated = false
 
@@ -85,12 +85,16 @@ $('#landingPage').ready(function() {
 })
 
 function openWhiteboard() {
-  console.log("CALLBACK FUNCTION REEEE")
-  document.body.append( '<iframe src="https://socketiowhiteboard.herokuapp.com/readonly.html" scrolling="no" id="whiteboard" frameborder="0"></iframe>' )
-  let iframe = document.getElementById('whiteboard')
-  let canvas = iframe.contentWindow.document.querySelector('.whiteboard')
-  ctx = canvas.getContext('2d')
-  whiteboardFound = true
+  if(!whiteboardFound) {
+    $(document.body).append( '<iframe src="http://socketiowhiteboard.herokuapp.com/" scrolling="no" id="whiteboard" frameborder="0"></iframe>' )
+
+    document.getElementById('whiteboard').onload = function() {
+      console.log(this)
+      whiteboardCanvas = this.contentWindow.document.querySelector('.whiteboard')
+      console.log(whiteboardCanvas)
+      whiteboardFound = true
+    }
+  }
 }
 
 function connectExisting(peers) {
@@ -465,16 +469,18 @@ function animate() {
 
   if(!whiteboardCreated && whiteboardFound) {
     console.log('CREATING CUBE WITH CANVAS TEXTURE!')
-    ctx.canvas.width = 256
-    ctx.canvas.height = 256
-    ctx.fillStyle = '#FF0000'
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-    const texture = new CanvasTexture(ctx.canvas)
+
+    const texture = new CanvasTexture(whiteboardCanvas)
     texture.needsUpdate = true
 
     const material = new MeshBasicMaterial({
       map: texture,
     })
+
+    const boxWidth = 2
+    const boxHeight = 2
+    const boxDepth = 2
+    const geometry = new BoxGeometry(boxWidth, boxHeight, boxDepth)
 
     const cube = new Mesh(geometry, material)
     scene.add(cube)
