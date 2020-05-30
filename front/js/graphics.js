@@ -42,10 +42,6 @@ let container
 let scene
 let mixer
 
-let whiteboardCanvas
-let whiteboardFound = false
-let whiteboardCreated = false
-
 let frustum = new Frustum()
 
 let clock = new Clock()
@@ -84,19 +80,6 @@ $('#landingPage').ready(function() {
     addNextButton()
   })
 })
-
-function openWhiteboard() {
-  if(!whiteboardFound) {
-    $(document.body).append( '<iframe src="http://socketiowhiteboard.herokuapp.com/" scrolling="no" id="whiteboard" frameborder="0"></iframe>' )
-
-    document.getElementById('whiteboard').onload = function() {
-      console.log(this)
-      whiteboardCanvas = this.contentWindow.document.querySelector('.whiteboard')
-      console.log(whiteboardCanvas)
-      whiteboardFound = true
-    }
-  }
-}
 
 function connectExisting(peers) {
   // console.log('existing', peers)
@@ -507,27 +490,6 @@ function animate() {
     }
   }
 
-  if(!whiteboardCreated && whiteboardFound) {
-    console.log('CREATING CUBE WITH CANVAS TEXTURE!')
-
-    const texture = new CanvasTexture(whiteboardCanvas)
-    texture.needsUpdate = true
-
-    const material = new MeshBasicMaterial({
-      map: texture,
-    })
-
-    const boxWidth = 2
-    const boxHeight = 2
-    const boxDepth = 2
-    const geometry = new BoxGeometry(boxWidth, boxHeight, boxDepth)
-
-    const cube = new Mesh(geometry, material)
-    scene.add(cube)
-
-    whiteboardCreated = true
-  }
-
   scene.traverse((node) => {
     if (node.isMesh) node.material.transparent = false
   })
@@ -603,22 +565,22 @@ function drawMap() {
   let gridXZ = new GridHelper(50, 50)
   scene.add(gridXZ)
 
-  // colladaLoader.load( '/models/s.dae', function ( object ) {
-  //   let classroom = object.scene
-  //   classroom.traverse(child => {
-  //     if(child.material) {
-  //       if(child.material instanceof Array) {
-  //         child.material = child.material.map(m =>
-  //           new MeshPhysicalMaterial( { map:  m.map, clearcoat: 0.2, color: m.color || 0xffffff } )
-  //         )
-  //       }
-  //       else child.material = new MeshPhysicalMaterial( { map: child.material.map, clearcoat: 0.2, color: child.material.color || 0xffffff } )
-  //     }
+  colladaLoader.load( '/models/s.dae', function ( object ) {
+    let classroom = object.scene
+    classroom.traverse(child => {
+      if(child.material) {
+        if(child.material instanceof Array) {
+          child.material = child.material.map(m =>
+            new MeshPhysicalMaterial( { map:  m.map, clearcoat: 0.2, color: m.color || 0xffffff } )
+          )
+        }
+        else child.material = new MeshPhysicalMaterial( { map: child.material.map, clearcoat: 0.2, color: child.material.color || 0xffffff } )
+      }
 
-  //   })
-  //   classroom.scale.multiplyScalar(4)
-  //   scene.add(classroom)
-  // })
+    })
+    classroom.scale.multiplyScalar(4)
+    scene.add(classroom)
+  })
 }
 
 function genID () {
