@@ -96,7 +96,7 @@ function openWhiteboard() {
 function connectExisting(peers) {
   peers.forEach(id => {
     let conn = peer.connect(id)
-    peer.call(id, window.globalStream)
+    let call = peer.call(id, window.globalStream)
     call.on('stream', stream => peerStreams[id] = stream)
   })
 }
