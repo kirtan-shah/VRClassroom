@@ -104,9 +104,10 @@ function initPeer() {
     console.log("Create peer:", window.globalSocket.id)
     peer = new Peer(window.globalSocket.id, {
       host: 'localhost',
-      port: 9000,
+      port: 80,
       path: '/'
     })
+    // peer = new Peer(window.globalSocket.id)
     peer.on('connection', conn => {
       // console.log("another peer connected")
       conn.on('open', () => {})//console.log("peer connection open"))
@@ -225,7 +226,7 @@ function addNextButton() {
           // student.photoURL = uploadedPhotoURL
           window.globalSocket = student.socket
           initPeer()
-          studentUI = new StudentUI(student.socket, openWhiteboard)
+          studentUI = new StudentUI(student.socket)
           $('#dash-button').hide()
           $('#room-id').html('Room Code: ' + code)
           startEnvironment()
