@@ -42,15 +42,21 @@ io.on('connection', function(socket) {
 			socket.isTeacher = isTeacher
 			socket.name = name
 			if(!rooms[room]) {
-				rooms[room] = { quizzes: {} , feedbacks: {}, students: [], sockets: [] }
+				rooms[room] = { quizzes: {} , feedbacks: {}, students: [], sockets: [], peers: [] }
 			}
 			if(!isTeacher) {
 				rooms[room].students.push(name)
 			}
-			socket.emit('initPeers', rooms[room].sockets)
 			rooms[room].sockets.push(socket.id)
 			console.log(socket.id + ' joined ' + room)
 		}
+	})
+
+	socket.on('connectPeer', () => {
+		let room = socket.room
+		if(!rooms[room]) return
+		socket.emit('initPeers', rooms[room].peers)
+		rooms[room].peers.push(socket.id)
 	})
 
 	socket.on('updateMovement', function(name, location, theta, state, photoURL, room){

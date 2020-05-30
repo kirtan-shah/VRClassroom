@@ -1,6 +1,6 @@
 window.$ = window.jQuery = require('jquery')
 
-import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, MeshPhysicalMaterial, AmbientLight, DirectionalLight, Box3, FontLoader, TextGeometry, AnimationClip, FileLoader, AnimationMixer, AnimationUtils, Clock, KeyframeTrack, PointLight, Raycaster, Vector2, Frustum, Matrix4, PlaneGeometry, DoubleSide, ImageUtils, MeshLambertMaterial, CanvasTexture } from 'three'
+import { Vector3, WebGLRenderer, Scene, PerspectiveCamera, GridHelper, TextureLoader, Mesh, MeshBasicMaterial, BoxGeometry, MeshPhysicalMaterial, AmbientLight, DirectionalLight, Box3, FontLoader, TextGeometry, AnimationClip, FileLoader, AnimationMixer, AnimationUtils, Clock, KeyframeTrack, PointLight, Raycaster, Vector2, Frustum, Matrix4, PlaneGeometry, DoubleSide, ImageUtils, MeshLambertMaterial, CanvasTexture, VideoTexture, RGBFormat, LinearFilter } from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader.js'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
@@ -10,6 +10,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { MtlObjBridge } from 'three/examples/jsm/loaders/obj2/bridge/MtlObjBridge.js'
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
 import CapsuleGeometry from '/js/CapsuleGeometry.js'
+import Peer from 'peerjs'
 
 import Student from '/js/Student.js'
 import StudentUI from './StudentUI'
@@ -17,23 +18,23 @@ import { closeApp, switchTo, setOnMenuLoad } from './switch.js'
 import selection2 from '/pages/selection2.html'
 
 
-import * as firebase from 'firebase/app'
-import 'firebase/storage'
+// import * as firebase from 'firebase/app'
+// import 'firebase/storage'
 
-let firebaseConfig = {
-  apiKey: "AIzaSyByvmyJHzHc472pLWyKhsu1JCaBm2MLf9Y",
-  authDomain: "vr-classroom-214b2.firebaseapp.com",
-  databaseURL: "https://vr-classroom-214b2.firebaseio.com",
-  projectId: "vr-classroom-214b2",
-  storageBucket: "vr-classroom-214b2.appspot.com",
-  messagingSenderId: "659971797979",
-  appId: "1:659971797979:web:76157965ae2a6f224d6dfe",
-  measurementId: "G-E5VEJG1ZHL"
-}
+// let firebaseConfig = {
+//   apiKey: "AIzaSyByvmyJHzHc472pLWyKhsu1JCaBm2MLf9Y",
+//   authDomain: "vr-classroom-214b2.firebaseapp.com",
+//   databaseURL: "https://vr-classroom-214b2.firebaseio.com",
+//   projectId: "vr-classroom-214b2",
+//   storageBucket: "vr-classroom-214b2.appspot.com",
+//   messagingSenderId: "659971797979",
+//   appId: "1:659971797979:web:76157965ae2a6f224d6dfe",
+//   measurementId: "G-E5VEJG1ZHL"
+// }
 
-firebase.initializeApp(firebaseConfig)
-let storageRef = firebase.storage().ref()
-let uploadedPhotoURL = 'https://firebasestorage.googleapis.com/v0/b/vr-classroom-214b2.appspot.com/o/defaultUser.png?alt=media&token=a15c1187-da96-4a93-8963-5ae30be92aa9'
+// firebase.initializeApp(firebaseConfig)
+// let storageRef = firebase.storage().ref()
+// let uploadedPhotoURL = 'https://firebasestorage.googleapis.com/v0/b/vr-classroom-214b2.appspot.com/o/defaultUser.png?alt=media&token=a15c1187-da96-4a93-8963-5ae30be92aa9'
 let isTeacher = false
 
 let container
@@ -58,22 +59,60 @@ let student
 let studentUI
 let otherStudents = {}
 let seats = {}
+let peer
+let peerStreams = {}
 
 $('#landingPage').ready(function() {
   $('#teacherBtn').click(function() {
     isTeacher = true
     console.log('teacher selected')
-    addUploadListener()
+    // addUploadListener()
+    loadVideo()
     addNextButton()
   })
 
   $('#studentBtn').click(function() {
     isTeacher = false
     console.log('student selected')
-    addUploadListener()
+    // addUploadListener()
+    loadVideo()
     addNextButton()
   })
 })
+
+function connectExisting(peers) {
+  peers.forEach(id => {
+    let conn = peer.connect(id)
+    peer.call(id, window.globalStream)
+    call.on('stream', stream => peerStreams[id] = stream)
+  })
+}
+function initPeer() {
+  window.globalSocket.emit('connectPeer')
+  window.globalSocket.once('initPeers', peers => {
+    peer = new Peer(window.globalSocket.id)
+    peer.on('call', call => {
+      call.answer(window.globalStream)
+      call.on('stream', stream => peerStreams[window.globalSocket.id] = stream)
+    })
+    connectExisting(peers)
+  })
+}
+function loadVideo() {
+  navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+    .then(stream => {
+      window.globalStream = stream
+      let video = document.createElement('video')
+      video.id = 'imagePreview'
+      video.autoplay = true
+      video.srcObject = stream
+      document.getElementById('imagePreview-container').appendChild(video)
+    })
+    .catch(err => { 
+      console.error("Error initializing video")
+      loadVideo()
+    })
+}
 
 function addUploadListener() {
   $('#profileImage').on('change', function(){
@@ -125,8 +164,9 @@ function addNextButton() {
       $('#createRoomBtn').click(function() {
         let id = genID()
         student = new Student(name, id, isTeacher)
-        student.photoURL = uploadedPhotoURL
+        // student.photoURL = uploadedPhotoURL
         window.globalSocket = student.socket
+        initPeer()
         $('#room-id').html('Room Code: ' + id)
         $('#room-id').show()
         $('#dash-button').show()
@@ -142,8 +182,9 @@ function addNextButton() {
         }
         else {
           student = new Student(name, code, isTeacher)
-          student.photoURL = uploadedPhotoURL
+          // student.photoURL = uploadedPhotoURL
           window.globalSocket = student.socket
+          initPeer()
           studentUI = new StudentUI(student.socket)
           $('#dash-button').hide()
           $('#room-id').html('Room Code: ' + code)
@@ -315,7 +356,21 @@ function createSocketListeners() {
             nameTag.id = socketId
             nameTag.className = 'nameTag'
 
-            let planeMaterial = new MeshLambertMaterial({ map: textureLoader.load(photoURL), color : 0xffffff, side: DoubleSide })
+            let videoTexture = undefined
+            if(peerStreams[student.socket.id]) {
+              let video = document.createElement('video')
+              video.style.display = 'none'
+              video.autoplay = true
+              video.srcObject = peerStreams[student.socket.id]
+              console.log(peerStreams, student.socket.id, video)
+              document.body.appendChild(video)
+              let videoTexture = new VideoTexture(video)
+              videoTexture.minFilter = LinearFilter
+              videoTexture.magFilter = LinearFilter
+              videoTexture.format = RGBFormat
+            }
+            let planeMaterial = new MeshLambertMaterial({ map: videoTexture, color : 0xffffff, side: DoubleSide })
+            //let planeMaterial = new MeshLambertMaterial({ map: textureLoader.load(photoURL), color : 0xffffff, side: DoubleSide })
             let planeGeometry = new PlaneGeometry( 1, 1, 32 )
             let plane = new Mesh(planeGeometry, planeMaterial)
             scene.add(plane)
