@@ -581,7 +581,7 @@ function drawMap() {
   //       }
   //       else child.material = new MeshPhysicalMaterial( { map: child.material.map, clearcoat: 0.2, color: child.material.color || 0xffffff } )
   //     }
-  
+
   //   })
   //   classroom.scale.multiplyScalar(4)
   //   scene.add(classroom)
