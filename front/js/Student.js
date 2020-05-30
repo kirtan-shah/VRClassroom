@@ -50,7 +50,7 @@ export default class Student {
     })
 
     this.socket.on('studentConnected', () => {
-      console.log('student connected!')
+      //console.log('student connected!')
     })
 
     this.initMouseClick(this)

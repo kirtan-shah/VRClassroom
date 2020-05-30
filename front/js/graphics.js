@@ -10,7 +10,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { MtlObjBridge } from 'three/examples/jsm/loaders/obj2/bridge/MtlObjBridge.js'
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
 import CapsuleGeometry from '/js/CapsuleGeometry.js'
-import Peer from 'peerjs'
+import '/lib/peerjs.min.js'
 
 import Student from '/js/Student.js'
 import StudentUI from './StudentUI'
@@ -65,6 +65,7 @@ let otherStudents = {}
 let seats = {}
 let peer
 let peerStreams = {}
+let planes = {}
 
 $('#landingPage').ready(function() {
   $('#teacherBtn').click(function() {
@@ -98,25 +99,45 @@ function openWhiteboard() {
 }
 
 function connectExisting(peers) {
-  console.log(peers)
+  // console.log('existing', peers)
   peers.forEach(id => {
     let conn = peer.connect(id)
-    console.log(conn, id, conn.on, conn.open)
-    conn.on('open', () => {
-      console.log("calling")
-      let call = peer.call(id, window.globalStream)
-      call.on('stream', stream => peerStreams[id] = stream)
+    // console.log("connected to:", id)
+    conn.on('open', () => {})//console.log('Connection open'))
+    let call = peer.call(id, window.globalStream)
+    // console.log('called', call)
+    call.on('stream', stream => {
+      console.log('onstream', stream)
+      peerStreams[id] = stream
+      if(planes[id] && !planes[id].material.map) {
+        planes[id].material = new MeshBasicMaterial({ map: makeVideoTexture(stream) })
+      }
     })
   })
 }
 function initPeer() {
   window.globalSocket.emit('connectPeer')
   window.globalSocket.once('initPeers', peers => {
-    peer = new Peer(window.globalSocket.id)
+    console.log("Create peer:", window.globalSocket.id)
+    peer = new Peer(window.globalSocket.id, {
+      host: 'localhost',
+      port: 9000,
+      path: '/'
+    })
+    peer.on('connection', conn => {
+      // console.log("another peer connected")
+      conn.on('open', () => {})//console.log("peer connection open"))
+    })
     peer.on('call', call => {
-      console.log("answering")
+      // console.log("call received")
+      call.on('stream', stream => {
+        console.log('onstream', stream)
+        peerStreams[call.peer] = stream
+        if(planes[call.peer] && !planes[call.peer].material.map) {
+          planes[call.peer].material = new MeshBasicMaterial({ map: makeVideoTexture(stream) })
+        }
+      })
       call.answer(window.globalStream)
-      call.on('stream', stream => peerStreams[window.globalSocket.id] = stream)
     })
     connectExisting(peers)
   })
@@ -125,16 +146,29 @@ function loadVideo() {
   navigator.mediaDevices.getUserMedia({ audio: true, video: true })
     .then(stream => {
       window.globalStream = stream
-      let video = document.createElement('video')
-      video.id = 'imagePreview'
-      video.autoplay = true
-      video.srcObject = stream
-      document.getElementById('imagePreview-container').appendChild(video)
+      // let video = document.createElement('video')
+      // video.id = 'imagePreview'
+      // video.autoplay = true
+      // video.srcObject = stream
+      // document.getElementById('imagePreview-container').appendChild(video)
     })
     .catch(err => {
       console.error("Error initializing video")
       loadVideo()
     })
+}
+
+function makeVideoTexture(stream) {
+  let video = document.createElement('video')
+  video.style.display = 'none'
+  video.autoplay = true
+  video.srcObject = stream
+  document.body.appendChild(video)
+  let videoTexture = new VideoTexture(video)
+  videoTexture.minFilter = LinearFilter
+  videoTexture.magFilter = LinearFilter
+  videoTexture.format = RGBFormat
+  return videoTexture
 }
 
 function addUploadListener() {
@@ -381,22 +415,14 @@ function createSocketListeners() {
 
             let videoTexture = undefined
             console.log(peerStreams)
-            if(peerStreams[student.socket.id]) {
-              let video = document.createElement('video')
-              video.style.display = 'none'
-              video.autoplay = true
-              video.srcObject = peerStreams[student.socket.id]
-              console.log(peerStreams, student.socket.id, video)
-              document.body.appendChild(video)
-              let videoTexture = new VideoTexture(video)
-              videoTexture.minFilter = LinearFilter
-              videoTexture.magFilter = LinearFilter
-              videoTexture.format = RGBFormat
+            if(peerStreams[socketId]) {
+              videoTexture = makeVideoTexture(peerStreams[socketId])
             }
-            let planeMaterial = new MeshLambertMaterial({ map: videoTexture, color : 0xffffff, side: DoubleSide })
+            let planeMaterial = videoTexture ? new MeshBasicMaterial({ map: videoTexture }) : new MeshBasicMaterial({ color: 0xff0000 })
             //let planeMaterial = new MeshLambertMaterial({ map: textureLoader.load(photoURL), color : 0xffffff, side: DoubleSide })
             let planeGeometry = new PlaneGeometry( 1, 1, 32 )
             let plane = new Mesh(planeGeometry, planeMaterial)
+            planes[socketId] = plane
             scene.add(plane)
 
             otherStudents[socketId] = {name: name, geometry: model, planeGeometry: plane, nameTag: nameTag, location: location, walkingAnimation: walking, idleAnimation: idle, sittingAnimation: sitting, state: state}
@@ -473,6 +499,13 @@ function animate() {
   requestAnimationFrame(animate)
   student.renderer.render(scene, student.camera)
   student.updateMovement()
+
+  //console.log(planes)
+  for(let plane of Object.values(planes)) {
+    if(plane && plane.material && plane.material.map) {
+      plane.material.map.update()
+    }
+  }
 
   if(!whiteboardCreated && whiteboardFound) {
     console.log('CREATING CUBE WITH CANVAS TEXTURE!')
