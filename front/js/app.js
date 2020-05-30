@@ -64,6 +64,7 @@ function openDash(direction='down') {
                 n++
             }
         }
+        sum /= n
         let avg = n == 0 ? '--' : (Math.round(sum*1000) / 10 + '%')
         $('#quizzes-info .number').text(avg)
     })
@@ -76,6 +77,7 @@ function openDash(direction='down') {
                 n++
             }
         }
+        sum /= n
         let avg = n == 0 ? '--' : (Math.round(sum*1000) / 10 + '%')
         $('#feedback-info .number').text(avg)
     })
