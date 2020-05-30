@@ -98,10 +98,15 @@ function openWhiteboard() {
 }
 
 function connectExisting(peers) {
+  console.log(peers)
   peers.forEach(id => {
     let conn = peer.connect(id)
-    let call = peer.call(id, window.globalStream)
-    call.on('stream', stream => peerStreams[id] = stream)
+    console.log(conn, id, conn.on, conn.open)
+    conn.on('open', () => {
+      console.log("calling")
+      let call = peer.call(id, window.globalStream)
+      call.on('stream', stream => peerStreams[id] = stream)
+    })
   })
 }
 function initPeer() {
@@ -109,6 +114,7 @@ function initPeer() {
   window.globalSocket.once('initPeers', peers => {
     peer = new Peer(window.globalSocket.id)
     peer.on('call', call => {
+      console.log("answering")
       call.answer(window.globalStream)
       call.on('stream', stream => peerStreams[window.globalSocket.id] = stream)
     })
@@ -374,6 +380,7 @@ function createSocketListeners() {
             nameTag.className = 'nameTag'
 
             let videoTexture = undefined
+            console.log(peerStreams)
             if(peerStreams[student.socket.id]) {
               let video = document.createElement('video')
               video.style.display = 'none'
@@ -574,7 +581,7 @@ function drawMap() {
   //       }
   //       else child.material = new MeshPhysicalMaterial( { map: child.material.map, clearcoat: 0.2, color: child.material.color || 0xffffff } )
   //     }
-  //
+  
   //   })
   //   classroom.scale.multiplyScalar(4)
   //   scene.add(classroom)
