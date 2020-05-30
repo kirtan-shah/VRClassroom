@@ -413,6 +413,7 @@ function animate() {
     ctx.fillStyle = '#FF0000'
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     const texture = new CanvasTexture(ctx.canvas)
+    texture.needsUpdate = true
 
     const material = new MeshBasicMaterial({
       map: texture,
