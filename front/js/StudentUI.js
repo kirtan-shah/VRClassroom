@@ -6,7 +6,7 @@ import whiteboard from '/pages/whiteboard.html'
 
 export default class StudentUI {
 
-    constructor(socket) {
+    constructor(socket, openWhiteboard) {
         this.socket = socket
         this.questionIndex = 0
         this.numCorrect = 0
@@ -33,12 +33,10 @@ export default class StudentUI {
             })
         })
         socket.on('openWhiteboard', () => {
-            switchTo(whiteboard, 'up')
-            $('iframe.whiteboard').attr('src', "https://socketiowhiteboard.herokuapp.com/readonly.html")
-            $('.menu-content').hide()
-            // let iframe = $('.whiteboard')[0]
-            // iframe.contentWindow.document.getElementsByClassName('colors')[0].style.display = 'none'
-            // iframe.style.pointerEvents = 'none'
+            // switchTo(whiteboard, 'up')
+            // $('.menu-content').hide()
+            // $('iframe.whiteboard').attr('src', "https://socketiowhiteboard.herokuapp.com/readonly.html")
+            openWhiteboard()
         })
     }
 

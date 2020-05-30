@@ -66,13 +66,6 @@ let seats = {}
 let peer
 let peerStreams = {}
 
-$('#whiteboard').ready(function() {
-  let iframe = document.getElementById('whiteboard')
-  let iframe_canvas = iframe.contentDocument || iframe.contentWindow.document
-  ctx = iframe_canvas.getElementsByClassName('whiteboard')
-  whiteboardFound = true
-})
-
 $('#landingPage').ready(function() {
   $('#teacherBtn').click(function() {
     isTeacher = true
@@ -90,6 +83,10 @@ $('#landingPage').ready(function() {
     addNextButton()
   })
 })
+
+function openWhiteboard() {
+  
+}
 
 function connectExisting(peers) {
   peers.forEach(id => {
@@ -196,7 +193,7 @@ function addNextButton() {
           // student.photoURL = uploadedPhotoURL
           window.globalSocket = student.socket
           initPeer()
-          studentUI = new StudentUI(student.socket)
+          studentUI = new StudentUI(student.socket, openWhiteboard)
           $('#dash-button').hide()
           $('#room-id').html('Room Code: ' + code)
           startEnvironment()
