@@ -85,7 +85,12 @@ $('#landingPage').ready(function() {
 })
 
 function openWhiteboard() {
-  
+  console.log("CALLBACK FUNCTION REEEE")
+  document.body.append( '<iframe src="https://socketiowhiteboard.herokuapp.com/" scrolling="no" id="whiteboard" frameborder="0"></iframe>' )
+  let iframe = document.getElementById('whiteboard')
+  let canvas = iframe.contentWindow.document.querySelector('.whiteboard')
+  ctx = canvas.getContext('2d')
+  whiteboardFound = true
 }
 
 function connectExisting(peers) {
@@ -116,7 +121,7 @@ function loadVideo() {
       video.srcObject = stream
       document.getElementById('imagePreview-container').appendChild(video)
     })
-    .catch(err => { 
+    .catch(err => {
       console.error("Error initializing video")
       loadVideo()
     })
